@@ -1,4 +1,4 @@
-package edu.kit.robocup;//
+package edu.kit.robocup.krislet;//
 //	File:			SoccerInterfaces.java
 //	Author:		Krzysztof Langner
 //	Date:			1997/04/28
@@ -15,7 +15,7 @@ package edu.kit.robocup;//
 //	command to player
 //
 //***************************************************************************
-interface SendCommand {
+public interface ISendCommand {
     // This function sends move command to the server
     void move(double x, double y);
 
@@ -38,19 +38,4 @@ interface SendCommand {
 
     // This function sends a bye command to the server
     void bye();
-}
-
-
-interface SensorInput {
-    //---------------------------------------------------------------------------
-    // This function sends see information
-    public void see(VisualInfo info);
-
-    //---------------------------------------------------------------------------
-    // This function receives hear information from player
-    public void hear(int time, int direction, String message);
-
-    //---------------------------------------------------------------------------
-    // This function receives hear information from referee
-    public void hear(int time, String message);
 }

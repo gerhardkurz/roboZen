@@ -1,5 +1,5 @@
-package edu.kit.robocup;//
-//	File:			edu.kit.robocup.Brain.java
+package edu.kit.robocup.krislet;//
+//	File:			edu.kit.robocup.krislet.Brain.java
 //	Author:		Krzysztof Langner
 //	Date:			1997/04/28
 //
@@ -7,6 +7,8 @@ package edu.kit.robocup;//
 
 //    Modified by:      Edgar Acosta
 //    Date:             March 4, 2008
+
+import edu.kit.robocup.krislet.VisualInfo;
 
 import java.lang.Math;
 import java.util.regex.*;

@@ -1,5 +1,5 @@
-package edu.kit.robocup;//
-//	File:			edu.kit.robocup.SoccerParams.java
+package edu.kit.robocup.krislet;//
+//	File:			edu.kit.robocup.krislet.SoccerParams.java
 //	Author:		Krzysztof Langner
 //	Date:			1997/04/28
 //

@@ -1,5 +1,5 @@
-package edu.kit.robocup;//
-//	File:			edu.kit.robocup.Krislet.java
+package edu.kit.robocup.krislet;//
+//	File:			edu.kit.robocup.krislet.Krislet.java
 //	Author:		Krzysztof Langner
 //	Date:			1997/04/28
 //
@@ -8,6 +8,8 @@ package edu.kit.robocup;//
 //      By:               Edgar Acosta
 //
 //********************************************
+
+import edu.kit.robocup.krislet.VisualInfo;
 
 import java.io.*;
 import java.net.*;

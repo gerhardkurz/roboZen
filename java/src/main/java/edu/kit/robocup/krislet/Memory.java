@@ -1,8 +1,10 @@
-package edu.kit.robocup;//
-//	File:			edu.kit.robocup.Memory.java
+package edu.kit.robocup.krislet;//
+//	File:			edu.kit.robocup.krislet.Memory.java
 //	Author:		Krzysztof Langner
 //	Date:			1997/04/28
 //
+
+import edu.kit.robocup.krislet.VisualInfo;
 
 class Memory {
     //---------------------------------------------------------------------------

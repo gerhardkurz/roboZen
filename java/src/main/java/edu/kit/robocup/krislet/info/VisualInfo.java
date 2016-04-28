@@ -1,5 +1,5 @@
-package edu.kit.robocup;//
-//	File:			edu.kit.robocup.VisualInfo.java
+package edu.kit.robocup.krislet.info;//
+//	File:			edu.kit.robocup.krislet.info.VisualInfo.java
 //	Author:		Krzysztof Langner
 //	Date:			1997/04/28
 
@@ -15,6 +15,7 @@ package edu.kit.robocup;//
 
 //  Modified by:	Edgar Acosta
 //  Date:		March 5, 2008
+
 
 import java.io.*;
 import java.util.*;
