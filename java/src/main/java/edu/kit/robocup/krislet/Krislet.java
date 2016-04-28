@@ -9,7 +9,8 @@ package edu.kit.robocup.krislet;//
 //
 //********************************************
 
-import edu.kit.robocup.krislet.VisualInfo;
+
+import edu.kit.robocup.krislet.info.VisualInfo;
 
 import java.io.*;
 import java.net.*;
@@ -22,7 +23,7 @@ import java.util.regex.*;
 //	This is main object class
 //
 //***************************************************************************
-class Krislet implements SendCommand {
+public class Krislet implements ISendCommand {
     //===========================================================================
     // Initialization member functions
 
@@ -47,9 +48,9 @@ class Krislet implements SendCommand {
     //	
     public static void main(String a[])
             throws SocketException, IOException {
-        String hostName = new String("");
+        String hostName = "";
         int port = 6000;
-        String team = new String("Krislet3");
+        String team = "Krislet3";
 
         try {
             // First look for parameters
@@ -285,7 +286,7 @@ class Krislet implements SendCommand {
     private InetAddress m_host;            // Server address
     private int m_port;            // server port
     private String m_team;            // team name
-    private SensorInput m_brain;        // input for sensor information
+    private ISensorInput m_brain;        // input for sensor information
     private boolean m_playing;              // controls the MainLoop
     private Pattern message_pattern = Pattern.compile("^\\((\\w+?)\\s.*");
     private Pattern hear_pattern = Pattern.compile("^\\(hear\\s(\\w+?)\\s(\\w+?)\\s(.*)\\).*");

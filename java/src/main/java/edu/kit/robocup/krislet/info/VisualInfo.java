@@ -21,7 +21,7 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
-class VisualInfo {
+public class VisualInfo {
     private int m_time;
     public Vector<ObjectInfo> m_objects;
     public String m_message;

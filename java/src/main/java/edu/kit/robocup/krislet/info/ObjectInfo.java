@@ -16,7 +16,7 @@ package edu.kit.robocup.krislet.info;
 //	about objects
 //
 //***************************************************************************
-public class ObjectInfo {
+public abstract class ObjectInfo {
     public String m_type;
     public float m_distance;
     public float m_direction;

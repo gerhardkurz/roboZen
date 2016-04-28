@@ -4,9 +4,10 @@ package edu.kit.robocup.krislet;//
 //	Date:			1997/04/28
 //
 
-import edu.kit.robocup.krislet.VisualInfo;
+import edu.kit.robocup.krislet.info.ObjectInfo;
+import edu.kit.robocup.krislet.info.VisualInfo;
 
-class Memory {
+public class Memory {
     //---------------------------------------------------------------------------
     // This constructor:
     // - initializes all variables

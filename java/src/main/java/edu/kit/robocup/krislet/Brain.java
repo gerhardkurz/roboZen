@@ -8,17 +8,19 @@ package edu.kit.robocup.krislet;//
 //    Modified by:      Edgar Acosta
 //    Date:             March 4, 2008
 
-import edu.kit.robocup.krislet.VisualInfo;
+
+import edu.kit.robocup.krislet.info.ObjectInfo;
+import edu.kit.robocup.krislet.info.VisualInfo;
 
 import java.lang.Math;
 import java.util.regex.*;
 
-class Brain extends Thread implements SensorInput {
+public class Brain extends Thread implements ISensorInput {
     //---------------------------------------------------------------------------
     // This constructor:
     // - stores connection to krislet
     // - starts thread for this object
-    public Brain(SendCommand krislet,
+    public Brain(ISendCommand krislet,
                  String team,
                  char side,
                  int number,
@@ -135,7 +137,7 @@ class Brain extends Thread implements SensorInput {
 
     //===========================================================================
     // Private members
-    private SendCommand m_krislet;            // robot which is controled by this brain
+    private ISendCommand m_krislet;            // robot which is controled by this brain
     private Memory m_memory;                // place where all information is stored
     private char m_side;
     volatile private boolean m_timeOver;
