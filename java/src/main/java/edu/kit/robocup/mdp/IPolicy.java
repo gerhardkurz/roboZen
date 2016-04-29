@@ -1,6 +1,6 @@
 package edu.kit.robocup.mdp;
 
-import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.game.action.IAction;
 import edu.kit.robocup.game.Player;
 
 import java.io.Serializable;
