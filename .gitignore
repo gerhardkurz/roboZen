@@ -3,3 +3,4 @@
 java/.gradle
 java/.idea
 java/build
+*.class
