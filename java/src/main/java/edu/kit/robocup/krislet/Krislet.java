@@ -46,8 +46,7 @@ public class Krislet implements ISendCommand {
     //		Team name. This name can not contain spaces.
     //
     //	
-    public static void main(String a[])
-            throws SocketException, IOException {
+    public static void main(String a[]) throws SocketException, IOException {
         String hostName = "";
         int port = 6000;
         String team = "Krislet3";
