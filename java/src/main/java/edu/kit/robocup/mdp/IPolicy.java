@@ -8,9 +8,9 @@ import java.util.Map;
 
 public interface IPolicy extends Serializable {
 
+    Map<Player, IAction> getAction(IState state);
+
     //FileOutputStream fout = new FileOutputStream("G:\\address.ser");
     //ObjectOutputStream oos = new ObjectOutputStream(fout);
     //oos.writeObject(MyClassList);
-
-    Map<Player, IAction> getAction(IState state);
 }
