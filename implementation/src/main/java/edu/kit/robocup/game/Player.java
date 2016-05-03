@@ -5,6 +5,7 @@ public class Player extends AGameObject {
     private final Team team;
     private final int number;
     private double orientation;
+    private Memory memory;
 
     public Player(Team team, int number, double positionX, double positionY, double orientation) {
         super(positionX, positionY);
