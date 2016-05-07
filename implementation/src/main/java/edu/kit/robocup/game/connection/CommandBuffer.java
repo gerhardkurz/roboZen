@@ -128,39 +128,39 @@ public class CommandBuffer implements CommandFilter {
             seeCommand = null;
         }
         if (hearCommand != null) {
-            executeMethod(parser, "parseHearCommand", seeCommand, controller, actions);
+            executeMethod(parser, "parseHearCommand", hearCommand, controller, actions);
             hearCommand = null;
         }
         if (initCommand != null) {
-            executeMethod(parser, "parseInitCommand", seeCommand, controller, actions);
+            executeMethod(parser, "parseInitCommand", initCommand, controller, actions);
             initCommand = null;
         }
         if (okCommand != null) {
-            executeMethod(parser, "parseOkCommand", seeCommand, controller, actions);
+            executeMethod(parser, "parseOkCommand", okCommand, controller, actions);
             okCommand = null;
         }
         if (warningCommand != null) {
-            executeMethod(parser, "parseWarningCommand", seeCommand, controller, actions);
+            executeMethod(parser, "parseWarningCommand", warningCommand, controller, actions);
             warningCommand = null;
         }
         if (serverParamCommand != null) {
-            executeMethod(parser, "parseServerParamCommand", seeCommand, controller, actions);
+            executeMethod(parser, "parseServerParamCommand", serverParamCommand, controller, actions);
             serverParamCommand = null;
         }
         if (playerParamCommand != null) {
-            executeMethod(parser, "parsePlayerParamCommand", seeCommand, controller, actions);
+            executeMethod(parser, "parsePlayerParamCommand", playerParamCommand, controller, actions);
             playerParamCommand = null;
         }
         if (playerTypeCommand != null) {
-            executeMethod(parser, "parsePlayerTypeCommand", seeCommand, controller, actions);
+            executeMethod(parser, "parsePlayerTypeCommand", playerTypeCommand, controller, actions);
             playerTypeCommand = null;
         }
         if (changePlayerTypeCommand != null) {
-            executeMethod(parser, "parseChangePlayerTypeCommand", seeCommand, controller, actions);
+            executeMethod(parser, "parseChangePlayerTypeCommand", changePlayerTypeCommand, controller, actions);
             changePlayerTypeCommand = null;
         }
         if (errorCommand != null) {
-            executeMethod(parser, "parseErrorCommand", seeCommand, controller, actions);
+            executeMethod(parser, "parseErrorCommand", errorCommand, controller, actions);
             errorCommand = null;
         }
     }

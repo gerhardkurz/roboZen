@@ -5,7 +5,6 @@ package edu.kit.robocup.game.connection;
 import com.github.robocup_atan.atan.model.*;
 import com.github.robocup_atan.atan.model.enums.PlayMode;
 
-import com.github.robocup_atan.atan.parser.CommandFilter;
 import com.github.robocup_atan.atan.parser.Filter;
 import com.github.robocup_atan.atan.parser.trainer.CmdParserTrainer;
 
@@ -23,7 +22,7 @@ import java.io.StringReader;
  */
 public class TrainerOutput extends AbstractUDPClient implements ActionsTrainer {
     private static final int TRAINER_PORT = 6001;
-    private static Logger log = Logger.getLogger(TrainerOutput.class);
+    private static Logger logger = Logger.getLogger(TrainerOutput.class);
     private String initMessage = null;
     private final CmdParserTrainer parser = new CmdParserTrainer(new StringReader(""));
     private final Filter filter = new Filter();
@@ -81,21 +80,17 @@ public class TrainerOutput extends AbstractUDPClient implements ActionsTrainer {
     @Override
     public void received(String msg) throws IOException {
         try {
-            if (log.isDebugEnabled()) {
-                log.debug("<---'" + msg + "'");
-            }
+            logger.debug("<---'" + msg + "'");
             filter.run(msg, cmdBuf);
             cmdBuf.takeStep(controller, parser, this);
             while (commandFactory.hasNext()) {
                 String cmd = commandFactory.next();
-                if (log.isDebugEnabled()) {
-                    log.debug("--->'" + cmd + "'");
-                }
+                logger.debug("--->'" + cmd + "'");
                 send(cmd);
                 pause(50);
             }
         } catch (Exception ex) {
-            log.error("Error while receiving message: " + msg + " " + ex.getMessage(), ex);
+            logger.error("Error while receiving message: " + msg + " " + ex.getMessage(), ex);
         }
     }
 
@@ -214,7 +209,7 @@ public class TrainerOutput extends AbstractUDPClient implements ActionsTrainer {
      */
     @Override
     public void handleError(String error) {
-        log.error(error);
+        logger.error(error);
     }
 
     /**
@@ -226,7 +221,7 @@ public class TrainerOutput extends AbstractUDPClient implements ActionsTrainer {
         try {
             this.wait(ms);
         } catch (InterruptedException ex) {
-            log.warn("Interrupted Exception ", ex);
+            logger.warn("Interrupted Exception ", ex);
         }
     }
 }
