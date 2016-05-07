@@ -30,6 +30,7 @@ public class Main {
 
         trainerOutput.movePlayer(team1.getPlayerOutput(0), -20, 20);
         trainerOutput.movePlayer(team2.getPlayerOutput(0), 20, 20);
+        trainerOutput.moveBall(5, 5);
         trainerOutput.changePlayMode(PlayMode.KICK_OFF_L);
     }
 

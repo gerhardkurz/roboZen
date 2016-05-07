@@ -37,7 +37,7 @@ public class OutputBase extends AbstractUDPClient {
     @Override
     public void received(String msg) throws IOException {
         try {
-            logger.debug("<--- " + msg);
+            log(msg, true);
             filter.run(msg, cmdBuf);
             cmdBuf.takeStep(controller, parser, this);
             sendAll();
@@ -50,7 +50,7 @@ public class OutputBase extends AbstractUDPClient {
         while (commandFactory.hasNext()) {
             String cmd = commandFactory.next();
             try {
-                logger.info("---> " + cmd);
+                log(cmd, false);
                 send(cmd);
                 pause(50);
             } catch (Exception ex) {
@@ -76,6 +76,15 @@ public class OutputBase extends AbstractUDPClient {
             this.wait(ms);
         } catch (InterruptedException ex) {
             logger.warn("Interrupted Exception ", ex);
+        }
+    }
+
+    private void log(String msg, boolean input) {
+        msg = (input ? "<---" : "--->") + " " + msg;
+        if (input && !(this instanceof TrainerOutput)) {
+            logger.debug(msg);
+        } else {
+            logger.info(msg);
         }
     }
 }
