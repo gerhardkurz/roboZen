@@ -37,7 +37,7 @@ public class OutputBase extends AbstractUDPClient {
     @Override
     public void received(String msg) throws IOException {
         try {
-            logger.debug("<---'" + msg + "'");
+            logger.debug("<--- " + msg);
             filter.run(msg, cmdBuf);
             cmdBuf.takeStep(controller, parser, this);
             sendAll();
@@ -50,7 +50,7 @@ public class OutputBase extends AbstractUDPClient {
         while (commandFactory.hasNext()) {
             String cmd = commandFactory.next();
             try {
-                logger.info("--->'" + cmd + "'");
+                logger.info("---> " + cmd);
                 send(cmd);
                 pause(50);
             } catch (Exception ex) {
@@ -61,7 +61,7 @@ public class OutputBase extends AbstractUDPClient {
 
     protected void start(String initMessage, String name) {
         this.initMessage = initMessage;
-        logger.info("--->'" + initMessage + "'");
+        logger.info("---> " + initMessage);
         super.start();
         super.setName(name);
     }
