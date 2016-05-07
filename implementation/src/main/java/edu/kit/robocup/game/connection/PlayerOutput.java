@@ -1,11 +1,10 @@
-package edu.kit.robocup;
+package edu.kit.robocup.game.connection;
 
 //~--- non-JDK imports --------------------------------------------------------
 
 
 import com.github.robocup_atan.atan.model.AbstractUDPClient;
 import com.github.robocup_atan.atan.model.ActionsPlayer;
-import com.github.robocup_atan.atan.model.CommandFactory;
 import com.github.robocup_atan.atan.model.ControllerPlayer;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;

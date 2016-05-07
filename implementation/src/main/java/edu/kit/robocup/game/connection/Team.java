@@ -1,6 +1,9 @@
-package edu.kit.robocup;
+package edu.kit.robocup.game.connection;
 
 
+import com.github.robocup_atan.atan.model.ActionsCoach;
+import com.github.robocup_atan.atan.model.ActionsPlayer;
+import com.github.robocup_atan.atan.model.ActionsTrainer;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ public class Team {
     private int playerPort = 6000;
 
     private List<Player> players = new ArrayList<>();
+    private Trainer trainer;
     private Coach coach;
     private String teamName;
 
@@ -33,22 +37,38 @@ public class Team {
             players.add(new Player(teamName, i + 1));
         }
         coach = new Coach(teamName);
+        trainer = new Trainer(teamName);
+    }
+
+    public ActionsPlayer getPlayerOutput(int index) {
+        return players.get(index).getOutput();
+    }
+
+    public ActionsCoach getCoachOutput() {
+        return coach.getOutput();
+    }
+
+    public ActionsTrainer getTrainerOutput() {
+        return trainer.getOutput();
     }
 
 
     public void connectAll() {
         doForEach(TeamAction.CONNECT);
         coach.getOutput().connect();
+        trainer.getOutput().connect();
     }
 
     public void reconnectAll() {
         doForEach(TeamAction.RECONNECT);
         coach.getOutput().connect();
+        trainer.getOutput().connect();
     }
 
     public void killAll() {
         doForEach(TeamAction.KILL);
         coach.getOutput().bye();
+        trainer.getOutput().bye();
     }
 
     private void doForEach(TeamAction action) {

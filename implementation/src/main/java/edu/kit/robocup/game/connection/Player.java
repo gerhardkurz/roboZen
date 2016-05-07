@@ -1,4 +1,4 @@
-package edu.kit.robocup;
+package edu.kit.robocup.game.connection;
 
 
 

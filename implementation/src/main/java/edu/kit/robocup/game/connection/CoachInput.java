@@ -1,4 +1,4 @@
-package edu.kit.robocup;
+package edu.kit.robocup.game.connection;
 
 
 import com.github.robocup_atan.atan.model.ActionsCoach;

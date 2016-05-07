@@ -1,4 +1,4 @@
-package edu.kit.robocup;
+package edu.kit.robocup.game.connection;
 
 import com.github.robocup_atan.atan.model.*;
 import com.github.robocup_atan.atan.model.enums.*;
@@ -69,8 +69,8 @@ public class PlayerInput implements ControllerPlayer {
 
     @Override
     public void infoSeeFlagCornerOwn(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-        if (flag == Flag.LEFT)
-            logger.info(direction +  "  " + distance);
+//        if (flag == Flag.LEFT)
+//            logger.info(direction +  "  " + distance);
     }
 
     @Override

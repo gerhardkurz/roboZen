@@ -1,5 +1,6 @@
 package edu.kit.robocup;
 
+import edu.kit.robocup.game.connection.Team;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
@@ -21,6 +22,7 @@ public class Main {
         Team team2 = new Team("t2", 1);
         team2.connectAll();
 
+        team1.getTrainerOutput().movePlayer(team1.getPlayerOutput(0), 50, 50);
     }
 
     private static void initEnvironment() {
