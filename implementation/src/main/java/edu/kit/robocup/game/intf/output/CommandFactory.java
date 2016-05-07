@@ -257,7 +257,7 @@ public class CommandFactory {
     public void addChangePlayModeCommand(PlayMode playMode) {
         StringBuilder buf = new StringBuilder();
         buf.append("(change_mode ");
-        buf.append(playMode);
+        buf.append(playMode.toString().toLowerCase());
         buf.append(')');
         fifo.add(fifo.size(), buf.toString());
     }
