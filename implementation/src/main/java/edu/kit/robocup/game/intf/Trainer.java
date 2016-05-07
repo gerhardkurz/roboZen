@@ -1,4 +1,4 @@
-package edu.kit.robocup.game.connection;
+package edu.kit.robocup.game.intf;
 
 
 public class Trainer {
@@ -7,7 +7,7 @@ public class Trainer {
 
     public Trainer(String teamName) {
         input = new TrainerInput();
-        output = new TrainerOutput(teamName, input);
+        output = new TrainerOutput(this, teamName);
     }
 
     public TrainerInput getInput() {

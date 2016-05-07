@@ -1,4 +1,4 @@
-package edu.kit.robocup.game.connection;
+package edu.kit.robocup.game.intf;
 
 import com.github.robocup_atan.atan.model.*;
 import com.github.robocup_atan.atan.model.enums.*;
@@ -19,10 +19,12 @@ public class PlayerInput implements ControllerPlayer {
 
 
     @Override
-    public void preInfo() {}
+    public void preInfo() {
+    }
 
     @Override
-    public void postInfo() {}
+    public void postInfo() {
+    }
 
     @Override
     public ActionsPlayer getPlayer() {
@@ -40,7 +42,8 @@ public class PlayerInput implements ControllerPlayer {
     }
 
     @Override
-    public void setType(String newType) {}
+    public void setType(String newType) {
+    }
 
     @Override
     public void infoSeeFlagRight(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
@@ -90,7 +93,8 @@ public class PlayerInput implements ControllerPlayer {
 
     @Override
     public void infoSeeFlagGoalOwn(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
+//        if (flag == Flag.CENTER)
+//            logger.info(distance);
     }
 
     @Override
@@ -144,7 +148,7 @@ public class PlayerInput implements ControllerPlayer {
 
     @Override
     public void infoHearWarning(Warning warning) {
-
+        logger.warn(warning);
     }
 
     @Override

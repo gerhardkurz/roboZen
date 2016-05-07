@@ -1,11 +1,10 @@
-package edu.kit.robocup.game.connection;
+package edu.kit.robocup.game.intf;
 
 //~--- non-JDK imports --------------------------------------------------------
 
 import com.github.robocup_atan.atan.model.*;
 import com.github.robocup_atan.atan.model.enums.PlayMode;
 
-import com.github.robocup_atan.atan.parser.Filter;
 import com.github.robocup_atan.atan.parser.trainer.CmdParserTrainer;
 
 import org.apache.log4j.Logger;
@@ -20,47 +19,16 @@ import java.io.StringReader;
  *
  * @author Atan
  */
-public class TrainerOutput extends AbstractUDPClient implements ActionsTrainer {
+public class TrainerOutput extends OutputBase implements ActionsTrainer {
     private static final int TRAINER_PORT = 6001;
     private static Logger logger = Logger.getLogger(TrainerOutput.class);
-    private String initMessage = null;
-    private final CmdParserTrainer parser = new CmdParserTrainer(new StringReader(""));
-    private final Filter filter = new Filter();
-    private final CommandFactory commandFactory = new CommandFactory();
-    private final CommandBuffer cmdBuf = new CommandBuffer();
-    private ControllerTrainer controller;
-    private String teamName;
+    private Trainer trainer;
 
-    /**
-     * A part constructor for SServerTrainer (assumes localhost:6001)
-     *
-     * @param teamName The team name.
-     * @param t        A ControllerTrainer.
-     */
-    public TrainerOutput(String teamName, ControllerTrainer t) {
-        this(teamName, t, TRAINER_PORT, "localhost");
-    }
 
-    /**
-     * The full constructor for SServerTrainer
-     *
-     * @param teamName The teams name.
-     * @param t        A ControllerTrainer.
-     * @param port     The port to connect to.
-     * @param hostname The host address.
-     */
-    public TrainerOutput(String teamName, ControllerTrainer t, int port, String hostname) {
-        super(port, hostname);
-        this.teamName = teamName;
-        this.controller = t;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getInitMessage() {
-        return initMessage;
+    public TrainerOutput(Trainer trainer, String teamName) {
+        super(TRAINER_PORT, "localhost", new CmdParserTrainer(new StringReader("")), trainer.getInput());
+        this.trainer = trainer;
     }
 
     /**
@@ -74,25 +42,6 @@ public class TrainerOutput extends AbstractUDPClient implements ActionsTrainer {
         super.setName("Trainer");
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void received(String msg) throws IOException {
-        try {
-            logger.debug("<---'" + msg + "'");
-            filter.run(msg, cmdBuf);
-            cmdBuf.takeStep(controller, parser, this);
-            while (commandFactory.hasNext()) {
-                String cmd = commandFactory.next();
-                logger.debug("--->'" + cmd + "'");
-                send(cmd);
-                pause(50);
-            }
-        } catch (Exception ex) {
-            logger.error("Error while receiving message: " + msg + " " + ex.getMessage(), ex);
-        }
-    }
 
     /**
      * {@inheritDoc}
@@ -212,16 +161,4 @@ public class TrainerOutput extends AbstractUDPClient implements ActionsTrainer {
         logger.error(error);
     }
 
-    /**
-     * Pause the thread.
-     *
-     * @param ms How long to pause the thread for (in ms).
-     */
-    private synchronized void pause(int ms) {
-        try {
-            this.wait(ms);
-        } catch (InterruptedException ex) {
-            logger.warn("Interrupted Exception ", ex);
-        }
-    }
 }

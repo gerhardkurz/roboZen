@@ -1,9 +1,6 @@
-package edu.kit.robocup.game.connection;
+package edu.kit.robocup.game.intf;
 
-import com.github.robocup_atan.atan.model.*;
 import com.github.robocup_atan.atan.parser.CommandFilter;
-import com.github.robocup_atan.atan.parser.coach.CmdParserCoach;
-import com.github.robocup_atan.atan.parser.player.CmdParserPlayer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

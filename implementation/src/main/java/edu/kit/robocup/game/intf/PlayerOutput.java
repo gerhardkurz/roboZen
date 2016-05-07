@@ -1,19 +1,14 @@
-package edu.kit.robocup.game.connection;
+package edu.kit.robocup.game.intf;
 
 //~--- non-JDK imports --------------------------------------------------------
 
 
-import com.github.robocup_atan.atan.model.AbstractUDPClient;
 import com.github.robocup_atan.atan.model.ActionsPlayer;
-import com.github.robocup_atan.atan.model.ControllerPlayer;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
-import com.github.robocup_atan.atan.parser.CommandFilter;
-import com.github.robocup_atan.atan.parser.Filter;
 import com.github.robocup_atan.atan.parser.player.CmdParserPlayer;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.io.StringReader;
 
 
@@ -22,47 +17,19 @@ import java.io.StringReader;
  *
  * @author Atan
  */
-public class PlayerOutput extends AbstractUDPClient implements ActionsPlayer {
+public class PlayerOutput extends OutputBase implements ActionsPlayer {
     private static final int PLAYER_PORT = 6000;
     private static Logger logger = Logger.getLogger(PlayerOutput.class);
 
     private final Player player;
-    private String initMessage = null;
-    private CmdParserPlayer parser = new CmdParserPlayer(new StringReader(""));
-    private Filter filter = new Filter();
-    private CommandFactory commandFactory = new CommandFactory();
-    private CommandBuffer cmdBuf = new CommandBuffer();
-    private ControllerPlayer controller;
 
-    /**
-     * A part constructor for PlayerOutput (assumes localhost:6000)
-     *
-     * @param teamName The team name.
-     */
+
+
     public PlayerOutput(Player player, String teamName) {
-        this(player, teamName, PLAYER_PORT, "localhost");
-    }
-
-    /**
-     * The full constructor for PlayerOutput.
-     *
-     * @param teamName The teams name.
-     * @param port     The port to connect to.
-     * @param hostname The host address.
-     */
-    public PlayerOutput(Player player, String teamName, int port, String hostname) {
-        super(port, hostname);
+        super(PLAYER_PORT, "localhost", new CmdParserPlayer(new StringReader("")), player.getInput());
         this.player = player;
-        this.controller = player.getInput();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getInitMessage() {
-        return initMessage;
-    }
 
     /**
      * Connects to the server via AbstractUDPClient.
@@ -89,33 +56,6 @@ public class PlayerOutput extends AbstractUDPClient implements ActionsPlayer {
     @Override
     public void start() {
         throw new Error("PlayerOutput should not use start. Use connect() instead");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void received(String msg) throws IOException {
-        if (msg.startsWith("(reconnect ")) {
-            return;
-        }
-        try {
-            if (logger.isDebugEnabled()) {
-                logger.debug("<---'" + msg + "'");
-            }
-            filter.run(msg, cmdBuf);
-            cmdBuf.takeStep(controller, parser, this);
-            while (commandFactory.hasNext()) {
-                String cmd = commandFactory.next();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("--->'" + cmd + "'");
-                }
-                send(cmd);
-                pause(50);
-            }
-        } catch (Exception ex) {
-            logger.error("Error while receiving message: " + msg + " " + ex.getMessage(), ex);
-        }
     }
 
     /**
@@ -284,18 +224,5 @@ public class PlayerOutput extends AbstractUDPClient implements ActionsPlayer {
             nam.append("<undefined>");
         }
         return nam.toString();
-    }
-
-    /**
-     * Pause the thread.
-     *
-     * @param ms How long to pause the thread for (in ms).
-     */
-    private synchronized void pause(int ms) {
-        try {
-            this.wait(ms);
-        } catch (InterruptedException ex) {
-            logger.warn("Interrupted Exception ", ex);
-        }
     }
 }

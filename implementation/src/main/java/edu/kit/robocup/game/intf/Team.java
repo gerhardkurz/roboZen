@@ -1,9 +1,8 @@
-package edu.kit.robocup.game.connection;
+package edu.kit.robocup.game.intf;
 
 
 import com.github.robocup_atan.atan.model.ActionsCoach;
 import com.github.robocup_atan.atan.model.ActionsPlayer;
-import com.github.robocup_atan.atan.model.ActionsTrainer;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

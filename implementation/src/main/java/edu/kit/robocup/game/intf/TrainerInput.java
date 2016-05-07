@@ -1,4 +1,4 @@
-package edu.kit.robocup.game.connection;
+package edu.kit.robocup.game.intf;
 
 
 import com.github.robocup_atan.atan.model.ControllerTrainer;

@@ -1,17 +1,16 @@
-package edu.kit.robocup.game.connection;
+package edu.kit.robocup.game.intf;
 
 
 
-public class Player {
+public class Player extends StaffBase {
     private final PlayerInput input;
     private final PlayerOutput output;
 
     private boolean isTeamEast;
-    private String teamName;
     private int number;
 
     public Player(String teamName, int number) {
-        this.teamName = teamName;
+        super(teamName);
         this.number = number;
         input = new PlayerInput(this);
         output = new PlayerOutput(this, teamName);
@@ -26,24 +25,8 @@ public class Player {
         return output;
     }
 
-    public boolean isTeamEast() {
-        return isTeamEast;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
     public int getNumber() {
         return number;
-    }
-
-    public void setTeamEast(boolean teamEast) {
-        isTeamEast = teamEast;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
     }
 
     public void setNumber(int number) {
