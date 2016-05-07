@@ -297,7 +297,7 @@ public class CommandFactory {
     public void addMoveBallCommand(double x, double y) {
         StringBuilder buf = new StringBuilder();
         buf.append("(move ");
-        buf.append("ball");    // TODO Manual says the format...will implement this later.
+        buf.append("(ball)");    // TODO Manual says the format...will implement this later.
         buf.append(' ');
         buf.append(x);
         buf.append(' ');
