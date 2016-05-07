@@ -1,4 +1,4 @@
-package edu.kit.robocup.game.intf;
+package edu.kit.robocup.game.intf.output;
 
 //~--- non-JDK imports --------------------------------------------------------
 

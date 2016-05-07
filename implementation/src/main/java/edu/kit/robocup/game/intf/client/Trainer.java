@@ -1,5 +1,8 @@
-package edu.kit.robocup.game.intf;
+package edu.kit.robocup.game.intf.client;
 
+
+import edu.kit.robocup.game.intf.input.TrainerInput;
+import edu.kit.robocup.game.intf.output.TrainerOutput;
 
 public class Trainer {
     private final TrainerInput input;

@@ -1,9 +1,9 @@
 package edu.kit.robocup;
 
 import com.github.robocup_atan.atan.model.enums.PlayMode;
-import edu.kit.robocup.game.intf.Team;
-import edu.kit.robocup.game.intf.Trainer;
-import edu.kit.robocup.game.intf.TrainerOutput;
+import edu.kit.robocup.game.intf.client.Team;
+import edu.kit.robocup.game.intf.client.Trainer;
+import edu.kit.robocup.game.intf.output.TrainerOutput;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;

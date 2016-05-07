@@ -1,6 +1,8 @@
-package edu.kit.robocup.game.intf;
+package edu.kit.robocup.game.intf.client;
 
 
+import edu.kit.robocup.game.intf.input.PlayerInput;
+import edu.kit.robocup.game.intf.output.PlayerOutput;
 
 public class Player extends StaffBase {
     private final PlayerInput input;

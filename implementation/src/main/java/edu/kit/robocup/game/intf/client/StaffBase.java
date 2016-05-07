@@ -1,4 +1,4 @@
-package edu.kit.robocup.game.intf;
+package edu.kit.robocup.game.intf.client;
 
 
 public class StaffBase {

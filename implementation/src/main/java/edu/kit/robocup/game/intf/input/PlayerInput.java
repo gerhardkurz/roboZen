@@ -1,7 +1,8 @@
-package edu.kit.robocup.game.intf;
+package edu.kit.robocup.game.intf.input;
 
 import com.github.robocup_atan.atan.model.*;
 import com.github.robocup_atan.atan.model.enums.*;
+import edu.kit.robocup.game.intf.client.Player;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;

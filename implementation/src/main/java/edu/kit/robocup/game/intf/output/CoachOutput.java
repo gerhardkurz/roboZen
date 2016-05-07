@@ -1,10 +1,11 @@
-package edu.kit.robocup.game.intf;
+package edu.kit.robocup.game.intf.output;
 
 //~--- non-JDK imports --------------------------------------------------------
 
 import com.github.robocup_atan.atan.model.*;
 import com.github.robocup_atan.atan.parser.coach.CmdParserCoach;
 
+import edu.kit.robocup.game.intf.client.Coach;
 import org.apache.log4j.Logger;
 
 //~--- JDK imports ------------------------------------------------------------

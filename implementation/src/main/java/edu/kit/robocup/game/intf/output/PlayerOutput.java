@@ -1,4 +1,4 @@
-package edu.kit.robocup.game.intf;
+package edu.kit.robocup.game.intf.output;
 
 //~--- non-JDK imports --------------------------------------------------------
 
@@ -7,6 +7,7 @@ import com.github.robocup_atan.atan.model.ActionsPlayer;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import com.github.robocup_atan.atan.parser.player.CmdParserPlayer;
+import edu.kit.robocup.game.intf.client.Player;
 import org.apache.log4j.Logger;
 
 import java.io.StringReader;

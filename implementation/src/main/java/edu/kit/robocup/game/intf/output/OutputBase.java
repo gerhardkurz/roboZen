@@ -1,7 +1,8 @@
-package edu.kit.robocup.game.intf;
+package edu.kit.robocup.game.intf.output;
 
 import com.github.robocup_atan.atan.model.AbstractUDPClient;
 import com.github.robocup_atan.atan.parser.Filter;
+import edu.kit.robocup.game.intf.input.CommandBuffer;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
