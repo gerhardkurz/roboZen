@@ -38,9 +38,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     public void connect() {
         CommandFactory f = new CommandFactory();
         f.addTrainerInitCommand();
-        initMessage = f.next();
-        super.start();
-        super.setName("Trainer");
+        super.start(f.next(), "Trainer");
     }
 
 
@@ -50,6 +48,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void changePlayMode(PlayMode playMode) {
         this.commandFactory.addChangePlayModeCommand(playMode);
+        sendAll();
     }
 
     /**
@@ -58,12 +57,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void movePlayer(ActionsPlayer p, double x, double y) {
         this.commandFactory.addMovePlayerCommand(p, x, y);
-        String cmd = commandFactory.next();
-        try {
-            send(cmd);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendAll();
     }
 
     /**
@@ -72,6 +66,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void moveBall(double x, double y) {
         this.commandFactory.addMoveBallCommand(x, y);
+        sendAll();
     }
 
     /**
@@ -80,6 +75,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void checkBall() {
         this.commandFactory.addCheckBallCommand();
+        sendAll();
     }
 
     /**
@@ -88,6 +84,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void startGame() {
         this.commandFactory.addStartCommand();
+        sendAll();
     }
 
     /**
@@ -96,6 +93,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void recover() {
         this.commandFactory.addRecoverCommand();
+        sendAll();
     }
 
     /**
@@ -104,6 +102,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void eye(boolean eyeOn) {
         this.commandFactory.addEyeCommand(eyeOn);
+        sendAll();
     }
 
     /**
@@ -112,6 +111,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void ear(boolean earOn) {
         this.commandFactory.addEarCommand(earOn);
+        sendAll();
     }
 
     /**
@@ -120,6 +120,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void look() {
         this.commandFactory.addLookCommand();
+        sendAll();
     }
 
     /**
@@ -128,6 +129,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void teamNames() {
         this.commandFactory.addTeamNamesCommand();
+        sendAll();
     }
 
     /**
@@ -136,6 +138,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void changePlayerType(String teamName, int unum, int playerType) {
         this.commandFactory.addChangePlayerTypeCommand(teamName, unum, playerType);
+        sendAll();
     }
 
     /**
@@ -144,6 +147,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void say(String message) {
         this.commandFactory.addSayCommand(message);
+        sendAll();
     }
 
     /**
@@ -152,6 +156,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
     @Override
     public void bye() {
         this.commandFactory.addByeCommand();
+        sendAll();
     }
 
     /**

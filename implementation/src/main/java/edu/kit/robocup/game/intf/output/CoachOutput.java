@@ -34,9 +34,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     public void connect() {
         CommandFactory f = new CommandFactory();
         f.addCoachInitCommand(coach.getTeamName());
-        initMessage = f.next();
-        super.start();
-        super.setName(coach.getTeamName() + " Coach");
+        super.start(f.next(), coach.getTeamName() + " Coach");
     }
 
     /**

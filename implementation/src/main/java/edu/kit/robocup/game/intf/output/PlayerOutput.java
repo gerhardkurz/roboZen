@@ -47,8 +47,7 @@ public class PlayerOutput extends OutputBase implements ActionsPlayer {
     public void reconnect() {
         CommandFactory f = new CommandFactory();
         f.addReconnectCommand(player.getTeamName(), player.getNumber());
-        initMessage = f.next();
-        super.start();
+        super.start(f.next(), player.getTeamName() + " " + player.getNumber());
     }
 
     /**

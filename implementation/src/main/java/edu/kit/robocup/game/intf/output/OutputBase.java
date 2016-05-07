@@ -9,7 +9,7 @@ import java.io.IOException;
 
 
 public class OutputBase extends AbstractUDPClient {
-    private static Logger logger = Logger.getLogger(AbstractUDPClient.class);
+    private static Logger logger = Logger.getLogger(OutputBase.class);
     protected final Filter filter = new Filter();
     protected final CommandFactory commandFactory = new CommandFactory();
     protected final CommandBuffer cmdBuf = new CommandBuffer();
@@ -40,15 +40,30 @@ public class OutputBase extends AbstractUDPClient {
             logger.debug("<---'" + msg + "'");
             filter.run(msg, cmdBuf);
             cmdBuf.takeStep(controller, parser, this);
-            while (commandFactory.hasNext()) {
-                String cmd = commandFactory.next();
-                logger.debug("--->'" + cmd + "'");
-                send(cmd);
-                pause(50);
-            }
+            sendAll();
         } catch (Exception ex) {
             logger.error("Error while receiving message: " + msg + " " + ex.getMessage(), ex);
         }
+    }
+
+    protected void sendAll() {
+        while (commandFactory.hasNext()) {
+            String cmd = commandFactory.next();
+            try {
+                logger.info("--->'" + cmd + "'");
+                send(cmd);
+                pause(50);
+            } catch (Exception ex) {
+                logger.error("Error while sending command: " + cmd + " " + ex.getMessage(), ex);
+            }
+        }
+    }
+
+    protected void start(String initMessage, String name) {
+        this.initMessage = initMessage;
+        logger.info("--->'" + initMessage + "'");
+        super.start();
+        super.setName(name);
     }
 
     /**

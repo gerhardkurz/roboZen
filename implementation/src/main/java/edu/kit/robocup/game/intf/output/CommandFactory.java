@@ -485,7 +485,6 @@ public class CommandFactory {
         }
         String cmd = (String) fifo.get(0);
         fifo.remove(0);
-        logger.debug(cmd);
         return cmd;
     }
 
