@@ -113,6 +113,12 @@ public class TrainerOutput extends AbstractUDPClient implements ActionsTrainer {
     @Override
     public void movePlayer(ActionsPlayer p, double x, double y) {
         this.commandFactory.addMovePlayerCommand(p, x, y);
+        String cmd = commandFactory.next();
+        try {
+            send(cmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

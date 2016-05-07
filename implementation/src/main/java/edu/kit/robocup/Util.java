@@ -22,10 +22,11 @@ public class Util {
         killTask(processName);
         try {
             TimeUnit.MILLISECONDS.sleep(100);
+            startExe(path);
+            TimeUnit.MILLISECONDS.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        startExe(path);
     }
 
     public static void startExe(String path) {

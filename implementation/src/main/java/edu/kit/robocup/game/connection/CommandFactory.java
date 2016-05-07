@@ -7,6 +7,7 @@ import com.github.robocup_atan.atan.model.XPMImage;
 import com.github.robocup_atan.atan.model.enums.PlayMode;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Vector;
@@ -19,6 +20,7 @@ import java.util.Vector;
  * @author Atan
  */
 public class CommandFactory {
+    private static Logger logger = Logger.getLogger(CommandFactory.class);
 
     // The SServer version that Atan can parse.
     private static final String serverVersion = "13";
@@ -269,17 +271,20 @@ public class CommandFactory {
      * @param y The y coordinate to move to.
      */
     public void addMovePlayerCommand(ActionsPlayer p, double x, double y) {
-        throw new UnsupportedOperationException("This method is for a future release");
-//        StringBuffer buf = new StringBuffer();
-//        buf.append("(move ");
-//        buf.append(p);    // TODO Manual says the format...will implement this later.
-//        buf.append(' ');
-//        buf.append(x);
-//        buf.append(' ');
-//        buf.append(y);
-//        buf.append(')');
-//        fifo.add(fifo.size(), buf.toString());
-
+//        throw new UnsupportedOperationException("This method is for a future release");
+        StringBuffer buf = new StringBuffer();
+        buf.append("(move ");
+        buf.append("(player ");    // TODO Manual says the format...will implement this later.
+        buf.append(p.getTeamName());
+        buf.append(' ');
+        buf.append(p.getNumber());
+        buf.append(')');
+        buf.append(' ');
+        buf.append(x);
+        buf.append(' ');
+        buf.append(y);
+        buf.append(')');
+        fifo.add(fifo.size(), buf.toString());
     }
 
     /**
@@ -480,6 +485,7 @@ public class CommandFactory {
         }
         String cmd = (String) fifo.get(0);
         fifo.remove(0);
+        logger.debug(cmd);
         return cmd;
     }
 
