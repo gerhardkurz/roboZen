@@ -36,7 +36,7 @@ public class Main {
         team1.getCoach().look();
         team2.getCoach().look();
 
-        team1.getCoach().receiveGlobalVisInfo();
+        team1.getCoach().eye(true); // enables constant visual updates for trainer/coach
     }
 
     private static void initEnvironment() {

@@ -109,8 +109,4 @@ public class Coach extends StaffBase implements ActionsCoach, ICoachInput {
         logger.error(error);
     }
 
-    public void receiveGlobalVisInfo() {
-        this.commandFactory.addEyeCommand(true);
-        sendAll();
-    }
 }
