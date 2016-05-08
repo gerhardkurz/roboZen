@@ -3,10 +3,8 @@ package edu.kit.robocup.game.intf.output;
 //~--- non-JDK imports --------------------------------------------------------
 
 import com.github.robocup_atan.atan.model.*;
-import com.github.robocup_atan.atan.parser.coach.CmdParserCoach;
 
 import edu.kit.robocup.game.intf.client.Coach;
-import edu.kit.robocup.game.intf.parser.CoachInputDummy;
 import org.apache.log4j.Logger;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -25,7 +23,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     private Coach coach;
 
     public CoachOutput(Coach coach, String teamName) {
-        super(COACH_PORT, "localhost", new CmdParserCoach(new StringReader("")), coach.getInput(), new CoachInputDummy());
+        super(COACH_PORT, "localhost", coach.getInput());
         this.coach = coach;
     }
 

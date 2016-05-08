@@ -16,7 +16,6 @@ public class Player extends StaffBase {
         this.number = number;
         input = new PlayerInput(this);
         output = new PlayerOutput(this, teamName);
-        input.setPlayer(output);
     }
 
     public PlayerInput getInput() {

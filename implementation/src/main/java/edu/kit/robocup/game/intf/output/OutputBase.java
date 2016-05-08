@@ -10,22 +10,15 @@ import java.io.IOException;
 
 public class OutputBase extends AbstractUDPClient {
     private static Logger logger = Logger.getLogger(OutputBase.class);
-    protected final Filter filter = new Filter();
     protected final CommandFactory commandFactory = new CommandFactory();
-    protected final CommandBuffer cmdBuf = new CommandBuffer();
 
-    protected final Object parser;
     protected IInput input;
-    protected IInputDummy inputDummy;
-
     protected String initMessage = null;
 
 
-    public OutputBase(int port, String hostname, Object parser, IInput input, IInputDummy inputDummy) {
+    public OutputBase(int port, String hostname, IInput input) {
         super(port, hostname);
-        this.parser = parser;
         this.input = input;
-        this.inputDummy = inputDummy;
     }
 
     @Override
@@ -37,7 +30,7 @@ public class OutputBase extends AbstractUDPClient {
     private void handleLook(String msg) {
         if (ICoachInput.class.isAssignableFrom(input.getClass())) {
             ICoachInput coachInput = (ICoachInput) input;
-            coachInput.look(msg);
+            coachInput.look(LookParser.parse(msg));
         }
     }
 
@@ -46,18 +39,9 @@ public class OutputBase extends AbstractUDPClient {
      */
     @Override
     public void received(String msg) throws IOException {
-        try {
-            log(msg, true);
-            if (msg.startsWith("(ok look ")) {
-                handleLook(msg);
-                return;
-            }
-            filter.run(msg, cmdBuf);
-            cmdBuf.takeStep(inputDummy, parser, this);
-            inputDummy.updateInput();
-            sendAll();
-        } catch (Exception ex) {
-            logger.error("Error while receiving message: " + msg + " " + ex.getMessage(), ex);
+        log(msg, true);
+        if (msg.startsWith("(ok look ")) {
+            handleLook(msg);
         }
     }
 
