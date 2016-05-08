@@ -33,6 +33,8 @@ public class Main {
         trainer.moveBall(5, 5);
         trainer.changePlayMode(PlayMode.KICK_OFF_L);
         team1.getCoach().look();
+
+        team1.getCoach().receiveGlobalVisInfo();
     }
 
     private static void initEnvironment() {

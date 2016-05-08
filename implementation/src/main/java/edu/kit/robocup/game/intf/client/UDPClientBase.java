@@ -79,7 +79,7 @@ public abstract class UDPClientBase extends AbstractUDPClient {
 
     private void log(String msg, boolean input) {
         msg = (input ? "<---" : "--->") + " " + msg;
-        if (input && !(this instanceof Trainer)) {
+        if (input && !(this instanceof Trainer) && !(this instanceof Coach)) {
             logger.debug(msg);
         } else {
             logger.info(msg);
