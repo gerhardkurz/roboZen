@@ -20,10 +20,10 @@ public class Main {
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Team team1 = new Team("t1", 1);
+        Team team1 = new Team("t1", 1, null);
         team1.connectAll();
 
-        Team team2 = new Team("t2", 2);
+        Team team2 = new Team("t2", 2, null);
         team2.connectAll();
 
         trainer.movePlayer(team1.getPlayerOutput(0), -20, 20);
@@ -33,6 +33,7 @@ public class Main {
         trainer.moveBall(5, 5);
         trainer.changePlayMode(PlayMode.KICK_OFF_L);
         team1.getCoach().look();
+        team2.getCoach().look();
 
         team1.getCoach().receiveGlobalVisInfo();
     }

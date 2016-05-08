@@ -9,14 +9,14 @@ import org.apache.log4j.Logger;
 public class Coach extends StaffBase implements ActionsCoach, ICoachInput {
     private static Logger logger = Logger.getLogger(Coach.class);
 
-    public Coach(String teamName) {
-        super(teamName, 6002, "localhost");
+    public Coach(Team team) {
+        super(team, 6002, "localhost");
         input = this;
     }
 
     @Override
     public void look(edu.kit.robocup.game.State state) {
-        logger.info(state);
+        team.handleState(state);
     }
 
     /**
@@ -24,8 +24,8 @@ public class Coach extends StaffBase implements ActionsCoach, ICoachInput {
      */
     public void connect() {
         edu.kit.robocup.game.intf.parser.CommandFactory f = new edu.kit.robocup.game.intf.parser.CommandFactory();
-        f.addCoachInitCommand(teamName);
-        super.start(f.next(), teamName + " Coach");
+        f.addCoachInitCommand(team.getTeamName());
+        super.start(f.next(), team.getTeamName() + " Coach");
     }
 
     /**

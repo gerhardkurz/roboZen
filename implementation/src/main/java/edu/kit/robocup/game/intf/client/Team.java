@@ -1,35 +1,45 @@
 package edu.kit.robocup.game.intf.client;
 
 
-import com.github.robocup_atan.atan.model.ActionsCoach;
 import com.github.robocup_atan.atan.model.ActionsPlayer;
+import edu.kit.robocup.game.PlayerState;
+import edu.kit.robocup.game.State;
+import edu.kit.robocup.game.action.IAction;
+import edu.kit.robocup.mdp.IPolicy;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
-//~--- non-JDK imports --------------------------------------------------------
 
 
-/**
- * An abstract class to use for teams.
- *
- * @author Atan
- */
 public class Team {
-    private static final Logger log = Logger.getLogger(Team.class);
-
-    private List<Player> players = new ArrayList<>();
+    private static final Logger logger = Logger.getLogger(Team.class);
+    private final IPolicy policy;
+    private final String teamName;
+    private List<PlayerClient> players = new ArrayList<>();
     private Coach coach;
-    private String teamName;
 
 
-    public Team(String teamName, int numberPlayers) {
+    public Team(String teamName, int numberPlayers, IPolicy policy) {
+        this.teamName = teamName;
+        this.policy = policy;
         for (int i = 0; i < numberPlayers; i++) {
-            players.add(new Player(teamName, i + 1));
+            players.add(new PlayerClient(this, i + 1));
         }
-        coach = new Coach(teamName);
+        coach = new Coach(this);
+    }
+
+    public void handleState(State state) {
+        logger.info(state);
+//        Map<PlayerState, IAction> action = policy.getAction(state);
+//        executeAction(action);
+    }
+
+    public String getTeamName() {
+        return teamName;
     }
 
     public ActionsPlayer getPlayerOutput(int index) {
@@ -68,7 +78,7 @@ public class Team {
         });
     }
 
-    private void doForPlayer(TeamAction action, Player player) {
+    private void doForPlayer(TeamAction action, PlayerClient player) {
         switch (action) {
             case CONNECT:
                 player.connect(false);
@@ -92,7 +102,7 @@ public class Team {
         try {
             this.wait(ms);
         } catch (InterruptedException ex) {
-            log.warn("Interrupted Exception ", ex);
+            logger.warn("Interrupted Exception ", ex);
         }
     }
 

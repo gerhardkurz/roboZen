@@ -8,14 +8,14 @@ import edu.kit.robocup.game.intf.parser.CommandFactory;
 import edu.kit.robocup.game.intf.parser.IPlayerInput;
 import org.apache.log4j.Logger;
 
-public class Player extends StaffBase implements ActionsPlayer, IPlayerInput {
-    private static Logger logger = Logger.getLogger(Player.class);
+public class PlayerClient extends StaffBase implements ActionsPlayer, IPlayerInput {
+    private static Logger logger = Logger.getLogger(PlayerClient.class);
 
     private boolean isTeamEast;
     private int number;
 
-    public Player(String teamName, int number) {
-        super(teamName, 6000, "localhost");
+    public PlayerClient(Team team, int number) {
+        super(team, 6000, "localhost");
         input = this;
         this.number = number;
     }
@@ -31,15 +31,15 @@ public class Player extends StaffBase implements ActionsPlayer, IPlayerInput {
      */
     public void connect(boolean isGoalie) {
         CommandFactory f = new CommandFactory();
-        f.addPlayerInitCommand(teamName, isGoalie);
+        f.addPlayerInitCommand(team.getTeamName(), isGoalie);
         initMessage = f.next();
         super.start();
     }
 
     public void reconnect() {
         CommandFactory f = new CommandFactory();
-        f.addReconnectCommand(teamName, number);
-        super.start(f.next(), teamName + " " + number);
+        f.addReconnectCommand(team.getTeamName(), number);
+        super.start(f.next(), team.getTeamName() + " " + number);
     }
 
     /**
@@ -129,7 +129,7 @@ public class Player extends StaffBase implements ActionsPlayer, IPlayerInput {
     @Override
     public void setNumber(int number) {
         this.number = number;
-        super.setName(teamName + " " + getNumber());
+        super.setName(team.getTeamName() + " " + getNumber());
     }
 
     /**
@@ -159,7 +159,7 @@ public class Player extends StaffBase implements ActionsPlayer, IPlayerInput {
         StringBuffer buf = new StringBuffer();
         buf.append(super.toStateString());
         buf.append("Team Name: ");
-        buf.append(teamName);
+        buf.append(team.getTeamName());
         buf.append("\n");
         buf.append("Number: ");
         buf.append(this.getNumber());
@@ -186,7 +186,7 @@ public class Player extends StaffBase implements ActionsPlayer, IPlayerInput {
      */
     @Override
     protected String getDescription() {
-        StringBuffer nam = new StringBuffer(teamName);
+        StringBuffer nam = new StringBuffer(team.getTeamName());
         nam.append(" ");
         if (number >= 0) {
             nam.append(number);

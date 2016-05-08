@@ -3,11 +3,11 @@ package edu.kit.robocup.game.intf.client;
 
 public abstract class StaffBase extends UDPClientBase {
     protected boolean isTeamEast;
-    protected String teamName;
+    protected final Team team;
 
-    public StaffBase(String teamName, int port, String hostname) {
+    public StaffBase(Team team, int port, String hostname) {
         super(port, hostname);
-        this.teamName = teamName;
+        this.team = team;
     }
 
 
@@ -16,15 +16,10 @@ public abstract class StaffBase extends UDPClientBase {
     }
 
     public String getTeamName() {
-        return teamName;
+        return team.getTeamName();
     }
 
     public void setTeamEast(boolean teamEast) {
         isTeamEast = teamEast;
     }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
 }

@@ -1,20 +1,20 @@
 package edu.kit.robocup.game;
 
 
-public class Player extends AGameObject {
-    private final Team team;
+public class PlayerState extends AGameObject {
+    private final String teamName;
     private final int number;
     private double orientation;
 
-    public Player(Team team, int number, double positionX, double positionY, double velocityX, double velocityY, double orientation) {
+    public PlayerState(String teamName, int number, double positionX, double positionY, double velocityX, double velocityY, double orientation) {
         super(positionX, positionY, velocityX, velocityY);
-        this.team = team;
+        this.teamName = teamName;
         this.number = number;
         this.orientation = orientation;
     }
 
-    public Team getTeam() {
-        return team;
+    public String getTeamName() {
+        return teamName;
     }
 
     public int getNumber() {

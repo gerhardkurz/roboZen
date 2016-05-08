@@ -6,19 +6,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class State implements IState {
-    private final Ball ball;
-    private final List<Player> players;
+    private final BallState ball;
+    private final List<PlayerState> players;
 
-    public State(Ball ball, List<Player> players) {
+    public State(BallState ball, List<PlayerState> players) {
         this.ball = ball;
         this.players = players;
     }
 
-    public Ball getBall() {
+    public BallState getBall() {
         return ball;
     }
 
-    public List<Player> getPlayers(final Team team) {
-        return players.stream().filter(p -> p.getTeam() == team).collect(Collectors.toList());
+    public List<PlayerState> getPlayers(final String teamName) {
+        return players.stream().filter(p -> p.getTeamName() == teamName).collect(Collectors.toList());
     }
 }
