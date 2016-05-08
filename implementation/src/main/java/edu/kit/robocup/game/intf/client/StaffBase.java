@@ -1,12 +1,12 @@
 package edu.kit.robocup.game.intf.client;
 
 
-public class StaffBase {
+public abstract class StaffBase extends UDPClientBase {
+    protected boolean isTeamEast;
+    protected String teamName;
 
-    private boolean isTeamEast;
-    private String teamName;
-
-    public StaffBase(String teamName) {
+    public StaffBase(String teamName, int port, String hostname) {
+        super(port, hostname);
         this.teamName = teamName;
     }
 

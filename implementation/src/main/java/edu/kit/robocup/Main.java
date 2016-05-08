@@ -3,7 +3,6 @@ package edu.kit.robocup;
 import com.github.robocup_atan.atan.model.enums.PlayMode;
 import edu.kit.robocup.game.intf.client.Team;
 import edu.kit.robocup.game.intf.client.Trainer;
-import edu.kit.robocup.game.intf.output.TrainerOutput;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
@@ -19,8 +18,7 @@ public class Main {
         initEnvironment();
 
         Trainer trainer = new Trainer("Trainer");
-        TrainerOutput trainerOutput = trainer.getOutput();
-        trainerOutput.connect();
+        trainer.connect();
 
         Team team1 = new Team("t1", 1);
         team1.connectAll();
@@ -28,13 +26,13 @@ public class Main {
         Team team2 = new Team("t2", 2);
         team2.connectAll();
 
-        trainerOutput.movePlayer(team1.getPlayerOutput(0), -20, 20);
-        trainerOutput.movePlayer(team2.getPlayerOutput(0), 20, 20);
-        trainerOutput.movePlayer(team2.getPlayerOutput(1), 20, -20);
+        trainer.movePlayer(team1.getPlayerOutput(0), -20, 20);
+        trainer.movePlayer(team2.getPlayerOutput(0), 20, 20);
+        trainer.movePlayer(team2.getPlayerOutput(1), 20, -20);
 
-        trainerOutput.moveBall(5, 5);
-        trainerOutput.changePlayMode(PlayMode.KICK_OFF_L);
-        team1.getCoachOutput().look();
+        trainer.moveBall(5, 5);
+        trainer.changePlayMode(PlayMode.KICK_OFF_L);
+        team1.getCoach().look();
     }
 
     private static void initEnvironment() {

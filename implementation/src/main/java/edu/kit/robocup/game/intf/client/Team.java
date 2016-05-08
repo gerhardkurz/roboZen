@@ -3,8 +3,6 @@ package edu.kit.robocup.game.intf.client;
 
 import com.github.robocup_atan.atan.model.ActionsCoach;
 import com.github.robocup_atan.atan.model.ActionsPlayer;
-import edu.kit.robocup.game.intf.output.CoachOutput;
-import edu.kit.robocup.game.intf.output.PlayerOutput;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -21,11 +19,6 @@ import java.util.List;
  */
 public class Team {
     private static final Logger log = Logger.getLogger(Team.class);
-    private static final int COACH_PORT = 6002;
-    private static final int TRAINER_PORT = 6001;
-
-    private String hostname = "localhost";
-    private int playerPort = 6000;
 
     private List<Player> players = new ArrayList<>();
     private Coach coach;
@@ -40,42 +33,42 @@ public class Team {
     }
 
     public ActionsPlayer getPlayerOutput(int index) {
-        return players.get(index).getOutput();
+        return players.get(index);
     }
 
-    public CoachOutput getCoachOutput() {
-        return coach.getOutput();
+    public Coach getCoach() {
+        return coach;
     }
 
 
 
     public void connectAll() {
         doForEach(TeamAction.CONNECT);
-        coach.getOutput().connect();
+        coach.connect();
     }
 
     public void reconnectAll() {
         doForEach(TeamAction.RECONNECT);
-        coach.getOutput().connect();
+        coach.connect();
     }
 
     public void killAll() {
         doForEach(TeamAction.KILL);
-        coach.getOutput().bye();
+        coach.bye();
     }
 
     private void doForEach(TeamAction action) {
-        players.stream().map(Player::getOutput).forEach(output -> {
+        players.stream().forEach(p -> {
             try {
-                doForPlayer(action, output);
+                doForPlayer(action, p);
             } catch (Exception ex) {
-                output.handleError(ex.getMessage());
+                p.handleError(ex.getMessage());
             }
             pause(500);
         });
     }
 
-    private void doForPlayer(TeamAction action, PlayerOutput player) {
+    private void doForPlayer(TeamAction action, Player player) {
         switch (action) {
             case CONNECT:
                 player.connect(false);

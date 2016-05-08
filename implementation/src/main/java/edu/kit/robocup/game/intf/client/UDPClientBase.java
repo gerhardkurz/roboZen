@@ -1,25 +1,24 @@
-package edu.kit.robocup.game.intf.output;
+package edu.kit.robocup.game.intf.client;
 
 import com.github.robocup_atan.atan.model.AbstractUDPClient;
-import com.github.robocup_atan.atan.parser.Filter;
 import edu.kit.robocup.game.intf.parser.*;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
 
-public class OutputBase extends AbstractUDPClient {
-    private static Logger logger = Logger.getLogger(OutputBase.class);
+public abstract class UDPClientBase extends AbstractUDPClient {
+    private static Logger logger = Logger.getLogger(UDPClientBase.class);
     protected final CommandFactory commandFactory = new CommandFactory();
 
     protected IInput input;
     protected String initMessage = null;
 
 
-    public OutputBase(int port, String hostname, IInput input) {
+    public UDPClientBase(int port, String hostname) {
         super(port, hostname);
-        this.input = input;
     }
+
 
     @Override
     public String getInitMessage() {
@@ -80,7 +79,7 @@ public class OutputBase extends AbstractUDPClient {
 
     private void log(String msg, boolean input) {
         msg = (input ? "<---" : "--->") + " " + msg;
-        if (input && !(this instanceof TrainerOutput)) {
+        if (input && !(this instanceof Trainer)) {
             logger.debug(msg);
         } else {
             logger.info(msg);
