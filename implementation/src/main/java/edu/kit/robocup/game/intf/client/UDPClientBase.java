@@ -44,6 +44,7 @@ public abstract class UDPClientBase extends AbstractUDPClient {
                 log(cmd, false);
                 send(cmd);
                 pause(50);
+            } catch (Exception ex) {
                 logger.error("Error while sending command: " + cmd + " " + ex.getMessage(), ex);
             }
         }
@@ -69,9 +70,9 @@ public abstract class UDPClientBase extends AbstractUDPClient {
         }
     }
 
-    private void log(String msg, boolean incoming) {
-        msg = (incoming ? "<---" : "--->") + " " + msg;
-        if (incoming && !(this instanceof Trainer)) {
+    private void log(String msg, boolean input) {
+        msg = (input ? "<---" : "--->") + " " + msg;
+        if (input && !(this instanceof Trainer) && !(this instanceof Coach)) {
             logger.debug(msg);
         } else {
             logger.info(msg);

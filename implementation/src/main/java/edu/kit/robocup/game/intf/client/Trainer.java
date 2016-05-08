@@ -149,4 +149,9 @@ public class Trainer extends UDPClientBase implements ActionsTrainer, ITrainerIn
     public void handleError(String error) {
         logger.error(error);
     }
+
+    public void receiveGlobalVisInfo() {
+        this.commandFactory.addEyeCommand(true);
+        sendAll();
+    }
 }
