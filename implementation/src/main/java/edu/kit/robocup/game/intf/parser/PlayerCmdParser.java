@@ -41,7 +41,6 @@ import com.github.robocup_atan.atan.parser.objects.ObjNameFlagPenaltyWest;
 import com.github.robocup_atan.atan.parser.objects.ObjNameFlagRight;
 import com.github.robocup_atan.atan.parser.objects.ObjNameFlagTop;
 import com.github.robocup_atan.atan.parser.objects.ObjNameLine;
-import com.github.robocup_atan.atan.parser.objects.ObjNameNull;
 import com.github.robocup_atan.atan.parser.objects.ObjNamePlayerEast;
 import com.github.robocup_atan.atan.parser.objects.ObjNamePlayerWest;
 
@@ -537,7 +536,7 @@ public class PlayerCmdParser implements CmdParserPlayerConstants {
             } else {
                 ;
             }
-            if (objName==null) {if (true) return new edu.kit.robocup.game.intf.parser.ObjNameNull(SeeEventType.PLAYER_AMBIGUOUS);}
+            if (objName==null) {if (true) return new ObjNameNull(SeeEventType.PLAYER_AMBIGUOUS);}
             else {if (true) return objName;}
         } else if (jj_2_36(2)) {
             jj_consume_token(B);
@@ -550,7 +549,7 @@ public class PlayerCmdParser implements CmdParserPlayerConstants {
             } else {
                 ;
             }
-            if (objName==null) {if (true) return new edu.kit.robocup.game.intf.parser.ObjNameNull(SeeEventType.FLAG_AMBIGUOUS);}
+            if (objName==null) {if (true) return new ObjNameNull(SeeEventType.FLAG_AMBIGUOUS);}
             else {if (true) return objName;}
         } else if (jj_2_38(2)) {
             jj_consume_token(L);
@@ -565,7 +564,7 @@ public class PlayerCmdParser implements CmdParserPlayerConstants {
             } else {
                 ;
             }
-            if (objName==null) {if (true) return new edu.kit.robocup.game.intf.parser.ObjNameNull(SeeEventType.GOAL_AMBIGUOUS);}
+            if (objName==null) {if (true) return new ObjNameNull(SeeEventType.GOAL_AMBIGUOUS);}
             else {if (true) return objName;}
         } else {
             jj_consume_token(-1);
