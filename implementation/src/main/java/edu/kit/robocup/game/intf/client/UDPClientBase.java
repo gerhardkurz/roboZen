@@ -26,12 +26,7 @@ public abstract class UDPClientBase extends AbstractUDPClient {
     }
 
 
-    private void handleLook(String msg) {
-        if (ICoachInput.class.isAssignableFrom(input.getClass())) {
-            ICoachInput coachInput = (ICoachInput) input;
-            coachInput.look(LookParser.parse(msg));
-        }
-    }
+
 
     /**
      * {@inheritDoc}
@@ -39,9 +34,7 @@ public abstract class UDPClientBase extends AbstractUDPClient {
     @Override
     public void received(String msg) throws IOException {
         log(msg, true);
-        if (msg.startsWith("(ok look ")) {
-            handleLook(msg);
-        }
+        Parser.parse(input, msg);
     }
 
     protected void sendAll() {
@@ -51,7 +44,6 @@ public abstract class UDPClientBase extends AbstractUDPClient {
                 log(cmd, false);
                 send(cmd);
                 pause(50);
-            } catch (Exception ex) {
                 logger.error("Error while sending command: " + cmd + " " + ex.getMessage(), ex);
             }
         }
@@ -77,9 +69,9 @@ public abstract class UDPClientBase extends AbstractUDPClient {
         }
     }
 
-    private void log(String msg, boolean input) {
-        msg = (input ? "<---" : "--->") + " " + msg;
-        if (input && !(this instanceof Trainer)) {
+    private void log(String msg, boolean incoming) {
+        msg = (incoming ? "<---" : "--->") + " " + msg;
+        if (incoming && !(this instanceof Trainer)) {
             logger.debug(msg);
         } else {
             logger.info(msg);
