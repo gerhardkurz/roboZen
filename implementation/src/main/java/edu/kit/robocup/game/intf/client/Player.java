@@ -4,24 +4,22 @@ package edu.kit.robocup.game.intf.client;
 import com.github.robocup_atan.atan.model.ActionsPlayer;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
+import edu.kit.robocup.game.IPlayer;
 import edu.kit.robocup.game.intf.parser.CommandFactory;
 import edu.kit.robocup.game.intf.parser.IPlayerInput;
 import org.apache.log4j.Logger;
 
-public class PlayerClient extends StaffBase implements ActionsPlayer, IPlayerInput {
-    private static Logger logger = Logger.getLogger(PlayerClient.class);
+public class Player extends StaffBase implements ActionsPlayer, IPlayerInput, IPlayer {
+    private static Logger logger = Logger.getLogger(Player.class);
 
     private boolean isTeamEast;
     private int number;
 
-    public PlayerClient(Team team, int number) {
+    public Player(Team team, int number) {
         super(team, 6000, "localhost");
         input = this;
         this.number = number;
     }
-
-
-
 
 
     /**

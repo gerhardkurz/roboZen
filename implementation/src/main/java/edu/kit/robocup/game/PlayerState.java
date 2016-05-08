@@ -1,7 +1,7 @@
 package edu.kit.robocup.game;
 
 
-public class PlayerState extends AGameObject {
+public class PlayerState extends AGameObject implements IPlayer {
     private final String teamName;
     private final int number;
     private double orientation;

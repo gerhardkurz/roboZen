@@ -2,24 +2,24 @@ package edu.kit.robocup.game.intf.client;
 
 
 import com.github.robocup_atan.atan.model.ActionsPlayer;
+import edu.kit.robocup.game.IPlayer;
 import edu.kit.robocup.game.PlayerState;
 import edu.kit.robocup.game.State;
 import edu.kit.robocup.game.action.IAction;
 import edu.kit.robocup.mdp.IPolicy;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-
 
 
 public class Team {
     private static final Logger logger = Logger.getLogger(Team.class);
     private final IPolicy policy;
     private final String teamName;
-    private List<PlayerClient> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
     private Coach coach;
 
 
@@ -27,15 +27,25 @@ public class Team {
         this.teamName = teamName;
         this.policy = policy;
         for (int i = 0; i < numberPlayers; i++) {
-            players.add(new PlayerClient(this, i + 1));
+            players.add(new Player(this, i + 1));
         }
         coach = new Coach(this);
     }
 
     public void handleState(State state) {
         logger.info(state);
-//        Map<PlayerState, IAction> action = policy.getAction(state);
-//        executeAction(action);
+        Map<IPlayer, IAction> action = policy.getAction(state);
+        executeAction(action);
+    }
+
+    private void executeAction(Map<IPlayer, IAction> action) {
+        for(Player player: players) {
+            try {
+                player.send(action.get(player).getCommandString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public String getTeamName() {
@@ -78,7 +88,7 @@ public class Team {
         });
     }
 
-    private void doForPlayer(TeamAction action, PlayerClient player) {
+    private void doForPlayer(TeamAction action, Player player) {
         switch (action) {
             case CONNECT:
                 player.connect(false);
