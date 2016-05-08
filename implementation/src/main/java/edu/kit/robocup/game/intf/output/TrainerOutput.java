@@ -28,7 +28,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
 
 
     public TrainerOutput(Trainer trainer, String teamName) {
-        super(TRAINER_PORT, "localhost", new CmdParserTrainer(new StringReader("")), trainer.getInput());
+        super(TRAINER_PORT, "localhost", new CmdParserTrainer(new StringReader("")), trainer.getInput(), null);
         this.trainer = trainer;
     }
 

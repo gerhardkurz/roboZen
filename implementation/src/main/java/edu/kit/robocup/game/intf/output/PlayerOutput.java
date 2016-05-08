@@ -8,6 +8,7 @@ import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import com.github.robocup_atan.atan.parser.player.CmdParserPlayer;
 import edu.kit.robocup.game.intf.client.Player;
+import edu.kit.robocup.game.intf.parser.PlayerInputDummy;
 import org.apache.log4j.Logger;
 
 import java.io.StringReader;
@@ -27,7 +28,7 @@ public class PlayerOutput extends OutputBase implements ActionsPlayer {
 
 
     public PlayerOutput(Player player, String teamName) {
-        super(PLAYER_PORT, "localhost", new CmdParserPlayer(new StringReader("")), player.getInput());
+        super(PLAYER_PORT, "localhost", new CmdParserPlayer(new StringReader("")), player.getInput(), new PlayerInputDummy(player.getInput()));
         this.player = player;
     }
 
@@ -151,7 +152,7 @@ public class PlayerOutput extends OutputBase implements ActionsPlayer {
     @Override
     public void setNumber(int num) {
         player.setNumber(num);
-        super.setName(player.getTeamName() + " Player # " + getNumber());
+        super.setName(player.getTeamName() + " " + getNumber());
     }
 
     /**
@@ -177,7 +178,7 @@ public class PlayerOutput extends OutputBase implements ActionsPlayer {
      */
     public String toListString() {
         StringBuffer buf = new StringBuffer();
-        buf.append(controller.getClass().getName());
+        buf.append(input.getClass().getName());
         return buf.toString();
     }
 
@@ -198,7 +199,7 @@ public class PlayerOutput extends OutputBase implements ActionsPlayer {
         buf.append(isRunning());
         buf.append("\n");
         buf.append("ControllerPlayer Class: ");
-        buf.append(controller.getClass().getName());
+        buf.append(input.getClass().getName());
         buf.append("\n");
         return buf.toString();
     }

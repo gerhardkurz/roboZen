@@ -3,6 +3,7 @@ package edu.kit.robocup.game.intf.output;
 import com.github.robocup_atan.atan.model.AbstractUDPClient;
 import com.github.robocup_atan.atan.parser.Filter;
 import edu.kit.robocup.game.intf.input.CommandBuffer;
+import edu.kit.robocup.game.intf.parser.IInputDummy;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -15,15 +16,17 @@ public class OutputBase extends AbstractUDPClient {
     protected final CommandBuffer cmdBuf = new CommandBuffer();
 
     protected final Object parser;
-    protected Object controller;
+    protected Object input;
+    protected IInputDummy inputDummy;
 
     protected String initMessage = null;
 
 
-    public OutputBase(int port, String hostname, Object parser, Object controller) {
+    public OutputBase(int port, String hostname, Object parser, Object input, IInputDummy inputDummy) {
         super(port, hostname);
         this.parser = parser;
-        this.controller = controller;
+        this.input = input;
+        this.inputDummy = inputDummy;
     }
 
     @Override
@@ -37,9 +40,15 @@ public class OutputBase extends AbstractUDPClient {
     @Override
     public void received(String msg) throws IOException {
         try {
+            if (msg.startsWith("(see "))
             log(msg, true);
             filter.run(msg, cmdBuf);
-            cmdBuf.takeStep(controller, parser, this);
+            if (inputDummy != null) {
+                cmdBuf.takeStep(inputDummy, parser, this);
+                inputDummy.updateInput();
+            } else {
+                cmdBuf.takeStep(input, parser, this);
+            }
             sendAll();
         } catch (Exception ex) {
             logger.error("Error while receiving message: " + msg + " " + ex.getMessage(), ex);

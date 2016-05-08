@@ -24,7 +24,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     private Coach coach;
 
     public CoachOutput(Coach coach, String teamName) {
-        super(COACH_PORT, "localhost", new CmdParserCoach(new StringReader("")), coach.getInput());
+        super(COACH_PORT, "localhost", new CmdParserCoach(new StringReader("")), coach.getInput(), null);
         this.coach = coach;
     }
 

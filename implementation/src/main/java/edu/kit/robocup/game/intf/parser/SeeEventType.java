@@ -1,0 +1,8 @@
+package edu.kit.robocup.game.intf.parser;
+
+/**
+ * Created by Florian on 08.05.2016.
+ */
+public enum SeeEventType {
+    FLAG_RIGHT, FLAG_LEFT, FLAG_OWN, FLAG_OTHER, FLAG_CENTER, FLAG_CORNER_OWN, FLAG_CORNER_OTHER, FLAG_PENALTY_OWN, FLAG_PENALTY_OTHER, FLAG_GOAL_OWN, FLAG_GOAL_OTHER, LINE, PLAYER_OTHER, PLAYER_OWN, BALL;
+}

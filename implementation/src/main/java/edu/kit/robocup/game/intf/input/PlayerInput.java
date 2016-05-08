@@ -3,12 +3,17 @@ package edu.kit.robocup.game.intf.input;
 import com.github.robocup_atan.atan.model.*;
 import com.github.robocup_atan.atan.model.enums.*;
 import edu.kit.robocup.game.intf.client.Player;
+import edu.kit.robocup.game.intf.parser.IPlayerInput;
+import edu.kit.robocup.game.intf.parser.SeeEventType;
+import edu.kit.robocup.game.intf.parser.SeeEvent;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
-public class PlayerInput implements ControllerPlayer {
+public class PlayerInput implements IPlayerInput {
     private final static Logger logger = Logger.getLogger(PlayerInput.class.getName());
     private final Player player;
 
@@ -47,80 +52,8 @@ public class PlayerInput implements ControllerPlayer {
     }
 
     @Override
-    public void infoSeeFlagRight(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeFlagLeft(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeFlagOwn(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeFlagOther(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeFlagCenter(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeFlagCornerOwn(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-//        if (flag == Flag.LEFT)
-//            logger.info(direction +  "  " + distance);
-    }
-
-    @Override
-    public void infoSeeFlagCornerOther(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeFlagPenaltyOwn(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeFlagPenaltyOther(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeFlagGoalOwn(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-//        if (flag == Flag.CENTER)
-//            logger.info(distance);
-    }
-
-    @Override
-    public void infoSeeFlagGoalOther(Flag flag, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeLine(Line line, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeePlayerOther(int number, boolean goalie, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeePlayerOwn(int number, boolean goalie, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
-    }
-
-    @Override
-    public void infoSeeBall(double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-
+    public void see(List<SeeEvent> seeEvents) {
+//        logger.info(seeEvents);
     }
 
     @Override
@@ -193,5 +126,10 @@ public class PlayerInput implements ControllerPlayer {
         } catch (InterruptedException ex) {
             logger.warn("Interrupted Exception ", ex);
         }
+    }
+
+
+    public void see(Object o) {
+
     }
 }
