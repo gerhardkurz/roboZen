@@ -32,7 +32,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
      * Connects to the server via AbstractUDPClient.
      */
     public void connect() {
-        CommandFactory f = new CommandFactory();
+        edu.kit.robocup.game.intf.parser.CommandFactory f = new edu.kit.robocup.game.intf.parser.CommandFactory();
         f.addCoachInitCommand(coach.getTeamName());
         super.start(f.next(), coach.getTeamName() + " Coach");
     }

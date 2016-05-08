@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerInputDummy implements ControllerPlayer, IInputDummy {
+public class PlayerInputDummy implements IInputDummy {
     private final PlayerInput input;
     private final List<SeeEvent> seeEvents = new ArrayList<>();
 
@@ -24,6 +24,11 @@ public class PlayerInputDummy implements ControllerPlayer, IInputDummy {
             input.see(seeEvents);
             seeEvents.clear();
         }
+    }
+
+    @Override
+    public void seeAmbiguous(SeeEventType eventType, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
+        seeEvents.add(new SeeEvent(eventType, distance, direction, distChange, dirChange, bodyFacingDirection, headFacingDirection));
     }
 
 
@@ -89,12 +94,12 @@ public class PlayerInputDummy implements ControllerPlayer, IInputDummy {
 
     @Override
     public void infoSeePlayerOther(int number, boolean goalie, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-        seeEvents.add(new SeeEvent(SeeEventType.LINE, number, goalie, distance, direction, distChange, dirChange, bodyFacingDirection, headFacingDirection));
+        seeEvents.add(new SeeEvent(SeeEventType.PLAYER_OTHER, number, goalie, distance, direction, distChange, dirChange, bodyFacingDirection, headFacingDirection));
     }
 
     @Override
     public void infoSeePlayerOwn(int number, boolean goalie, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-        seeEvents.add(new SeeEvent(SeeEventType.LINE, number, goalie, distance, direction, distChange, dirChange, bodyFacingDirection, headFacingDirection));
+        seeEvents.add(new SeeEvent(SeeEventType.PLAYER_OWN, number, goalie, distance, direction, distChange, dirChange, bodyFacingDirection, headFacingDirection));
     }
 
     @Override

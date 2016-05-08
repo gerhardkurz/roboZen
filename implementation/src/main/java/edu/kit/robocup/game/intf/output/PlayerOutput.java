@@ -8,6 +8,8 @@ import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import com.github.robocup_atan.atan.parser.player.CmdParserPlayer;
 import edu.kit.robocup.game.intf.client.Player;
+import edu.kit.robocup.game.intf.parser.CommandFactory;
+import edu.kit.robocup.game.intf.parser.PlayerCmdParser;
 import edu.kit.robocup.game.intf.parser.PlayerInputDummy;
 import org.apache.log4j.Logger;
 
@@ -28,7 +30,7 @@ public class PlayerOutput extends OutputBase implements ActionsPlayer {
 
 
     public PlayerOutput(Player player, String teamName) {
-        super(PLAYER_PORT, "localhost", new CmdParserPlayer(new StringReader("")), player.getInput(), new PlayerInputDummy(player.getInput()));
+        super(PLAYER_PORT, "localhost", new PlayerCmdParser(new StringReader("")), player.getInput(), new PlayerInputDummy(player.getInput()));
         this.player = player;
     }
 

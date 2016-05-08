@@ -2,7 +2,8 @@ package edu.kit.robocup.game.intf.output;
 
 import com.github.robocup_atan.atan.model.AbstractUDPClient;
 import com.github.robocup_atan.atan.parser.Filter;
-import edu.kit.robocup.game.intf.input.CommandBuffer;
+import edu.kit.robocup.game.intf.parser.CommandBuffer;
+import edu.kit.robocup.game.intf.parser.CommandFactory;
 import edu.kit.robocup.game.intf.parser.IInputDummy;
 import org.apache.log4j.Logger;
 
@@ -91,7 +92,7 @@ public class OutputBase extends AbstractUDPClient {
     private void log(String msg, boolean input) {
         msg = (input ? "<---" : "--->") + " " + msg;
         if (input && !(this instanceof TrainerOutput)) {
-            logger.debug(msg);
+            logger.info(msg);
         } else {
             logger.info(msg);
         }

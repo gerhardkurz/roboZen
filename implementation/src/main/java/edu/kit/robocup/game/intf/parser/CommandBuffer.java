@@ -1,4 +1,4 @@
-package edu.kit.robocup.game.intf.input;
+package edu.kit.robocup.game.intf.parser;
 
 import com.github.robocup_atan.atan.parser.CommandFilter;
 

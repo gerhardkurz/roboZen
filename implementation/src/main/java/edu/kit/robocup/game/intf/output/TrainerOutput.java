@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 
 //~--- JDK imports ------------------------------------------------------------
 
-import java.io.IOException;
 import java.io.StringReader;
 
 /**
@@ -36,7 +35,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
      * Connects to the server via AbstractUDPClient.
      */
     public void connect() {
-        CommandFactory f = new CommandFactory();
+        edu.kit.robocup.game.intf.parser.CommandFactory f = new edu.kit.robocup.game.intf.parser.CommandFactory();
         f.addTrainerInitCommand();
         super.start(f.next(), "Trainer");
     }

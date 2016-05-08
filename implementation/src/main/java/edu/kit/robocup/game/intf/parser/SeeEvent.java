@@ -47,6 +47,18 @@ public class SeeEvent {
         this.headFacingDirection = headFacingDirection;
     }
 
+    public SeeEventType getEventType() {
+        return eventType;
+    }
+
+    public Flag getFlag() {
+        return flag;
+    }
+
+    public Line getLine() {
+        return line;
+    }
+
     public Integer getNumber() {
         return number;
     }
@@ -77,5 +89,16 @@ public class SeeEvent {
 
     public double getHeadFacingDirection() {
         return headFacingDirection;
+    }
+
+    public String toString() {
+        String result = eventType + " ";
+        if (flag != null) {
+            result += flag;
+        } else if (line != null) {
+            result += line;
+        }
+        result += " " + direction + " " + distance;
+        return result;
     }
 }

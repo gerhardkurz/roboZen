@@ -25,11 +25,13 @@ public class Main {
         Team team1 = new Team("t1", 1);
         team1.connectAll();
 
-        Team team2 = new Team("t2", 1);
+        Team team2 = new Team("t2", 2);
         team2.connectAll();
 
         trainerOutput.movePlayer(team1.getPlayerOutput(0), -20, 20);
         trainerOutput.movePlayer(team2.getPlayerOutput(0), 20, 20);
+        trainerOutput.movePlayer(team2.getPlayerOutput(1), 20, -20);
+
         trainerOutput.moveBall(5, 5);
         trainerOutput.changePlayMode(PlayMode.KICK_OFF_L);
     }
