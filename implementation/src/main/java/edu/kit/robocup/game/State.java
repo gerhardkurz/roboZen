@@ -21,4 +21,9 @@ public class State implements IState {
     public List<PlayerState> getPlayers(final String teamName) {
         return players.stream().filter(p -> p.getTeamName() == teamName).collect(Collectors.toList());
     }
+
+    @Override
+    public String toString() {
+        return "State{" + ball.toString() + " " + players.toString() + "}";
+    }
 }

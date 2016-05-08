@@ -6,7 +6,7 @@ public class PlayerState extends AGameObject implements IPlayer {
     private final int number;
     private double orientation;
 
-    public PlayerState(String teamName, int number, double positionX, double positionY, double velocityX, double velocityY, double orientation) {
+    public PlayerState(String teamName, int number, double positionX, double positionY, double velocityX, double velocityY, double bodyAngle) {
         super(positionX, positionY, velocityX, velocityY);
         this.teamName = teamName;
         this.number = number;
@@ -27,5 +27,10 @@ public class PlayerState extends AGameObject implements IPlayer {
 
     public void setOrientation(double orientation) {
         this.orientation = orientation;
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerState{nr: " + getNumber() + " team: " + getTeamName() + " x:" + getPositionX() + " y: " + getPositionY() + " velX: " + getVelocityX() + " velY: " + getVelocityY() + "}";
     }
 }

@@ -9,7 +9,7 @@ public class Parser {
     private Parser() {}
 
     public static void parse(IInput input, String msg) {
-        if (msg.startsWith("(ok look ")) {
+        if (msg.startsWith("(see_global ")) {
             handleLook(input, msg);
         }
     }
