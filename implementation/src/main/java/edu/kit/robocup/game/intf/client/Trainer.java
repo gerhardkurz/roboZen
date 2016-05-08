@@ -3,9 +3,10 @@ package edu.kit.robocup.game.intf.client;
 
 import edu.kit.robocup.game.intf.input.TrainerInput;
 import edu.kit.robocup.game.intf.output.TrainerOutput;
+import edu.kit.robocup.game.intf.parser.ITrainerInput;
 
 public class Trainer {
-    private final TrainerInput input;
+    private final ITrainerInput input;
     private final TrainerOutput output;
 
     public Trainer(String teamName) {
@@ -13,7 +14,7 @@ public class Trainer {
         output = new TrainerOutput(this, teamName);
     }
 
-    public TrainerInput getInput() {
+    public ITrainerInput getInput() {
         return input;
     }
 

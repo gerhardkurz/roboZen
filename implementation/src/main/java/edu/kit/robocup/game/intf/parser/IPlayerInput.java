@@ -30,7 +30,7 @@ import java.util.Map;
  *
  * @author Atan
  */
-public interface IPlayerInput {
+public interface IPlayerInput extends IInput {
 
     /**
      * This is the method called before the controller receives all the new visual

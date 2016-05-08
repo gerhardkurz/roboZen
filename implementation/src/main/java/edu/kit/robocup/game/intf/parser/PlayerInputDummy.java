@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerInputDummy implements IInputDummy {
+public class PlayerInputDummy implements IInputDummy, ControllerPlayer {
     private final PlayerInput input;
     private final List<SeeEvent> seeEvents = new ArrayList<>();
 

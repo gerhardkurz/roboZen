@@ -54,11 +54,11 @@ public class PlayerInput implements IPlayerInput {
     @Override
     public void see(List<SeeEvent> seeEvents) {
         if (player.getTeamName().equals("t1")) {
-            logger.info("");
+//            logger.info("");
             for (SeeEvent seeEvent : seeEvents) {
-                logger.info(seeEvent);
+//                logger.info(seeEvent);
             }
-            logger.info("");
+//            logger.info("");
         }
     }
 

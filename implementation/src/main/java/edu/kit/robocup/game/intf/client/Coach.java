@@ -10,9 +10,8 @@ public class Coach extends StaffBase {
 
     public Coach(String teamName) {
         super(teamName);
-        input = new CoachInput();
+        input = new CoachInput(this);
         output = new CoachOutput(this, teamName);
-        input.setCoach(output);
     }
 
 

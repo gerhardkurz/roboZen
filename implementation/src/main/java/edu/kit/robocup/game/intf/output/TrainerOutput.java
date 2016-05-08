@@ -8,6 +8,7 @@ import com.github.robocup_atan.atan.model.enums.PlayMode;
 import com.github.robocup_atan.atan.parser.trainer.CmdParserTrainer;
 
 import edu.kit.robocup.game.intf.client.Trainer;
+import edu.kit.robocup.game.intf.parser.TrainerInputDummy;
 import org.apache.log4j.Logger;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -27,7 +28,7 @@ public class TrainerOutput extends OutputBase implements ActionsTrainer {
 
 
     public TrainerOutput(Trainer trainer, String teamName) {
-        super(TRAINER_PORT, "localhost", new CmdParserTrainer(new StringReader("")), trainer.getInput(), null);
+        super(TRAINER_PORT, "localhost", new CmdParserTrainer(new StringReader("")), trainer.getInput(), new TrainerInputDummy());
         this.trainer = trainer;
     }
 
