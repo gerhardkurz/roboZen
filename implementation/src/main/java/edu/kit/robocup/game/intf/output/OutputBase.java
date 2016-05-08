@@ -2,7 +2,6 @@ package edu.kit.robocup.game.intf.output;
 
 import com.github.robocup_atan.atan.model.AbstractUDPClient;
 import com.github.robocup_atan.atan.parser.Filter;
-import edu.kit.robocup.game.intf.input.CoachInput;
 import edu.kit.robocup.game.intf.parser.*;
 import org.apache.log4j.Logger;
 

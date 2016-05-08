@@ -54,6 +54,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     @Override
     public void eye(boolean eyeOn) {
         this.commandFactory.addEyeCommand(eyeOn);
+        sendAll();
     }
 
     /**
@@ -62,6 +63,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     @Override
     public void look() {
         this.commandFactory.addLookCommand();
+        sendAll();
     }
 
     /**
@@ -70,6 +72,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     @Override
     public void getTeamNames() {
         this.commandFactory.addTeamNamesCommand();
+        sendAll();
     }
 
     /**
@@ -78,6 +81,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     @Override
     public void changePlayerType(int unum, int playerType) {
         this.commandFactory.addChangePlayerTypeCommand(unum, playerType);
+        sendAll();
     }
 
     /**
@@ -86,6 +90,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     @Override
     public void say(String message) {
         this.commandFactory.addSayCommand(message);
+        sendAll();
     }
 
     /**
@@ -94,6 +99,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     @Override
     public void teamGraphic(XPMImage xpm) {
         this.commandFactory.addTeamGraphicCommand(xpm);
+        sendAll();
     }
 
     /**
@@ -102,6 +108,7 @@ public class CoachOutput extends OutputBase implements ActionsCoach {
     @Override
     public void bye() {
         this.commandFactory.addByeCommand();
+        sendAll();
     }
 
     /**

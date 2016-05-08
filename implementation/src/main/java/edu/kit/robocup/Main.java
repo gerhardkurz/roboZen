@@ -34,7 +34,7 @@ public class Main {
 
         trainerOutput.moveBall(5, 5);
         trainerOutput.changePlayMode(PlayMode.KICK_OFF_L);
-        trainerOutput.look();
+        team1.getCoachOutput().look();
     }
 
     private static void initEnvironment() {

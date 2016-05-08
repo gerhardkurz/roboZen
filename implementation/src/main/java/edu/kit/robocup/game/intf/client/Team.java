@@ -3,6 +3,7 @@ package edu.kit.robocup.game.intf.client;
 
 import com.github.robocup_atan.atan.model.ActionsCoach;
 import com.github.robocup_atan.atan.model.ActionsPlayer;
+import edu.kit.robocup.game.intf.output.CoachOutput;
 import edu.kit.robocup.game.intf.output.PlayerOutput;
 import org.apache.log4j.Logger;
 
@@ -42,7 +43,7 @@ public class Team {
         return players.get(index).getOutput();
     }
 
-    public ActionsCoach getCoachOutput() {
+    public CoachOutput getCoachOutput() {
         return coach.getOutput();
     }
 
