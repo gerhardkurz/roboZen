@@ -3,7 +3,7 @@ package edu.kit.robocup.mdp.transitions;
 import java.util.List;
 
 import edu.kit.robocup.game.State;
-import edu.kit.robocup.game.action.IAction;
+import edu.kit.robocup.mdp.IActions;
 
 public class Game implements IGame {
 
@@ -11,7 +11,12 @@ public class Game implements IGame {
 	private List<State> states;
 	
 	// actions a_0 to a_(T-1), a_i is action between s_i and s_(i+1)
-	private List<IAction> actions;
+	private List<IActions> actions;
+	
+	public Game(List<State> states, List<IActions> actions) {
+		this.states = states;
+		this.actions = actions;
+	}
 	
 	@Override
 	public List<State> getStates() {
@@ -19,7 +24,7 @@ public class Game implements IGame {
 	}
 
 	@Override
-	public List<IAction> getActions() {
+	public List<IActions> getActions() {
 		return this.actions;
 	}
 
