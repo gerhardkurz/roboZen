@@ -33,7 +33,8 @@ public class LookParser {
 
         List<PlayerState> players = new LinkedList<>();
         BallState ball = null;
-        Pattern re_objAndDesc = Pattern.compile("(\\((?<type>b|(p \"(?<teamname>.*?)\" (?<playerNr>\\d+)))\\) (?<first>[-+]?[0-9]*\\.?[0-9]+) (?<second>[-+]?[0-9]*\\.?[0-9]+) (?<third>[-+]?[0-9]*\\.?[0-9]+) (?<fourth>[-+]?[0-9]*\\.?[0-9]+)( (?<fifth>[-+]?[0-9]*\\.?[0-9]+) (?<sixth>[-+]?[0-9]*\\.?[0-9]+))?( (?<seventh>[-+]?[0-9]*\\.?[0-9]+))?)");
+        //String re_double = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
+        Pattern re_objAndDesc = Pattern.compile("(\\((?<type>b|(p \"(?<teamname>.*?)\" (?<playerNr>\\d+)))\\) (?<first>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<second>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<third>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<fourth>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)( (?<fifth>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<sixth>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))?( (?<seventh>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))?)");
         Matcher match = re_objAndDesc.matcher(info);
         while (match.find()) {
             String type = match.group("type");
