@@ -11,20 +11,16 @@ import java.util.*;
 
 
 public class DummyPolicy implements IPolicy {
+    private final String teamName;
+
+    public DummyPolicy(String teamName) {
+        this.teamName = teamName;
+    }
+
     @Override
     public Map<IPlayer, IAction> getAction(IState state) {
-        Map<IPlayer, IAction> result = new TreeMap<>(new Comparator<IPlayer>(){
-            @Override
-            public int compare(IPlayer o1, IPlayer o2) {
-                int team = o1.getTeamName().compareTo(o2.getTeamName());
-                if (team != 0) {
-                    return team;
-                } else {
-                    return o1.getNumber() - o2.getNumber();
-                }
-            }
-        });
-        List<PlayerState> players = state.getPlayers("t1");
+        Map<IPlayer, IAction> result = new TreeMap<>(new PlayerComparator());
+        List<PlayerState> players = state.getPlayers(teamName);
         for (PlayerState player: players) {
             result.put(player, new Yolo());
         }

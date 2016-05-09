@@ -13,13 +13,13 @@ public class Yolo implements IAction {
         if (yoloGen()) {
             commandFactory.addTurnCommand(10);
         } else {
-            commandFactory.addDashCommand(1);
+            commandFactory.addDashCommand(20);
         }
         return commandFactory.next();
     }
 
     private boolean yoloGen() {
         Random rnd = new Random();
-        return rnd.nextFloat() <= 0.5;
+        return rnd.nextFloat() <= 0.25;
     }
 }
