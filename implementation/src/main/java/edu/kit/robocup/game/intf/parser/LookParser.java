@@ -25,7 +25,6 @@ public class LookParser {
         } else {
             System.out.println("NO MATCH");
         }
-        System.out.println(state);
         return state;
 }
 

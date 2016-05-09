@@ -51,7 +51,7 @@ public abstract class UDPClientBase extends AbstractUDPClient {
 
     protected void start(String initMessage, String name) {
         this.initMessage = initMessage;
-        logger.info("---> " + initMessage);
+        log(initMessage, false);
         super.start();
         super.setName(name);
     }
@@ -74,7 +74,7 @@ public abstract class UDPClientBase extends AbstractUDPClient {
         if (input && !(this instanceof Trainer) && !(this instanceof Coach)) {
             logger.debug(msg);
         } else {
-            logger.info(msg);
+            logger.debug(msg);
         }
     }
 }

@@ -33,7 +33,6 @@ public class Team {
     }
 
     public void handleState(State state) {
-        logger.info(state);
         Map<IPlayer, IAction> action = policy.getAction(state);
         executeAction(action);
     }
