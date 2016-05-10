@@ -1,6 +1,5 @@
 package edu.kit.robocup.mdp.transitions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Jama.Matrix;
