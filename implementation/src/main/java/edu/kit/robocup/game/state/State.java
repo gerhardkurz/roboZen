@@ -30,4 +30,15 @@ public class State implements IState {
     public String toString() {
         return "State{" + ball.toString() + " " + players.toString() + "}";
     }
+    
+    public double[] getArray() {
+		double[] pos = new double[2*(players.size() + 1)];
+		pos[0] = ball.getPositionX();
+		pos[1] = ball.getPositionY();
+		for (int i = 0; i < players.size(); i++) {
+			pos[2*(i+1)] = players.get(i).getPositionX();
+			pos[2*(i+1)+1] = players.get(i).getPositionY();
+		}
+		return pos;
+	}
 }
