@@ -10,4 +10,6 @@ public interface IGame {
 	List<State> getStates();
 	// returns sequence of T-1 actions
 	List<IActions> getActions();
+	// returns number of visited states per game
+	int getGamelength();
 }

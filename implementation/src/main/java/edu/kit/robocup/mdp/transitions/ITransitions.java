@@ -6,6 +6,6 @@ public interface ITransitions {
 	// get sequences of m games
 	List<IGame> getGames();
 	
-	// calculate A, B, epsilon
+	// calculate A, B
 	void learn();
 }
