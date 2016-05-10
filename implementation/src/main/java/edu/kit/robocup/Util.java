@@ -25,9 +25,9 @@ public class Util {
     public static void killAndStart(String processName, String path) {
         killTask(processName);
         try {
-            TimeUnit.MILLISECONDS.sleep(100);
+            TimeUnit.MILLISECONDS.sleep(500);
             startExe(path);
-            TimeUnit.MILLISECONDS.sleep(100);
+            TimeUnit.MILLISECONDS.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -5,7 +5,7 @@ import com.github.robocup_atan.atan.model.ActionsPlayer;
 import edu.kit.robocup.game.IPlayer;
 import edu.kit.robocup.game.PlayerState;
 import edu.kit.robocup.game.State;
-import edu.kit.robocup.game.action.IAction;
+import edu.kit.robocup.game.action.Action;
 import edu.kit.robocup.mdp.IPolicy;
 import org.apache.log4j.Logger;
 
@@ -33,11 +33,11 @@ public class Team {
     }
 
     public void handleState(State state) {
-        Map<IPlayer, IAction> action = policy.getAction(state);
+        Map<IPlayer, Action> action = policy.getAction(state);
         executeAction(action);
     }
 
-    private void executeAction(Map<IPlayer, IAction> action) {
+    private void executeAction(Map<IPlayer, Action> action) {
         for(Player player: players) {
             try {
                 player.send(action.get(player).getCommandString());
