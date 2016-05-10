@@ -1,6 +1,8 @@
-package edu.kit.robocup.game.intf.client;
+package edu.kit.robocup.game.server.client;
 
-import edu.kit.robocup.game.intf.parser.*;
+import edu.kit.robocup.game.Coach;
+import edu.kit.robocup.game.Trainer;
+import edu.kit.robocup.game.server.message.*;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -10,7 +12,6 @@ public abstract class UDPClientBase extends AbstractUDPClient {
     private static Logger logger = Logger.getLogger(UDPClientBase.class);
     protected final CommandFactory commandFactory = new CommandFactory();
 
-    protected IInput input;
     protected String initMessage = null;
 
 
@@ -33,7 +34,7 @@ public abstract class UDPClientBase extends AbstractUDPClient {
     @Override
     public void received(String msg) throws IOException {
         log(msg, true);
-        Parser.parse(input, msg);
+        Parser.parse(this, msg);
     }
 
     protected void sendAll() {

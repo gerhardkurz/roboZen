@@ -1,8 +1,9 @@
 package edu.kit.robocup.mdp;
 
+import edu.kit.robocup.game.Action;
+
 import java.util.List;
 
-import edu.kit.robocup.game.action.Action;
 
 public interface IActions {
 	List<Action> getActions();

@@ -1,8 +1,10 @@
 package edu.kit.robocup;
 
 import com.github.robocup_atan.atan.model.enums.PlayMode;
-import edu.kit.robocup.game.intf.client.Team;
-import edu.kit.robocup.game.intf.client.Trainer;
+import edu.kit.robocup.game.Ball;
+import edu.kit.robocup.game.PlayerState;
+import edu.kit.robocup.game.Team;
+import edu.kit.robocup.game.Trainer;
 import edu.kit.robocup.mdp.DummyPolicy;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -27,11 +29,11 @@ public class Main {
         Team team2 = new Team("t2", 2, new DummyPolicy("t2"));
         team2.connectAll();
 
-        trainer.movePlayer(team1.getPlayerOutput(0), -20, 20);
-        trainer.movePlayer(team2.getPlayerOutput(0), 20, 20);
-        trainer.movePlayer(team2.getPlayerOutput(1), 20, -20);
+        trainer.movePlayer(new PlayerState("t1", 1, 20, 20));
+        trainer.movePlayer(new PlayerState("t2", 1, 20, 20));
+        trainer.movePlayer(new PlayerState("t2", 2, 20, -20));
 
-        trainer.moveBall(5, 5);
+        trainer.moveBall(new Ball(3, 3));
         trainer.changePlayMode(PlayMode.KICK_OFF_L);
 
         team1.getCoach().eye(true); // enables constant visual updates for trainer/coach

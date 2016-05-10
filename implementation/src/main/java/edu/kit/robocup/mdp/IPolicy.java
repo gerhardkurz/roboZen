@@ -1,15 +1,13 @@
 package edu.kit.robocup.mdp;
 
-import edu.kit.robocup.game.IPlayer;
-import edu.kit.robocup.game.action.Action;
-import edu.kit.robocup.game.PlayerState;
+import edu.kit.robocup.game.IPlayerController;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.List;
 
 public interface IPolicy extends Serializable {
 
-    Map<IPlayer, Action> getAction(IState state);
+    void apply(IState state, List<? extends IPlayerController> playerControllers);
 
     //FileOutputStream fout = new FileOutputStream("G:\\address.ser");
     //ObjectOutputStream oos = new ObjectOutputStream(fout);

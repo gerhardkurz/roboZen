@@ -6,20 +6,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class State implements IState {
-    private final BallState ball;
+    private final Ball ball;
     private final List<PlayerState> players;
 
-    public State(BallState ball, List<PlayerState> players) {
+    public State(Ball ball, List<PlayerState> players) {
         this.ball = ball;
         this.players = players;
     }
 
-    public BallState getBall() {
+    public Ball getBall() {
         return ball;
     }
 
     public List<PlayerState> getPlayers(final String teamName) {
-        return players.stream().filter(p -> p.getTeamName().equals(teamName)).collect(Collectors.toList());
+        return players.stream().filter(p -> p.isTeam(teamName)).collect(Collectors.toList());
     }
     
     public int getDimension() {
