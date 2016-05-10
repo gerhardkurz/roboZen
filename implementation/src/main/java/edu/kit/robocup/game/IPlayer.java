@@ -2,6 +2,6 @@ package edu.kit.robocup.game;
 
 
 public interface IPlayer {
-    String getTeamName();
-    int getNumber();
+    boolean isTeam(String teamName);
+    boolean hasNumber(int number);
 }

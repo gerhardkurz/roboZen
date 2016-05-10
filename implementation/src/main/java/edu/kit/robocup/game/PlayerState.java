@@ -1,16 +1,25 @@
 package edu.kit.robocup.game;
 
 
-public class PlayerState extends AGameObject implements IPlayer {
+public class PlayerState implements IPlayer, IGameObject {
     private final String teamName;
     private final int number;
-    private double orientation;
+    private final double positionX;
+    private final double positionY;
+    private final double velocityX;
+    private final double velocityY;
 
-    public PlayerState(String teamName, int number, double positionX, double positionY, double velocityX, double velocityY, double bodyAngle) {
-        super(positionX, positionY, velocityX, velocityY);
+    public PlayerState(String teamName, int number, double positionX, double positionY) {
+        this(teamName, number, positionX, positionY, 0, 0);
+    }
+
+    public PlayerState(String teamName, int number, double positionX, double positionY, double velocityX, double velocityY) {
         this.teamName = teamName;
         this.number = number;
-        this.orientation = orientation;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
     }
 
     public String getTeamName() {
@@ -21,16 +30,33 @@ public class PlayerState extends AGameObject implements IPlayer {
         return number;
     }
 
-    public double getOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(double orientation) {
-        this.orientation = orientation;
+    @Override
+    public double getPositionX() {
+        return positionX;
     }
 
     @Override
-    public String toString() {
-        return "PlayerState{nr: " + getNumber() + " team: " + getTeamName() + " x:" + getPositionX() + " y: " + getPositionY() + " velX: " + getVelocityX() + " velY: " + getVelocityY() + "}";
+    public double getPositionY() {
+        return positionY;
+    }
+
+    @Override
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    @Override
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    @Override
+    public boolean isTeam(String teamName) {
+        return this.teamName.equals(teamName);
+    }
+
+    @Override
+    public boolean hasNumber(int number) {
+        return this.number == number;
     }
 }

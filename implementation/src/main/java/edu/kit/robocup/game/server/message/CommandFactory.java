@@ -1,12 +1,13 @@
-package edu.kit.robocup.game.intf.parser;
+package edu.kit.robocup.game.server.message;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import com.github.robocup_atan.atan.model.ActionsPlayer;
 import com.github.robocup_atan.atan.model.XPMImage;
 import com.github.robocup_atan.atan.model.enums.PlayMode;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
+import edu.kit.robocup.game.Ball;
+import edu.kit.robocup.game.PlayerState;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -265,24 +266,24 @@ public class CommandFactory {
     /**
      * Trainer only command.
      * Moves the given player to the given coordinates.
-     *
-     * @param p The player to move.
-     * @param x The x coordinate to move to.
-     * @param y The y coordinate to move to.
      */
-    public void addMovePlayerCommand(ActionsPlayer p, double x, double y) {
+    public void addMovePlayerCommand(PlayerState player) {
 //        throw new UnsupportedOperationException("This method is for a future release");
         StringBuffer buf = new StringBuffer();
         buf.append("(move ");
-        buf.append("(player ");    // TODO Manual says the format...will implement this later.
-        buf.append(p.getTeamName());
+        buf.append("(player ");
+        buf.append(player.getTeamName());
         buf.append(' ');
-        buf.append(p.getNumber());
+        buf.append(player.getNumber());
         buf.append(')');
         buf.append(' ');
-        buf.append(x);
+        buf.append(player.getPositionX());
         buf.append(' ');
-        buf.append(y);
+        buf.append(player.getPositionY());
+//        buf.append(' ');
+//        buf.append(player.getVelocityX());
+//        buf.append(' ');
+//        buf.append(player.getVelocityY());
         buf.append(')');
         fifo.add(fifo.size(), buf.toString());
     }
@@ -291,17 +292,19 @@ public class CommandFactory {
      * Trainer only command.
      * Moves the ball to the given coordinates.
      *
-     * @param x The x coordinate to move to.
-     * @param y The y coordinate to move to.
      */
-    public void addMoveBallCommand(double x, double y) {
+    public void addMoveBallCommand(Ball ball) {
         StringBuilder buf = new StringBuilder();
         buf.append("(move ");
-        buf.append("(ball)");    // TODO Manual says the format...will implement this later.
+        buf.append("(ball)");
         buf.append(' ');
-        buf.append(x);
+        buf.append(ball.getPositionX());
         buf.append(' ');
-        buf.append(y);
+        buf.append(ball.getPositionY());
+//        buf.append(' ');
+//        buf.append(ball.getVelocityX());
+//        buf.append(' ');
+//        buf.append(ball.getVelocityY());
         buf.append(')');
         fifo.add(fifo.size(), buf.toString());
     }

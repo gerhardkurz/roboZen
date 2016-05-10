@@ -12,6 +12,9 @@ public class Util {
 
     public static final String rcssDir = "..\\rcss\\";
 
+
+
+
     public static void startServer() {
         System.out.println("starting rcssserver!");
         killAndStart("rcssserver.exe", rcssDir + "rcssserver-14.0.3-win\\rcssserver.exe");

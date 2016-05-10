@@ -1,7 +1,7 @@
-package edu.kit.robocup.game.intf.parser;
+package edu.kit.robocup.game.server.message;
 
 
-import edu.kit.robocup.game.BallState;
+import edu.kit.robocup.game.Ball;
 import edu.kit.robocup.game.PlayerState;
 import edu.kit.robocup.game.State;
 
@@ -14,10 +14,9 @@ public class LookParser {
     private LookParser() {}
 
     public static State parse(String msg) {
-        // SEITE 101 manual
-        State state = null;
         Pattern re_seeGlobal = Pattern.compile("\\((?<command>see_global) (?<time>\\d+) (?<info>.*)\\)");
         Matcher match = re_seeGlobal.matcher(msg);
+        State state = null;
 
         if (match.find()) {
             String infoStr = match.group("info");
@@ -28,28 +27,28 @@ public class LookParser {
         return state;
 }
 
-    public static State parseInfo(String info) {
+    private static State parseInfo(String info) {
 
         List<PlayerState> players = new LinkedList<>();
-        BallState ball = null;
+        Ball ball = null;
         //String re_double = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
         Pattern re_objAndDesc = Pattern.compile("(\\((?<type>b|(p \"(?<teamname>.*?)\" (?<playerNr>\\d+)))\\) (?<first>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<second>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<third>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<fourth>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)( (?<fifth>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<sixth>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))?( (?<seventh>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))?)");
         Matcher match = re_objAndDesc.matcher(info);
         while (match.find()) {
             String type = match.group("type");
-            double posX = Double.parseDouble(match.group("first"));
-            double posY = Double.parseDouble(match.group("second"));
-            double velX = Double.parseDouble(match.group("third"));
-            double velY = Double.parseDouble(match.group("fourth"));
+            double positionX = Double.parseDouble(match.group("first"));
+            double positionY = Double.parseDouble(match.group("second"));
+            double velocityX = Double.parseDouble(match.group("third"));
+            double velocityY = Double.parseDouble(match.group("fourth"));
             if (type.equals("b")) {
-                ball = new BallState(posX, posY, velX, velY);
+                ball = new Ball(positionX, positionY, velocityX, velocityY);
             } else if (type.startsWith("p ")) {
-                String teamname = match.group("teamname");
-                int playerNr = Integer.parseInt(match.group("playerNr"));
+                String teamName = match.group("teamname");
+                int number = Integer.parseInt(match.group("playerNr"));
                 double bodyAngle = Double.parseDouble(match.group("fifth"));
                 //double neckAngle = Double.parseDouble(match.group("sixth"));
                 //double pointingDir = Double.parseDouble(match.group("seventh"));
-                PlayerState player = new PlayerState(teamname, playerNr, posX, posY, velX, velY, bodyAngle);
+                PlayerState player = new PlayerState(teamName, number, positionX, positionY, velocityX, velocityY);
                 players.add(player);
             } else {
                 // unknown match. May be ok.
@@ -60,4 +59,6 @@ public class LookParser {
         }
         return new State(ball, players);
     }
+
+
 }

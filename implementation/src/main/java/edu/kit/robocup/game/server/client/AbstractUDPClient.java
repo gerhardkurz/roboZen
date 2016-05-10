@@ -1,4 +1,4 @@
-package edu.kit.robocup.game.intf.client;
+package edu.kit.robocup.game.server.client;
 
 import com.github.robocup_atan.atan.model.ByteBuffer;
 import org.apache.log4j.Logger;
@@ -11,15 +11,8 @@ import java.net.InetAddress;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import org.apache.log4j.Logger;
-
 //~--- JDK imports ------------------------------------------------------------
 
-import java.io.IOException;
-
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 
 /**
  * This is the class used to connect each player/trainer/coach to the server within their

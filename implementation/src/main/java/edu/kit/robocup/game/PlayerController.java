@@ -1,23 +1,18 @@
-package edu.kit.robocup.game.intf.client;
+package edu.kit.robocup.game;
 
 
-import com.github.robocup_atan.atan.model.ActionsPlayer;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
-import edu.kit.robocup.game.IPlayer;
-import edu.kit.robocup.game.intf.parser.CommandFactory;
-import edu.kit.robocup.game.intf.parser.IPlayerInput;
+import edu.kit.robocup.game.server.client.StaffClientBase;
+import edu.kit.robocup.game.server.message.CommandFactory;
 import org.apache.log4j.Logger;
 
-public class Player extends StaffBase implements ActionsPlayer, IPlayerInput, IPlayer {
-    private static Logger logger = Logger.getLogger(Player.class);
-
-    private boolean isTeamEast;
+public class PlayerController extends StaffClientBase implements IPlayer, IPlayerController {
+    private static Logger logger = Logger.getLogger(PlayerController.class);
     private int number;
 
-    public Player(Team team, int number) {
+    public PlayerController(Team team, int number) {
         super(team, 6000, "localhost");
-        input = this;
         this.number = number;
     }
 
@@ -49,132 +44,76 @@ public class Player extends StaffBase implements ActionsPlayer, IPlayerInput, IP
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void dash(int power) {
         this.commandFactory.addDashCommand(power);
+        sendAll();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void kick(int power, double direction) {
         this.commandFactory.addKickCommand(power, (int) direction);
+        sendAll();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void move(int x, int y) {
         this.commandFactory.addMoveCommand(x, y);
+        sendAll();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void say(String message) {
         this.commandFactory.addSayCommand(message);
+        sendAll();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void turn(double angle) {
         this.commandFactory.addTurnCommand((int) angle);
+        sendAll();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void turnNeck(double angle) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void catchBall(double direction) {
         this.commandFactory.addCatchCommand((int) direction);
+        sendAll();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void changeViewMode(ViewQuality quality, ViewAngle angle) {
         this.commandFactory.addChangeViewCommand(angle, quality);
+        sendAll();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void bye() {
         this.commandFactory.addByeCommand();
+        sendAll();
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setNumber(int number) {
         this.number = number;
         super.setName(team.getTeamName() + " " + getNumber());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public int getNumber() {
         return number;
     }
 
-    /**
-     * Create a list string.
-     *
-     * @return A list string.
-     */
-    public String toListString() {
-        StringBuffer buf = new StringBuffer();
-        buf.append(input.getClass().getName());
-        return buf.toString();
-    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String toStateString() {
-        StringBuffer buf = new StringBuffer();
-        buf.append(super.toStateString());
-        buf.append("Team Name: ");
-        buf.append(team.getTeamName());
-        buf.append("\n");
-        buf.append("Number: ");
-        buf.append(this.getNumber());
-        buf.append("\n");
-        buf.append("Running: ");
-        buf.append(isRunning());
-        buf.append("\n");
-        buf.append("ControllerPlayer Class: ");
-        buf.append(input.getClass().getName());
-        buf.append("\n");
-        return buf.toString();
+        return super.toStateString() +
+                "Team Name: " + team.getTeamName() +
+                "\n" +
+                "Number: " + this.getNumber() +
+                "\n" +
+                "Running: " + isRunning() +
+                "\n" +
+                "ControllerPlayer Class: " + getClass().getName() +
+                "\n";
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void handleError(String error) {
         logger.error(error);
     }
@@ -184,7 +123,7 @@ public class Player extends StaffBase implements ActionsPlayer, IPlayerInput, IP
      */
     @Override
     protected String getDescription() {
-        StringBuffer nam = new StringBuffer(team.getTeamName());
+        StringBuilder nam = new StringBuilder(team.getTeamName());
         nam.append(" ");
         if (number >= 0) {
             nam.append(number);
@@ -193,4 +132,10 @@ public class Player extends StaffBase implements ActionsPlayer, IPlayerInput, IP
         }
         return nam.toString();
     }
+
+    @Override
+    public boolean hasNumber(int number) {
+        return this.number == number;
+    }
+
 }
