@@ -1,4 +1,4 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.game.controller;
 
 
 import com.github.robocup_atan.atan.model.XPMImage;
@@ -12,7 +12,7 @@ public class Coach extends StaffClientBase {
         super(team, 6002, "localhost");
     }
 
-    public void look(edu.kit.robocup.game.State state) {
+    public void look(edu.kit.robocup.game.state.State state) {
         team.handleState(state);
     }
 

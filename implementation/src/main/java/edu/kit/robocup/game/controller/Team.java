@@ -1,6 +1,7 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.game.controller;
 
 
+import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.IPolicy;
 import org.apache.log4j.Logger;
 

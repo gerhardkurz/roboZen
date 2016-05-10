@@ -1,6 +1,6 @@
 package edu.kit.robocup.mdp;
 
-import edu.kit.robocup.game.IPlayerController;
+import edu.kit.robocup.game.controller.IPlayerController;
 
 import java.io.Serializable;
 import java.util.List;

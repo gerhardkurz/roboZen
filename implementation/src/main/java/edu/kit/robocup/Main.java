@@ -1,11 +1,11 @@
 package edu.kit.robocup;
 
 import com.github.robocup_atan.atan.model.enums.PlayMode;
-import edu.kit.robocup.game.Ball;
-import edu.kit.robocup.game.PlayerState;
-import edu.kit.robocup.game.Team;
-import edu.kit.robocup.game.Trainer;
-import edu.kit.robocup.mdp.DummyPolicy;
+import edu.kit.robocup.game.state.Ball;
+import edu.kit.robocup.game.state.PlayerState;
+import edu.kit.robocup.game.controller.Team;
+import edu.kit.robocup.game.controller.Trainer;
+import edu.kit.robocup.mdp.SimplePolicy;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
@@ -23,10 +23,10 @@ public class Main {
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Team team1 = new Team("t1", 1, new DummyPolicy("t1"));
+        Team team1 = new Team("t1", 1, new SimplePolicy());
         team1.connectAll();
 
-        Team team2 = new Team("t2", 2, new DummyPolicy("t2"));
+        Team team2 = new Team("t2", 2, new SimplePolicy());
         team2.connectAll();
 
         trainer.movePlayer(new PlayerState("t1", 1, 20, 20));

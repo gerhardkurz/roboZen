@@ -1,7 +1,7 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.game.state;
 
 
-public class PlayerState implements IPlayer, IGameObject {
+public class PlayerState implements IPlayerState {
     private final String teamName;
     private final int number;
     private final double positionX;
@@ -48,15 +48,5 @@ public class PlayerState implements IPlayer, IGameObject {
     @Override
     public double getVelocityY() {
         return velocityY;
-    }
-
-    @Override
-    public boolean isTeam(String teamName) {
-        return this.teamName.equals(teamName);
-    }
-
-    @Override
-    public boolean hasNumber(int number) {
-        return this.number == number;
     }
 }

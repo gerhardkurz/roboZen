@@ -1,7 +1,9 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.game.controller;
 
 
 import com.github.robocup_atan.atan.model.enums.PlayMode;
+import edu.kit.robocup.game.state.Ball;
+import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.server.client.UDPClientBase;
 import org.apache.log4j.Logger;
 
@@ -21,7 +23,7 @@ public class Trainer extends UDPClientBase {
         super.start(f.next(), "Trainer");
     }
 
-    public void changeState(edu.kit.robocup.game.State state) {
+    public void changeState(edu.kit.robocup.game.state.State state) {
         this.commandFactory.addMoveBallCommand(state.getBall());
     }
 

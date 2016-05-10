@@ -1,4 +1,4 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.game.controller;
 
 
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
@@ -7,7 +7,7 @@ import edu.kit.robocup.game.server.client.StaffClientBase;
 import edu.kit.robocup.game.server.message.CommandFactory;
 import org.apache.log4j.Logger;
 
-public class PlayerController extends StaffClientBase implements IPlayer, IPlayerController {
+public class PlayerController extends StaffClientBase implements IPlayerController {
     private static Logger logger = Logger.getLogger(PlayerController.class);
     private int number;
 
@@ -133,9 +133,8 @@ public class PlayerController extends StaffClientBase implements IPlayer, IPlaye
         return nam.toString();
     }
 
-    @Override
-    public boolean hasNumber(int number) {
-        return this.number == number;
+    public int getNumber(int number) {
+        return number;
     }
 
 }

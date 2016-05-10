@@ -2,7 +2,7 @@ package edu.kit.robocup.mdp.transitions;
 
 import java.util.List;
 
-import edu.kit.robocup.game.State;
+import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.IActions;
 
 public interface IGame {

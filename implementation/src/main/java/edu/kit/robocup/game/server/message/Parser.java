@@ -1,7 +1,7 @@
 package edu.kit.robocup.game.server.message;
 
 
-import edu.kit.robocup.game.Coach;
+import edu.kit.robocup.game.controller.Coach;
 import org.apache.log4j.Logger;
 
 public class Parser {

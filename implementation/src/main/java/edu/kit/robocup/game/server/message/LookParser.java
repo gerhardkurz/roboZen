@@ -1,9 +1,10 @@
 package edu.kit.robocup.game.server.message;
 
 
-import edu.kit.robocup.game.Ball;
-import edu.kit.robocup.game.PlayerState;
-import edu.kit.robocup.game.State;
+import edu.kit.robocup.game.state.Ball;
+import edu.kit.robocup.game.state.IPlayerState;
+import edu.kit.robocup.game.state.PlayerState;
+import edu.kit.robocup.game.state.State;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class LookParser {
 
     private static State parseInfo(String info) {
 
-        List<PlayerState> players = new LinkedList<>();
+        List<IPlayerState> players = new LinkedList<>();
         Ball ball = null;
         //String re_double = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
         Pattern re_objAndDesc = Pattern.compile("(\\((?<type>b|(p \"(?<teamname>.*?)\" (?<playerNr>\\d+)))\\) (?<first>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<second>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<third>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<fourth>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)( (?<fifth>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?) (?<sixth>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))?( (?<seventh>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))?)");

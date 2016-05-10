@@ -1,7 +1,7 @@
 package edu.kit.robocup.game.server.client;
 
-import edu.kit.robocup.game.Coach;
-import edu.kit.robocup.game.Trainer;
+import edu.kit.robocup.game.controller.Coach;
+import edu.kit.robocup.game.controller.Trainer;
 import edu.kit.robocup.game.server.message.*;
 import org.apache.log4j.Logger;
 

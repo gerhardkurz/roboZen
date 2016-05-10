@@ -1,4 +1,4 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.game.state;
 
 import edu.kit.robocup.mdp.IState;
 
@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 public class State implements IState {
     private final Ball ball;
-    private final List<PlayerState> players;
+    private final List<IPlayerState> players;
 
-    public State(Ball ball, List<PlayerState> players) {
+    public State(Ball ball, List<IPlayerState> players) {
         this.ball = ball;
         this.players = players;
     }
@@ -18,8 +18,8 @@ public class State implements IState {
         return ball;
     }
 
-    public List<PlayerState> getPlayers(final String teamName) {
-        return players.stream().filter(p -> p.isTeam(teamName)).collect(Collectors.toList());
+    public List<IPlayerState> getPlayers(final String teamName) {
+        return players.stream().filter(p -> p.getTeamName().equals(teamName)).collect(Collectors.toList());
     }
     
     public int getDimension() {

@@ -6,8 +6,8 @@ import com.github.robocup_atan.atan.model.XPMImage;
 import com.github.robocup_atan.atan.model.enums.PlayMode;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
-import edu.kit.robocup.game.Ball;
-import edu.kit.robocup.game.PlayerState;
+import edu.kit.robocup.game.state.Ball;
+import edu.kit.robocup.game.state.PlayerState;
 import org.apache.log4j.Logger;
 
 import java.util.List;

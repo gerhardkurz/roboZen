@@ -1,7 +1,9 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.game.controller;
 
 
-public interface IPlayerController {
+import edu.kit.robocup.game.IPlayer;
+
+public interface IPlayerController extends IPlayer {
     void dash(int power);
     void kick(int power, double direction);
     void move(int x, int y);

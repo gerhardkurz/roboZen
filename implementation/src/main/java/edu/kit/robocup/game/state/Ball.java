@@ -1,4 +1,6 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.game.state;
+
+import edu.kit.robocup.game.IGameObject;
 
 public class Ball implements IGameObject {
     private final double positionX;

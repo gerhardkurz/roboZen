@@ -1,8 +1,7 @@
 package edu.kit.robocup.game.server.client;
 
 
-import edu.kit.robocup.game.Team;
-import edu.kit.robocup.game.server.client.UDPClientBase;
+import edu.kit.robocup.game.controller.Team;
 
 public abstract class StaffClientBase extends UDPClientBase {
     protected final Team team;
@@ -18,9 +17,5 @@ public abstract class StaffClientBase extends UDPClientBase {
 
     public String getTeamName() {
         return team.getTeamName();
-    }
-
-    public boolean isTeam(String teamName) {
-        return teamName.equals(getTeamName());
     }
 }

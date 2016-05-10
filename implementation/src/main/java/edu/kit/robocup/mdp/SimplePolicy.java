@@ -1,16 +1,11 @@
 package edu.kit.robocup.mdp;
 
-import edu.kit.robocup.game.IPlayerController;
+import edu.kit.robocup.game.controller.IPlayerController;
 
 import java.util.*;
 
 
-public class DummyPolicy implements IPolicy {
-    private final String teamName;
-
-    public DummyPolicy(String teamName) {
-        this.teamName = teamName;
-    }
+public class SimplePolicy implements IPolicy {
 
     public void apply(IState state, List<? extends IPlayerController> playerControllers) {
         for (IPlayerController playerController : playerControllers) {
