@@ -8,12 +8,10 @@ import java.util.stream.Collectors;
 public class State implements IState {
     private final BallState ball;
     private final List<PlayerState> players;
-    int dim;
 
     public State(BallState ball, List<PlayerState> players) {
         this.ball = ball;
         this.players = players;
-        dim = 1 + players.size();
     }
 
     public BallState getBall() {
@@ -25,7 +23,7 @@ public class State implements IState {
     }
     
     public int getDimension() {
-    	return this.dim;
+    	return players.size() + 1;
     }
 
     @Override

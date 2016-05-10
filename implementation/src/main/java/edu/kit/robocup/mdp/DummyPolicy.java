@@ -5,8 +5,6 @@ import edu.kit.robocup.game.PlayerState;
 import edu.kit.robocup.game.action.Action;
 import edu.kit.robocup.game.action.Dash;
 import edu.kit.robocup.game.action.Turn;
-import edu.kit.robocup.mdp.IPolicy;
-import edu.kit.robocup.mdp.IState;
 
 import java.util.*;
 

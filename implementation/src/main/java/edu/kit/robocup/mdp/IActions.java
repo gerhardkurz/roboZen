@@ -2,9 +2,9 @@ package edu.kit.robocup.mdp;
 
 import java.util.List;
 
-import edu.kit.robocup.game.action.IAction;
+import edu.kit.robocup.game.action.Action;
 
 public interface IActions {
-	List<IAction> getActions();
+	List<Action> getActions();
 	int getDimension();
 }
