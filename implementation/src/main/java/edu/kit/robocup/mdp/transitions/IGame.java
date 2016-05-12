@@ -12,4 +12,5 @@ public interface IGame {
 	List<IActions> getActions();
 	// returns number of visited states per game
 	int getGamelength();
+	int getNumberPlayers();
 }

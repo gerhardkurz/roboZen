@@ -8,4 +8,6 @@ import java.util.List;
 public interface IActions {
 	List<Action> getActions();
 	int getDimension();
+	// returns values for transitions in array
+	double[] getArray();
 }
