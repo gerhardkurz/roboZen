@@ -101,7 +101,7 @@ public class Transitions {
 		double[][] values = new double[size][size*value.length];
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size*value.length; j++) {
-				if (i == j*value.length) {
+				if (j == i*value.length) {
 					for (int k = 0; k < value.length; k++) {
 						values[i][j+k] = value[k];
 					}
