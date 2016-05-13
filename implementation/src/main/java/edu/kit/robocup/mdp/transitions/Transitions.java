@@ -89,6 +89,8 @@ public class Transitions {
 				M = h.appendRows(M, S);
 			}
 		}
+		
+		// constructs b as vector / 1xn-Matrix of s_t+1 values
 		DoubleMatrix2D b = h.make(0, 0 ,0);
 		for (int m = 0; m < games.size(); m++) {
 			for (int t = 1; t < gamelength; t++) {
@@ -96,9 +98,14 @@ public class Transitions {
 				double[][] stst = new double[1][st.length];
 				stst[0] = st;
 				DoubleMatrix2D bb = h.make(stst);
-				b = h.appendColumns(b, bb);
+				if (b.size() == 0) {
+					b = bb;
+				} else {
+					b = h.appendColumns(b, bb);
+				}
 			}
 		}
+		b = b.viewDice();
 		
 		// M*x = b is solved by x = (M^T*M)^-1 * M^T * b
 		Algebra a = new Algebra();
