@@ -133,8 +133,4 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
         return nam.toString();
     }
 
-    public int getNumber(int number) {
-        return number;
-    }
-
 }
