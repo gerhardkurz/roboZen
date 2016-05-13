@@ -1,6 +1,6 @@
 package edu.kit.robocup.mdp.transitions;
 
-import java.awt.Desktop.Action;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +11,7 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
+import edu.kit.robocup.game.Action;
 import edu.kit.robocup.game.ActionFactory;
 import edu.kit.robocup.game.Dash;
 import edu.kit.robocup.game.IAction;
@@ -102,8 +103,10 @@ public class Transitions {
 		// M*x = b is solved by x = (M^T*M)^-1 * M^T * b
 		Algebra a = new Algebra();
 		//DoubleMatrix2D factory = h.make(0, 0, 0);
+		System.out.println(M.cardinality());
 		DoubleMatrix2D hasToInvert = a.mult(M.viewDice(), M);
-		System.out.println(hasToInvert);
+		System.out.println(M.columns() + "<-- columns rows --> " + M.rows());
+		System.out.println(hasToInvert.cardinality());
 		DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), M.viewDice());
 		System.out.println(b.size());
 		System.out.println(nearlyDone.size());
@@ -148,9 +151,6 @@ public class Transitions {
 	 */
 	private int getActionIndex(IActions actions) {
 		int[] types = actions.getActionsType();
-		for (int i = 0; i < types.length; i++) {
-			System.out.println(types[i]);
-		}
 		int n = actions.getActions().size() - 1;
 		int codednumber = 0;
 		for (int i = 0; i < types.length; i++) {
@@ -231,12 +231,12 @@ public class Transitions {
 		states.add(qs1);
 		
 		List<IActions> actions = new ArrayList<IActions>();
-		IAction a0 = new Dash(4);
+		IAction a0 = new Kick(4,6);
 		IAction a1 = new Kick(1,2);
 		IAction a2 = new Kick(2,3);
-		IAction a3 = new Dash(2);
+		IAction a3 = new Kick(2,2);
 		IAction a4 = new Kick(1,5);
-		IAction a5 = new Dash(10);
+		IAction a5 = new Kick(10,3);
 		List<IAction> helper = new ArrayList<IAction>();
 		List<IAction> helper1 = new ArrayList<IAction>();
 		List<IAction> helper2 = new ArrayList<IAction>();
@@ -258,6 +258,7 @@ public class Transitions {
 		Game g = new Game(states, actions, numberplayers);
 		games.add(g);
 		games.add(g);
+
 		Transitions t = new Transitions(games);
 		
 		DoubleMatrix2D testing = t.getkDiagonalMatrix(test1Darray, 3);
