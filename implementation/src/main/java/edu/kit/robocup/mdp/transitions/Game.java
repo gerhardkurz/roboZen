@@ -23,6 +23,7 @@ public class Game implements IGame {
 		this.states = states;
 		this.actions = actions;
 		this.numberPlayers = numberPlayers;
+		this.gamelength = states.size();
 	}
 	
 	public int getNumberPlayers() {

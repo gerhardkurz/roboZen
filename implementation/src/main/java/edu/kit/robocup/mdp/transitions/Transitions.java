@@ -1,5 +1,6 @@
 package edu.kit.robocup.mdp.transitions;
 
+import java.awt.Desktop.Action;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +11,16 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
+import edu.kit.robocup.game.ActionFactory;
+import edu.kit.robocup.game.Dash;
+import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.game.Kick;
+import edu.kit.robocup.game.Turn;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.IPlayerState;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
+import edu.kit.robocup.mdp.Actions;
 import edu.kit.robocup.mdp.IActions;
 
 public class Transitions {
@@ -24,10 +31,12 @@ public class Transitions {
 	/**
 	 * contains matrices for all possible actions
 	 */
-	private Map<IActions, DoubleMatrix2D> B;
+	private DoubleMatrix2D[] B;
 	
 	public Transitions(List<IGame> games) {
 		this.games = games;
+		int numberOfCombinations = (int) Math.pow(games.get(0).getNumberPlayers(), Action.values().length);
+		B = new DoubleMatrix2D[numberOfCombinations];
 	}
 	
 	// get sequences of m games
@@ -38,38 +47,46 @@ public class Transitions {
 	public void learn() {
 		// TODO learn A, B
 		int statedim = games.get(0).getStates().get(0).getDimension();
-		int actiondim = games.get(0).getActions().get(0).getDimension();
+		System.out.println("Statedimension: " + statedim);
 		
-		// TODO how much action does exist? move, turn, dash kick?
-		double numberactions = 4;
-		double numberplayers = games.get(0).getNumberPlayers();
-		double combinations = Math.pow(numberactions, numberplayers);
+		int numberplayers = games.get(0).getNumberPlayers();
+		// all possible combinations are numberofactions^numberofplayers
+		double combinations = Math.pow(Action.values().length, numberplayers);
 		
 		
 		//T
 		int gamelength = games.get(0).getGamelength();
+		System.out.println("Gamelength: " + gamelength);
 		//m
 		int numberOfGames = games.size();
+		System.out.println("Gamesize: " + numberOfGames);
 		
 		DoubleFactory2D h = DoubleFactory2D.sparse;
 		DoubleMatrix2D M = h.make(0, 0, 0);
-		DoubleMatrix2D zero = h.make(statedim, actiondim, 0);
 		for (int m = 0; m < games.size(); m++) {
 			DoubleMatrix2D S = h.make(0, 0, 0);
-			for (int t = 0; t < gamelength; t++) {
-				//x and y values are stacked
+			for (int t = 0; t < gamelength - 1; t++) {
 				S = getkDiagonalMatrix(games.get(m).getStates().get(t).getArray(), statedim);
-				int actualaction = 0; // TODO getActionIndex(games.get(m).getActions().get(t));
+				//System.out.println(S.toString());
+				int actualaction = getActionIndex(games.get(m).getActions().get(t));
+				//System.out.println(actualaction);
 				for (int i = 0; i < combinations; i++) {
 					if (actualaction == i) {
 						DoubleMatrix2D action = getkDiagonalMatrix(games.get(m).getActions().get(t).getArray(), statedim);
 						S = h.appendColumns(S, action);
 					} else {
+						int actiondim = getDimension(i, numberplayers);
+						DoubleMatrix2D zero = h.make(statedim, actiondim*statedim, 0);
 						S = h.appendColumns(S, zero);
+						//System.out.println(S.toString());
 					}
 				}
 			}
-			M = h.appendRows(M, S);
+			if (M.size() == 0) {
+				M = S;
+			} else {
+				M = h.appendRows(M, S);
+			}
 		}
 		DoubleMatrix2D b = h.make(0, 0 ,0);
 		for (int m = 0; m < games.size(); m++) {
@@ -81,16 +98,67 @@ public class Transitions {
 				b = h.appendColumns(b, bb);
 			}
 		}
+		
+		// M*x = b is solved by x = (M^T*M)^-1 * M^T * b
 		Algebra a = new Algebra();
-		DoubleMatrix2D ab = a.solve(M, b);
+		//DoubleMatrix2D factory = h.make(0, 0, 0);
+		DoubleMatrix2D hasToInvert = a.mult(M.viewDice(), M);
+		System.out.println(hasToInvert);
+		DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), M.viewDice());
+		System.out.println(b.size());
+		System.out.println(nearlyDone.size());
+		DoubleMatrix2D ab = a.mult(nearlyDone, b.viewDice());
 		double[] solution = ab.viewRow(0).toArray();
 		DoubleFactory1D hh = DoubleFactory1D.sparse;
 		DoubleMatrix1D d = hh.make(Arrays.copyOfRange(solution, 0, statedim*statedim));
 		A = d.like2D(statedim, statedim);
 		double[] solutionActions = Arrays.copyOfRange(solution, statedim*statedim + 1, solution.length);
-		// TODO map solution matrices of size actiondim x statedim to B
+		for (int i = 0; i < B.length; i++) {
+			int matrixsize = getDimension(i, numberplayers);
+			B[i] = (hh.make(Arrays.copyOfRange(solutionActions, 0, matrixsize*statedim))).like2D(statedim, matrixsize);
+			solutionActions = Arrays.copyOfRange(solutionActions, statedim*matrixsize + 1, solutionActions.length);
+		}
 	}
 	
+	/**
+	 * recalculate actions from actionindex
+	 * @param actionsIndex index
+	 * @param numberOfPlayers basis of number system
+	 * @return dimension of the recalculated actions
+	 */
+	private int getDimension(int actionsIndex, int numberOfPlayers) {
+		int[] types = new int[numberOfPlayers];
+		int rest = actionsIndex;
+		for (int i = numberOfPlayers; i > 0; i--) {
+			types[i - 1] = rest % (numberOfPlayers - 1);
+			rest = rest / (numberOfPlayers - 1);
+		}
+		int dim = 0;
+		ActionFactory a = new ActionFactory();
+		for (int i = 0; i < numberOfPlayers; i++) {
+			dim += a.getAction(types[i]).getActionDimension();
+		}
+		return dim;
+	}
+	
+	/**
+	 * calculate actions in a n-dimensional numeral system, i-th player is the i-th position of number. n = numberOfPlayers/Actions - 1
+	 * @param actions actions that are chosen
+	 * @return value in the n-dimensional numeral system
+	 */
+	private int getActionIndex(IActions actions) {
+		int[] types = actions.getActionsType();
+		for (int i = 0; i < types.length; i++) {
+			System.out.println(types[i]);
+		}
+		int n = actions.getActions().size() - 1;
+		int codednumber = 0;
+		for (int i = 0; i < types.length; i++) {
+			codednumber += (int)Math.pow(n, i) * types[i];
+		}
+		return codednumber;
+	}
+
 	/**
 	 * returns matrix where array is diagonal entered
 	 * @param value entered values
@@ -121,39 +189,83 @@ public class Transitions {
 		double[][] testarray = {{0, 0},{1, 2}};
 		double[] test1Darray = {0,1,2,3,4,5,6,5};
 		DoubleMatrix2D zero = h.make(5, 3, 0);
-		System.out.println(zero.toString());
+		//System.out.println(zero.toString());
 		
 		List<IGame> games = new ArrayList<IGame>();
 		Ball ball = new Ball(10, 10);
+		Ball ball1 = new Ball(15, 13);
 		
 		List<IPlayerState> players = new ArrayList<IPlayerState>();
+		List<IPlayerState> players1 = new ArrayList<IPlayerState>();
 		PlayerState p = new PlayerState("munich", 0, 5, 5);
 		PlayerState p1 = new PlayerState("munich", 1, 4, 4);
+		PlayerState p2 = new PlayerState("munich", 2, 7, 7);
+		PlayerState p3 = new PlayerState("munich", 3, 6, 6);
 		players.add(p);
 		players.add(p1);
+		players1.add(p2);
+		players1.add(p3);
 		
 		Ball qball = new Ball(9, 9);
+		Ball qball1 = new Ball(8, 8);
 		
 		List<IPlayerState> qplayers = new ArrayList<IPlayerState>();
+		List<IPlayerState> qplayers1 = new ArrayList<IPlayerState>();
 		PlayerState qp = new PlayerState("munich", 0, 6, 6);
 		PlayerState qp1 = new PlayerState("munich", 1, 3, 3);
-		players.add(qp);
-		players.add(qp1);
+		PlayerState qp2 = new PlayerState("munich", 2, 6, 10);
+		PlayerState qp3 = new PlayerState("munich", 3, 5, 11);
+		qplayers.add(qp);
+		qplayers.add(qp1);
+		qplayers1.add(qp2);
+		qplayers1.add(qp3);
 
 		List<State> states = new ArrayList<State>();
 		State s = new State(ball, players);
+		State s1 = new State(ball1, players1);
 		states.add(s);
+		states.add(s1);
 		State qs = new State(qball, qplayers);
+		State qs1 = new State(qball1, qplayers1);
 		states.add(qs);
+		states.add(qs1);
 		
 		List<IActions> actions = new ArrayList<IActions>();
+		IAction a0 = new Dash(4);
+		IAction a1 = new Kick(1,2);
+		IAction a2 = new Kick(2,3);
+		IAction a3 = new Dash(2);
+		IAction a4 = new Kick(1,5);
+		IAction a5 = new Dash(10);
+		List<IAction> helper = new ArrayList<IAction>();
+		List<IAction> helper1 = new ArrayList<IAction>();
+		List<IAction> helper2 = new ArrayList<IAction>();
+		helper.add(a0);
+		helper.add(a1);
+		helper1.add(a2);
+		helper1.add(a3);
+		helper2.add(a4);
+		helper2.add(a5);
+		Actions a = new Actions(helper);
+		Actions a11 = new Actions(helper1);
+		Actions a111 = new Actions(helper2);
+		actions.add(a);
+		actions.add(a11);
+		actions.add(a111);
+		
+		
 		int numberplayers = 2;
 		Game g = new Game(states, actions, numberplayers);
+		games.add(g);
 		games.add(g);
 		Transitions t = new Transitions(games);
 		
 		DoubleMatrix2D testing = t.getkDiagonalMatrix(test1Darray, 3);
-		System.out.println(testing.toString());
+		//System.out.println(t.getActionIndex(a));
+		//System.out.println(t.getDimension(28, 4));
+		//System.out.println(testing.toString());
+		
+	    t.learn();
 	}
 	
 //	/**

@@ -26,7 +26,7 @@ public class State implements IState {
      * @returns Dimension of state. Players get x and y coordinates, ball gets x, y coordinate and x, y velocity
      */
     public int getDimension() {
-    	return 2*(players.size() + 2);
+    	return 2*(players.size() + 1);
     }
 
     @Override
