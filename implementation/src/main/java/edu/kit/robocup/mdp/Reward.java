@@ -18,6 +18,12 @@ public class Reward {
 	private int gettingAwayFromGoal;
 	
 	/**
+	 * suggestion: Reward(200,-200,50, -50, 70, 170, -170)
+	 * gettingNearBall gives +5 if distance to ball is 10, +50 if distance to ball is 1
+	 * lineary add rewards: reward += gettingNear...*1/distance
+	 * gettingNearGoal gives +17 if distance to goal is 10, +170 if distance to goal is 1
+	 * 
+	 * 
 	 * all rewards will be added, so use negative rewards
 	 * @param goal if ball is in own goal +goal
 	 * @param advGoal if ball is in adversary goal +advGoal
@@ -56,9 +62,9 @@ public class Reward {
 			double pynext = pnext.get(i).getPositionY();
 			double distBallnext = calculateDist(pxnext, pynext, bxnext, bynext);
 			if (distBallnext > distBallprev) {
-				reward += gettingAwayFromBall;
+				reward += gettingAwayFromBall * 1/distBallnext;
 			} else {
-				reward += gettingNearBall;
+				reward += gettingNearBall * 1/distBallnext;
 			}
 			// kickable margin in server.conf is 0.7
 			if (distBallnext <= 0.7) {
@@ -99,9 +105,9 @@ public class Reward {
 			}
 			
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
-				reward += gettingNearGoal;
+				reward += gettingNearGoal * 1/distBallGoalnext;
 			} else {
-				reward += gettingAwayFromGoal;
+				reward += gettingAwayFromGoal * 1/distBallGoalnext;
 			}
 		} else {
 			if (bxnext == 52.5 && Math.abs(bynext) <= 7.01) {
@@ -132,9 +138,9 @@ public class Reward {
 			}
 			
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
-				reward += gettingNearGoal;
+				reward += gettingNearGoal * 1/distBallAdvGoalnext;
 			} else {
-				reward += gettingAwayFromGoal;
+				reward += gettingAwayFromGoal * 1/distBallAdvGoalnext;
 			}
 		}
 		
