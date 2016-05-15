@@ -105,9 +105,9 @@ public class Reward {
 			}
 			
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
-				reward += gettingNearGoal * 1/distBallGoalnext;
+				reward += gettingNearGoal * 1/distBallAdvGoalnext;
 			} else {
-				reward += gettingAwayFromGoal * 1/distBallGoalnext;
+				reward += gettingAwayFromGoal * 1/distBallAdvGoalnext;
 			}
 		} else {
 			if (bxnext == 52.5 && Math.abs(bynext) <= 7.01) {
