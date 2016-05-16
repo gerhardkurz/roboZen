@@ -27,7 +27,7 @@ public class State implements IState, Serializable{
      * @returns Dimension of state. Players get x and y coordinates, ball gets x, y coordinate and x, y velocity
      */
     public int getDimension() {
-    	return 2*(players.size() + 1);
+    	return 2*(players.size() + 2);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class State implements IState, Serializable{
 		double[] pos = new double[2*(players.size() + 2)];
 		for (int i = 0; i < players.size(); i++) {
 			pos[2*i] = players.get(i).getPositionX();
-			pos[2*(i+1)] = players.get(i).getPositionY();
+			pos[2*i+1] = players.get(i).getPositionY();
 		}
 		pos[2*(players.size())] = ball.getPositionX();
 		pos[2*(players.size())+1] = ball.getPositionY();
