@@ -1,8 +1,9 @@
-package edu.kit.robocup;
+package edu.kit.robocup.recorder;
 
 
 import java.io.*;
 
+import edu.kit.robocup.mdp.transitions.Game;
 import org.apache.log4j.Logger;
 
 
@@ -12,6 +13,8 @@ public class Sandbox {
 
     public static void main(String[] args) throws IOException {
 
-        GameRecorder.getGameFromFile("test.tmp");
+        GameReader reader = new GameReader("test.tmp");
+
+        Game game = reader.getGameFromFile();
     }
 }

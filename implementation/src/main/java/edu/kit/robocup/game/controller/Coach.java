@@ -1,28 +1,27 @@
 package edu.kit.robocup.game.controller;
 
 
-import com.github.robocup_atan.atan.model.XPMImage;
-import edu.kit.robocup.GameRecorder;
+import edu.kit.robocup.recorder.GameRecorder;
 import edu.kit.robocup.game.server.client.StaffClientBase;
 import org.apache.log4j.Logger;
 
 public class Coach extends StaffClientBase {
     private static Logger logger = Logger.getLogger(Coach.class);
-    private boolean record = false;
+    private GameRecorder recorder;
 
     public Coach(Team team) {
         super(team, 6002, "localhost");
     }
 
     public void look(edu.kit.robocup.game.state.State state) {
-        if (record) {
-            GameRecorder.record(state);
+        if (recorder != null) {
+            recorder.record(state);
         }
         team.handleState(state);
     }
 
-    public void recordGame(boolean record) {
-        this.record = record;
+    public void recordGame(GameRecorder recorder) {
+        this.recorder = recorder;
     }
 
     /**
