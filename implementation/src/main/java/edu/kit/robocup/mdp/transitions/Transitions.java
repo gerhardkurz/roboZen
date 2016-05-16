@@ -10,6 +10,7 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
+import edu.kit.robocup.Main;
 import edu.kit.robocup.game.Action;
 import edu.kit.robocup.game.ActionFactory;
 import edu.kit.robocup.game.Dash;
@@ -21,8 +22,11 @@ import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.ActionSet;
 import edu.kit.robocup.mdp.IActionSet;
+import org.apache.log4j.Logger;
 
 public class Transitions {
+
+    static Logger logger = Logger.getLogger(Main.class.getName());
 
     // m games of T sequences, statesequence has to have the same length
     private List<IGame> games;
@@ -46,7 +50,6 @@ public class Transitions {
     public void learn() {
         // TODO learn A, B
         int statedim = games.get(0).getStates().get(0).getDimension();
-        System.out.println("Statedimension: " + statedim);
 
         int numberplayers = games.get(0).getNumberPlayers();
         // all possible combinations are numberofactions^numberofplayers
@@ -55,19 +58,15 @@ public class Transitions {
 
         //T
         int gamelength = games.get(0).getGamelength();
-        System.out.println("Gamelength: " + gamelength);
         //m
         int numberOfGames = games.size();
-        System.out.println("Gamesize: " + numberOfGames);
 
         DoubleFactory2D h = DoubleFactory2D.sparse;
         DoubleMatrix2D M = h.make(0, 0, 0);
         for (int m = 0; m < games.size(); m++) {
             for (int t = 0; t < gamelength - 1; t++) {
                 DoubleMatrix2D S = getkDiagonalMatrix(games.get(m).getStates().get(t).getArray(), statedim);
-                //System.out.println(S.toString());
                 int actualaction = getActionIndex(games.get(m).getActions().get(t));
-                //System.out.println(actualaction);
                 for (int i = 0; i < combinations; i++) {
                     if (actualaction == i) {
                         DoubleMatrix2D action = getkDiagonalMatrix(games.get(m).getActions().get(t).getArray(), statedim);
@@ -76,7 +75,6 @@ public class Transitions {
                         int actiondim = getDimension(i, numberplayers);
                         DoubleMatrix2D zero = h.make(statedim, actiondim * statedim, 0);
                         S = h.appendColumns(S, zero);
-                        //System.out.println(S.toString());
                     }
                 }
                 if (M.size() == 0) {
@@ -106,18 +104,11 @@ public class Transitions {
 
         // M*x = b is solved by x = (M^T*M)^-1 * M^T * b
         Algebra a = new Algebra();
-        //DoubleMatrix2D factory = h.make(0, 0, 0);
-        //System.out.println(M.toString());
         System.out.println(M.columns() + " " + M.rows());
         DoubleMatrix2D hasToInvert = a.mult(M.viewDice(), M);
-        System.out.println("Rank of matrix that should be inverted is: " + a.rank(hasToInvert));
-        System.out.println("Matrix has " + hasToInvert.columns() + " columns and " + hasToInvert.rows() + " rows");
         DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), M.viewDice());
-        System.out.println("b has " + b.columns() + " columns and " + b.rows() + " rows");
-        System.out.println("nearlyDone has " + nearlyDone.columns() + " columns and " + nearlyDone.rows() + " rows");
 
         DoubleMatrix2D ab = a.mult(nearlyDone, b);
-        System.out.println("SolutionMatrix has " + ab.columns() + " columns and " + ab.rows() + " rows");
         double[] solution = ab.viewColumn(0).toArray();
         DoubleFactory1D hh = DoubleFactory1D.sparse;
         DoubleMatrix1D d = hh.make(Arrays.copyOfRange(solution, 0, statedim * statedim));
@@ -127,7 +118,7 @@ public class Transitions {
                 A.set(i, j, d.get(i + j * statedim));
             }
         }
-        System.out.println("A: " + A.toString());
+        logger.info("A: " + A.toString());
         double[] solutionActions = Arrays.copyOfRange(solution, statedim * statedim, solution.length);
         for (int k = 0; k < B.length; k++) {
             int matrixsize = getDimension(k, numberplayers);
@@ -138,7 +129,7 @@ public class Transitions {
                     B[k].set(i, j, d.get(i + j * matrixsize));
                 }
             }
-            System.out.println(B[k].toString());
+            logger.info(B[k].toString());
             solutionActions = Arrays.copyOfRange(solutionActions, statedim * matrixsize, solutionActions.length);
         }
     }
@@ -212,7 +203,6 @@ public class Transitions {
         double[][] testarray = {{0, 0}, {1, 2}};
         double[] test1Darray = {0, 1, 2, 3, 4, 5, 6, 5};
         DoubleMatrix2D zero = h.make(5, 3, 0);
-        //System.out.println(zero.toString());
 
         List<IGame> games = new ArrayList<IGame>();
 
@@ -235,11 +225,6 @@ public class Transitions {
         games.add(g);
 
         Transitions t = new Transitions(games);
-
-        DoubleMatrix2D testing = t.getkDiagonalMatrix(test1Darray, 3);
-        //System.out.println(t.getActionIndex(a));
-        //System.out.println(t.getDimension(28, 4));
-        //System.out.println(testing.toString());
 
         t.learn();
     }
