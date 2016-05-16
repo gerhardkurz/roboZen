@@ -1,6 +1,7 @@
-package edu.kit.robocup;
+package edu.kit.robocup.recorder;
 
 import com.github.robocup_atan.atan.model.enums.PlayMode;
+import edu.kit.robocup.Util;
 import edu.kit.robocup.game.controller.Coach;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
@@ -8,13 +9,14 @@ import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.SimplePolicy;
+import edu.kit.robocup.mdp.transitions.Game;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
-
-import static javafx.scene.input.KeyCode.M;
 
 public class GameRecorder {
 
@@ -41,6 +43,9 @@ public class GameRecorder {
         trainer.movePlayer(new PlayerState("t2", 1, 20, 20));
 
         trainer.moveBall(new Ball(3, 3));
+
+
+
 
         startRecording("test.tmp", team1.getCoach());
         team1.getCoach().eye(true); // enables constant visual updates for trainer/coach
@@ -74,6 +79,7 @@ public class GameRecorder {
 
     public static void record(State state) {
         try {
+            //logger.info(state);
             oos.writeObject(state);
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,4 +93,36 @@ public class GameRecorder {
         }
     }
 
+    public static Game getGameFromFile(String file) {
+        //Game game;
+
+
+        return null;
+    }
+
+    private static List<State> getStatesFromFile() {
+        List<State> states = new ArrayList<>();
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(new File(file));
+            ObjectInputStream input = new ObjectInputStream(fileInputStream);
+            State state;
+            try {
+                while (true) {
+                    state = (State) input.readObject();
+                    states.add(state);
+                }
+            } catch (EOFException eof) {
+                input.close();
+                logger.info("File was read and closed: " + file);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
