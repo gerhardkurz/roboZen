@@ -36,7 +36,7 @@ public class Recorder {
 
 
 
-        GameRecorder recorder = new GameRecorder("test.tmp", team1.getCoach());
+        GameRecorder recorder = new GameRecorder("test", team1.getCoach());
 
         team1.getCoach().eye(true); // enables constant visual updates for trainer/coach
         trainer.changePlayMode(PlayMode.KICK_OFF_L);

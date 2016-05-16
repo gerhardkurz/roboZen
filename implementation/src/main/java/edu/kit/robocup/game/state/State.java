@@ -22,7 +22,11 @@ public class State implements IState, Serializable{
     public List<IPlayerState> getPlayers(final String teamName) {
         return players.stream().filter(p -> p.getTeamName().equals(teamName)).collect(Collectors.toList());
     }
-    
+
+    public int getPlayerCount() {
+        return players.size();
+    }
+
     /**
      * @returns Dimension of state. Players get x and y coordinates, ball gets x, y coordinate and x, y velocity
      */

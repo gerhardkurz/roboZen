@@ -1,6 +1,7 @@
 package edu.kit.robocup.game.controller;
 
 
+import com.github.robocup_atan.atan.model.XPMImage;
 import edu.kit.robocup.recorder.GameRecorder;
 import edu.kit.robocup.game.server.client.StaffClientBase;
 import org.apache.log4j.Logger;
@@ -50,7 +51,7 @@ public class Coach extends StaffClientBase {
         this.commandFactory.addByeCommand();
         sendAll();
     }
-/*
+
     public void look() {
         this.commandFactory.addLookCommand();
         sendAll();
@@ -84,6 +85,5 @@ public class Coach extends StaffClientBase {
         logger.error(error);
     }
 
-*/
 
 }

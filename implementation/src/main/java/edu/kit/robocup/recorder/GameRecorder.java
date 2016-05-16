@@ -8,21 +8,24 @@ import java.io.*;
 import org.apache.log4j.Logger;
 
 public class GameRecorder {
-
+    public static final String fileEnding = ".gl";
     static Logger logger = Logger.getLogger(GameRecorder.class.getName());
     FileOutputStream fos;
     ObjectOutputStream oos;
 
     private File file;
-    public GameRecorder(String file, Coach observer) {
-        this.file = new File(file);
+    public GameRecorder(String fileName, Coach observer) {
+        this.file = new File(fileName + fileEnding);
 
         try {
-            this.fos = new FileOutputStream(file);
+            this.fos = new FileOutputStream(this.file);
             this.oos = new ObjectOutputStream(this.fos);
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         observer.recordGame(this);
     }
 
