@@ -6,8 +6,10 @@ import com.github.robocup_atan.atan.model.XPMImage;
 import com.github.robocup_atan.atan.model.enums.PlayMode;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
+import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
+import edu.kit.robocup.recorder.GameRecorder;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.Vector;
  */
 public class CommandFactory {
     private static Logger logger = Logger.getLogger(CommandFactory.class);
+    private static GameRecorder recorder;
 
     // The SServer version that Atan can parse.
     private static final String serverVersion = "13";
@@ -31,6 +34,10 @@ public class CommandFactory {
      * Constructs a blank command factory.
      */
     public CommandFactory() {
+    }
+
+    public static void recordActions(GameRecorder recorder) {
+        CommandFactory.recorder = recorder;
     }
 
     /**
@@ -166,6 +173,9 @@ public class CommandFactory {
      * @param power Power is between minpower (-100) and maxpower (+100).
      */
     public void addDashCommand(int power) {
+        if (recorder != null) {
+            recorder.record(new Dash(power));
+        }
         StringBuilder buf = new StringBuilder();
         buf.append("(dash ");
         buf.append(power);
@@ -180,6 +190,9 @@ public class CommandFactory {
      * @param direction Direction is relative to the body of the player.
      */
     public void addKickCommand(int power, int direction) {
+        if (recorder != null) {
+            recorder.record(new Kick(power, direction));
+        }
         StringBuilder buf = new StringBuilder();
         buf.append("(kick ");
         buf.append(power);
@@ -196,6 +209,9 @@ public class CommandFactory {
      * @param y Y location (between -32 and +32).
      */
     public void addMoveCommand(int x, int y) {
+        if (recorder != null) {
+            recorder.record(new Move(x, y));
+        }
         StringBuilder buf = new StringBuilder();
         buf.append("(move ");
         buf.append(x);
@@ -212,6 +228,9 @@ public class CommandFactory {
      * @param angle Angle to turn (between -180 and +180).
      */
     public void addTurnCommand(int angle) {
+        if (recorder != null) {
+            recorder.record(new Turn(angle));
+        }
         StringBuilder buf = new StringBuilder();
         buf.append("(turn ");
         buf.append(angle);

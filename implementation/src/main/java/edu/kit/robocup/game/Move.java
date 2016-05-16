@@ -1,6 +1,8 @@
 package edu.kit.robocup.game;
 
-public class Move implements IAction {
+import java.io.Serializable;
+
+public class Move implements IAction, Serializable {
 
 	private int x, y;
 	
@@ -24,4 +26,8 @@ public class Move implements IAction {
 		return new double[]{x,y};
 	}
 
+	@Override
+	public String toString() {
+		return "Move{" + x + ", " + y + "}";
+	}
 }

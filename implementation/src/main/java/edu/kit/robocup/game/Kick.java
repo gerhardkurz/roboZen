@@ -1,6 +1,8 @@
 package edu.kit.robocup.game;
 
-public class Kick implements IAction {
+import java.io.Serializable;
+
+public class Kick implements IAction, Serializable {
 
 	private double power;
 	private double direction;
@@ -25,4 +27,8 @@ public class Kick implements IAction {
 		return new double[]{power,direction};
 	}
 
+	@Override
+	public String toString() {
+		return "Kick{" + power + ", " + direction + "}";
+	}
 }

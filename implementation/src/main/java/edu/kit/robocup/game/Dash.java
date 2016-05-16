@@ -1,6 +1,8 @@
 package edu.kit.robocup.game;
 
-public class Dash implements IAction {
+import java.io.Serializable;
+
+public class Dash implements IAction, Serializable {
 
 	private double power;
 	
@@ -22,5 +24,11 @@ public class Dash implements IAction {
 	public double[] getArray() {
 		return new double[]{power};
 	}
+
+	@Override
+	public String toString() {
+		return "Dash{" + power + "}";
+	}
+
 
 }

@@ -16,5 +16,7 @@ public class Sandbox {
         GameReader reader = new GameReader("test");
 
         Game game = reader.getGameFromFile();
+
+        logger.info(game);
     }
 }

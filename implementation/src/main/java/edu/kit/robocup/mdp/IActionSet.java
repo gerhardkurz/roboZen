@@ -6,7 +6,7 @@ import edu.kit.robocup.game.IAction;
 import java.util.List;
 
 
-public interface IActions {
+public interface IActionSet {
 	List<IAction> getActions();
 	int getDimension();
 	// returns values for transitions in array

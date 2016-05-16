@@ -21,7 +21,7 @@ public class Coach extends StaffClientBase {
         team.handleState(state);
     }
 
-    public void recordGame(GameRecorder recorder) {
+    public void recordStates(GameRecorder recorder) {
         this.recorder = recorder;
     }
 

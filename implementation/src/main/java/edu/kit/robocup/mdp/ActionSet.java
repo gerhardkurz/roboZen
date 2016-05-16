@@ -4,12 +4,12 @@ import java.util.List;
 
 import edu.kit.robocup.game.IAction;
 
-public class Actions implements IActions {
+public class ActionSet implements IActionSet {
 	
 	private List<IAction> actions;
 	private int dimension;
 
-	public Actions(List<IAction> actions) {
+	public ActionSet(List<IAction> actions) {
 		this.actions = actions;
 		int dim = 0;
 		for (IAction action: actions) {

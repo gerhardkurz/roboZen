@@ -3,7 +3,6 @@ package edu.kit.robocup.mdp.transitions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Arrays;
 
 import cern.colt.matrix.DoubleFactory1D;
@@ -16,13 +15,12 @@ import edu.kit.robocup.game.ActionFactory;
 import edu.kit.robocup.game.Dash;
 import edu.kit.robocup.game.IAction;
 import edu.kit.robocup.game.Kick;
-import edu.kit.robocup.game.Turn;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.IPlayerState;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.mdp.Actions;
-import edu.kit.robocup.mdp.IActions;
+import edu.kit.robocup.mdp.ActionSet;
+import edu.kit.robocup.mdp.IActionSet;
 
 public class Transitions {
 
@@ -171,7 +169,7 @@ public class Transitions {
 	 * @param actions actions that are chosen
 	 * @return value in the n-dimensional numeral system
 	 */
-	private int getActionIndex(IActions actions) {
+	private int getActionIndex(IActionSet actions) {
 		int[] types = actions.getActionsType();
 		int n = actions.getActions().size();
 		int codednumber = 0;
@@ -294,8 +292,8 @@ public class Transitions {
 		return states;
 	}
 	
-	private static List<IActions> getRandomActions() {
-		List<IActions> actions = new ArrayList<IActions>();
+	private static List<IActionSet> getRandomActions() {
+		List<IActionSet> actions = new ArrayList<IActionSet>();
 		IAction a0 = new Kick(Math.random(),Math.random());
 		IAction a1 = new Dash(Math.random());
 		IAction a2 = new Dash(Math.random());
@@ -316,10 +314,10 @@ public class Transitions {
 		helper2.add(a5);
 		helper3.add(a6);
 		helper3.add(a7);
-		Actions a = new Actions(helper);
-		Actions a11 = new Actions(helper1);
-		Actions a111 = new Actions(helper2);
-		Actions a1111 = new Actions(helper3);
+		ActionSet a = new ActionSet(helper);
+		ActionSet a11 = new ActionSet(helper1);
+		ActionSet a111 = new ActionSet(helper2);
+		ActionSet a1111 = new ActionSet(helper3);
 		actions.add(a);
 		actions.add(a11);
 		actions.add(a111);

@@ -1,6 +1,8 @@
 package edu.kit.robocup.game;
 
-public class Turn implements IAction {
+import java.io.Serializable;
+
+public class Turn implements IAction, Serializable {
 
 	private int moment;
 	
@@ -23,4 +25,8 @@ public class Turn implements IAction {
 		return new double[]{moment};
 	}
 
+	@Override
+	public String toString() {
+		return "Turn{" + moment + "}";
+	}
 }

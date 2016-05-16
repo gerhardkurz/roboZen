@@ -1,6 +1,7 @@
 package edu.kit.robocup.recorder;
 
 import edu.kit.robocup.game.controller.Coach;
+import edu.kit.robocup.game.server.message.CommandFactory;
 import edu.kit.robocup.game.state.State;
 
 import java.io.*;
@@ -26,13 +27,14 @@ public class GameRecorder {
             e.printStackTrace();
         }
 
-        observer.recordGame(this);
+        observer.recordStates(this);
+        CommandFactory.recordActions(this);
     }
 
-    public void record(State state) {
+    public void record(Serializable stateOrAction) {
         try {
-            //logger.info(state);
-            this.oos.writeObject(state);
+            logger.info(stateOrAction);
+            this.oos.writeObject(stateOrAction);
         } catch (Exception e) {
             e.printStackTrace();
         }
