@@ -22,7 +22,10 @@ public class Recorder {
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Team team1 = new Team("t1", 1, new SimplePolicy());
+
+        GameRecorder recorder = new GameRecorder("test", new SimplePolicy());
+
+        Team team1 = new Team("t1", 1, recorder);
         team1.connectAll();
 
         Team team2 = new Team("t2", 2, new SimplePolicy());
@@ -33,10 +36,6 @@ public class Recorder {
 
         trainer.moveBall(new Ball(3, 3));
 
-
-
-
-        GameRecorder recorder = new GameRecorder("test", team1.getCoach());
 
         team1.getCoach().eye(true); // enables constant visual updates for trainer/coach
         trainer.changePlayMode(PlayMode.KICK_OFF_L);

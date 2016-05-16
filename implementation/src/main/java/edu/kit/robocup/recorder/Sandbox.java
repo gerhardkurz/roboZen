@@ -13,10 +13,10 @@ public class Sandbox {
 
     public static void main(String[] args) throws IOException {
 
-        GameReader reader = new GameReader("test");
+//        GameReader reader = new GameReader("test");
+//
+//        Game game = reader.getGameFromFile();
 
-        Game game = reader.getGameFromFile();
-
-        logger.info(game);
+//        logger.info(game);
     }
 }

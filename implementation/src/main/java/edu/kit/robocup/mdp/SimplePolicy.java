@@ -15,7 +15,7 @@ public class SimplePolicy implements IPolicy {
         Map<IPlayerController, IAction> action = new HashMap<>();
         for (IPlayerController playerController : players) {
             if (yoloGen(0.25f)) {
-                action.put(playerController, new Turn(20));
+                action.put(playerController, new Turn(0, 20));
             } else {
                 action.put(playerController, new Dash(30));
             }

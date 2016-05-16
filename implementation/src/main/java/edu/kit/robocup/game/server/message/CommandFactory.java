@@ -9,7 +9,6 @@ import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
-import edu.kit.robocup.recorder.GameRecorder;
 import org.apache.log4j.Logger;
 
 import java.util.List;
