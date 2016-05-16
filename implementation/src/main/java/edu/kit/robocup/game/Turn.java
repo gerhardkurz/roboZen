@@ -4,12 +4,10 @@ import java.io.Serializable;
 
 public class Turn implements IAction, Serializable {
 
-	private int moment;
-    private int angle;
+	private int angle;
 	
-	public Turn(int moment, int angle) {
-		this.moment = moment;
-        this.angle = angle;
+	public Turn(int angle) {
+		this.angle = angle;
 	}
 	
 	@Override
@@ -24,19 +22,15 @@ public class Turn implements IAction, Serializable {
 
 	@Override
 	public double[] getArray() {
-		return new double[]{moment};
+		return new double[]{angle};
 	}
 
 	@Override
 	public String toString() {
-		return "Turn{" + moment + "}";
+		return "Turn{" + angle + "}";
 	}
 
-	public int getMoment() {
-		return moment;
+	public int getAngle() {
+		return angle;
 	}
-
-    public int getAngle() {
-        return angle;
-    }
 }

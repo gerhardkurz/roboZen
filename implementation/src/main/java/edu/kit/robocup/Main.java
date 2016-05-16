@@ -6,6 +6,7 @@ import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
 import edu.kit.robocup.mdp.SimplePolicy;
+import edu.kit.robocup.recorder.GameRecorder;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
@@ -22,17 +23,18 @@ public class Main {
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Team team1 = new Team("t1", 1, new SimplePolicy());
+        Team team1 = new Team("t1", 2, new GameRecorder("test",new SimplePolicy()));
         team1.connectAll();
 
         Team team2 = new Team("t2", 2, new SimplePolicy());
         team2.connectAll();
 
-        trainer.movePlayer(new PlayerState("t1", 1, 20, 20));
-        trainer.movePlayer(new PlayerState("t2", 1, 20, 20));
-        trainer.movePlayer(new PlayerState("t2", 2, 20, -20));
+        trainer.movePlayer(new PlayerState("t1", 1, 1, 10));
+        trainer.movePlayer(new PlayerState("t1", 2, 1, 5));
+        trainer.movePlayer(new PlayerState("t2", 1, 1, -5));
+        trainer.movePlayer(new PlayerState("t2", 2, 1, -10));
 
-        trainer.moveBall(new Ball(3, 3));
+        trainer.moveBall(new Ball(0, 0));
         trainer.changePlayMode(PlayMode.KICK_OFF_L);
 
         team1.getCoach().eye(true); // enables constant visual updates for trainer/coach

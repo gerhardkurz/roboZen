@@ -1,9 +1,6 @@
 package edu.kit.robocup.mdp;
 
-import edu.kit.robocup.game.Dash;
-import edu.kit.robocup.game.IAction;
-import edu.kit.robocup.game.IPlayer;
-import edu.kit.robocup.game.Turn;
+import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.controller.IPlayerController;
 
 import java.util.*;
@@ -15,9 +12,23 @@ public class SimplePolicy implements IPolicy {
         Map<IPlayerController, IAction> action = new HashMap<>();
         for (IPlayerController playerController : players) {
             if (yoloGen(0.25f)) {
-                action.put(playerController, new Turn(0, 20));
+                if (yoloGen(0.25f)) {
+                    int p = 0 + (int)(Math.random() * ((100 - 0) + 1));
+                    int a = 0 + (int)(Math.random() * ((180 - 0) + 1));
+                    action.put(playerController, new Kick(p, a));
+                } else {
+                    int a = 0 + (int)(Math.random() * ((180 - 0) + 1));
+                    action.put(playerController, new Turn(a));
+                }
             } else {
-                action.put(playerController, new Dash(30));
+                if (yoloGen(0.25f)) {
+                    int x = 0 + (int)(Math.random() * ((50 - 0) + 1));
+                    int y = 0 + (int)(Math.random() * ((30 - 0) + 1));
+                    action.put(playerController, new Move(x, y));
+                } else {
+                    int p = 0 + (int)(Math.random() * ((100 - 0) + 1));
+                    action.put(playerController, new Dash(p));
+                }
             }
         }
         return action;

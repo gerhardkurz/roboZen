@@ -18,7 +18,7 @@ public class ActionFactory {
 			return new Dash(0);
 		}
 		case 2: {
-			return new Turn(0, 0);
+			return new Turn(0);
 		}
 		case 3: {
 			return new Move(0,0);
