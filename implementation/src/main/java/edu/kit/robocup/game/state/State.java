@@ -2,10 +2,11 @@ package edu.kit.robocup.game.state;
 
 import edu.kit.robocup.mdp.IState;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class State implements IState {
+public class State implements IState, Serializable{
     private final Ball ball;
     private final List<IPlayerState> players;
 
@@ -33,6 +34,7 @@ public class State implements IState {
     public String toString() {
         return "State{" + ball.toString() + " " + players.toString() + "}";
     }
+
     /**
      * @return Array containing all x-/y-coordinates of players and the last
      * entries are ballposition and ballvelocity

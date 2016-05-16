@@ -2,18 +2,27 @@ package edu.kit.robocup.game.controller;
 
 
 import com.github.robocup_atan.atan.model.XPMImage;
+import edu.kit.robocup.GameRecorder;
 import edu.kit.robocup.game.server.client.StaffClientBase;
 import org.apache.log4j.Logger;
 
 public class Coach extends StaffClientBase {
     private static Logger logger = Logger.getLogger(Coach.class);
+    private boolean record = false;
 
     public Coach(Team team) {
         super(team, 6002, "localhost");
     }
 
     public void look(edu.kit.robocup.game.state.State state) {
+        if (record) {
+            GameRecorder.record(state);
+        }
         team.handleState(state);
+    }
+
+    public void recordGame(boolean record) {
+        this.record = record;
     }
 
     /**
@@ -33,15 +42,16 @@ public class Coach extends StaffClientBase {
         throw new Error("Coach should not use start. Use connect() instead");
     }
 
-
-
-
     public void eye(boolean eyeOn) {
         this.commandFactory.addEyeCommand(eyeOn);
         sendAll();
     }
 
-
+    public void bye() {
+        this.commandFactory.addByeCommand();
+        sendAll();
+    }
+/*
     public void look() {
         this.commandFactory.addLookCommand();
         sendAll();
@@ -71,15 +81,10 @@ public class Coach extends StaffClientBase {
         sendAll();
     }
 
-
-    public void bye() {
-        this.commandFactory.addByeCommand();
-        sendAll();
-    }
-
-
     public void handleError(String error) {
         logger.error(error);
     }
+
+*/
 
 }
