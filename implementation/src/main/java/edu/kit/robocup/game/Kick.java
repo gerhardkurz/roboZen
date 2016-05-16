@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 public class Kick implements IAction, Serializable {
 
-	private double power;
-	private double direction;
+	private int power;
+	private int direction;
 	
-	public Kick(double power, double direction) {
+	public Kick(int power, int direction) {
 		this.power = power;
 		this.direction = direction;
 	}
 	
 	@Override
 	public Action getActionType() {
-		return Action.kick;
+		return Action.KICK;
 	}
 
 	@Override
@@ -31,4 +31,12 @@ public class Kick implements IAction, Serializable {
 	public String toString() {
 		return "Kick{" + power + ", " + direction + "}";
 	}
+
+    public int getPower() {
+        return power;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
 }

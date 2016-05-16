@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class State implements IState, Serializable{
+public class State implements IState {
     private final Ball ball;
     private final List<IPlayerState> players;
 

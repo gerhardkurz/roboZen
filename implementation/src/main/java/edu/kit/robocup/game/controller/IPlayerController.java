@@ -1,14 +1,17 @@
 package edu.kit.robocup.game.controller;
 
 
-import edu.kit.robocup.game.IPlayer;
+import edu.kit.robocup.game.*;
 
-public interface IPlayerController extends IPlayer {
-    void dash(int power);
-    void kick(int power, double direction);
-    void move(int x, int y);
+import java.io.Serializable;
+
+public interface IPlayerController extends IPlayer, Serializable {
+    void dash(Dash dashAction);
+    void kick(Kick kickAction);
+    void move(Move moveAction);
     void say(String message);
-    void turn(double angle);
+    void turn(Turn turnAction);
     void turnNeck(double angle);
     void catchBall(double direction);
+    void execute(IAction action);
 }

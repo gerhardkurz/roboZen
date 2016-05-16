@@ -3,6 +3,7 @@ package edu.kit.robocup.game.controller;
 
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
+import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.server.client.StaffClientBase;
 import edu.kit.robocup.game.server.message.CommandFactory;
 import org.apache.log4j.Logger;
@@ -44,18 +45,18 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
     }
 
 
-    public void dash(int power) {
-        this.commandFactory.addDashCommand(power);
+    public void dash(Dash dashAction) {
+        this.commandFactory.addDashCommand(dashAction.getPower());
         sendAll();
     }
 
-    public void kick(int power, double direction) {
-        this.commandFactory.addKickCommand(power, (int) direction);
+    public void kick(Kick kickAction) {
+        this.commandFactory.addKickCommand(kickAction.getPower(), kickAction.getDirection());
         sendAll();
     }
 
-    public void move(int x, int y) {
-        this.commandFactory.addMoveCommand(x, y);
+    public void move(Move moveAction) {
+        this.commandFactory.addMoveCommand(moveAction.getX(), moveAction.getY());
         sendAll();
     }
 
@@ -64,8 +65,8 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
         sendAll();
     }
 
-    public void turn(double angle) {
-        this.commandFactory.addTurnCommand((int) angle);
+    public void turn(Turn turnAction) {
+        this.commandFactory.addTurnCommand(turnAction.getAngle());
         sendAll();
     }
 
@@ -75,6 +76,24 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
     public void catchBall(double direction) {
         this.commandFactory.addCatchCommand((int) direction);
         sendAll();
+    }
+
+    @Override
+    public void execute(IAction action) {
+        switch (action.getActionType()) {
+            case KICK:
+                kick((Kick) action);
+                break;
+            case DASH:
+                dash((Dash) action);
+                break;
+            case TURN:
+                turn((Turn) action);
+                break;
+            case MOVE:
+                move((Move) action);
+                break;
+        }
     }
 
     public void changeViewMode(ViewQuality quality, ViewAngle angle) {

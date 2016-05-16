@@ -4,15 +4,15 @@ import java.io.Serializable;
 
 public class Dash implements IAction, Serializable {
 
-	private double power;
+	private int power;
 	
-	public Dash(double power) {
+	public Dash(int power) {
 		this.power = power;
 	}
 	
 	@Override
 	public Action getActionType() {
-		return Action.dash;
+		return Action.DASH;
 	}
 
 	@Override
@@ -31,4 +31,7 @@ public class Dash implements IAction, Serializable {
 	}
 
 
+	public int getPower() {
+		return power;
+	}
 }

@@ -1,12 +1,15 @@
 package edu.kit.robocup.game.controller;
 
 
+import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.game.IPlayer;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.IPolicy;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class Team {
@@ -28,7 +31,8 @@ public class Team {
     }
 
     public void handleState(State state) {
-        policy.apply(state, playerControllers);
+        Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers);
+        actions.entrySet().forEach(e -> e.getKey().execute(e.getValue()));
     }
 
 

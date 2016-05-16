@@ -5,14 +5,16 @@ import java.io.Serializable;
 public class Turn implements IAction, Serializable {
 
 	private int moment;
+    private int angle;
 	
-	public Turn(int moment) {
+	public Turn(int moment, int angle) {
 		this.moment = moment;
+        this.angle = angle;
 	}
 	
 	@Override
 	public Action getActionType() {
-		return Action.turn;
+		return Action.TURN;
 	}
 
 	@Override
@@ -29,4 +31,12 @@ public class Turn implements IAction, Serializable {
 	public String toString() {
 		return "Turn{" + moment + "}";
 	}
+
+	public int getMoment() {
+		return moment;
+	}
+
+    public int getAngle() {
+        return angle;
+    }
 }

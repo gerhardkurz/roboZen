@@ -13,7 +13,7 @@ public class Move implements IAction, Serializable {
 	
 	@Override
 	public Action getActionType() {
-		return Action.move;
+		return Action.MOVE;
 	}
 
 	@Override
@@ -30,4 +30,12 @@ public class Move implements IAction, Serializable {
 	public String toString() {
 		return "Move{" + x + ", " + y + "}";
 	}
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

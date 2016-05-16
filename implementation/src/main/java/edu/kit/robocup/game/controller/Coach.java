@@ -8,22 +8,15 @@ import org.apache.log4j.Logger;
 
 public class Coach extends StaffClientBase {
     private static Logger logger = Logger.getLogger(Coach.class);
-    private GameRecorder recorder;
 
     public Coach(Team team) {
         super(team, 6002, "localhost");
     }
 
     public void look(edu.kit.robocup.game.state.State state) {
-        if (recorder != null) {
-            recorder.record(state);
-        }
         team.handleState(state);
     }
 
-    public void recordStates(GameRecorder recorder) {
-        this.recorder = recorder;
-    }
 
     /**
      * Connects to the server via AbstractUDPClient.

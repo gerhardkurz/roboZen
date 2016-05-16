@@ -1,5 +1,9 @@
 package edu.kit.robocup.mdp;
 
+import edu.kit.robocup.game.Dash;
+import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.game.IPlayer;
+import edu.kit.robocup.game.Turn;
 import edu.kit.robocup.game.controller.IPlayerController;
 
 import java.util.*;
@@ -7,14 +11,16 @@ import java.util.*;
 
 public class SimplePolicy implements IPolicy {
 
-    public void apply(IState state, List<? extends IPlayerController> playerControllers) {
-        for (IPlayerController playerController : playerControllers) {
+    public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> players) {
+        Map<IPlayerController, IAction> action = new HashMap<>();
+        for (IPlayerController playerController : players) {
             if (yoloGen(0.25f)) {
-                playerController.turn(20);
+                action.put(playerController, new Turn(20));
             } else {
-                playerController.dash(30);
+                action.put(playerController, new Dash(30));
             }
         }
+        return action;
     }
 
 
