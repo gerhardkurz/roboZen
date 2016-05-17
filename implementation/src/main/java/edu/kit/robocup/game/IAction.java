@@ -1,6 +1,8 @@
 package edu.kit.robocup.game;
 
-public interface IAction {
+import java.io.Serializable;
+
+public interface IAction extends Serializable {
 
 	Action getActionType();
 	

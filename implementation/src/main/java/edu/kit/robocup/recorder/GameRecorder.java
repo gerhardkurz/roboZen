@@ -37,7 +37,7 @@ public class GameRecorder implements IPolicy {
 
     public void record(Serializable stateOrAction) {
         try {
-            logger.info(stateOrAction);
+            logger.info("recording: " + stateOrAction);
             this.oos.writeObject(stateOrAction);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,6 +57,10 @@ public class GameRecorder implements IPolicy {
         record(state);
         Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers);
         //record(actions);
+        for (Map.Entry<IPlayerController, IAction> entry : actions.entrySet())
+        {
+            record(entry.getValue());
+        }
         return actions;
     }
 }
