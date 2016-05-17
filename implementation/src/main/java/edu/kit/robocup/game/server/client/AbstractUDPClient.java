@@ -139,21 +139,8 @@ public abstract class AbstractUDPClient extends Thread {
      * @throws java.io.IOException if any.
      */
     public void send(String message) throws IOException {
-        logger.info(message);
-        buf.setString(message);
-        if (message.equals("(change_mode kick_off_l)") ||
-                message.equals("(move (player t1 1) 1.0 10.0)") ||
-                message.equals("(move (player t1 2) 1.0 5.0)") ||
-                message.equals("(move (ball) 0.0 0.0)") ||
-                message.equals("(eye on)")
-                ) {
-
-            DatagramPacket packet = new DatagramPacket(buf.getByteArray(), buf.length(), host, port);
-            socket.send(packet);
-        }
-        logger.info(buf.size() + " - " + buf.length());
-        buf.reset();
-        logger.info(buf.size() + " - " + buf.length());
+        DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), host, port);
+        socket.send(packet);
     }
 
     /**
