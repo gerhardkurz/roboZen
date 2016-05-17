@@ -1,6 +1,7 @@
 package edu.kit.robocup.game.server.client;
 
 import com.github.robocup_atan.atan.model.ByteBuffer;
+import edu.kit.robocup.recorder.GameRecorder;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ import java.net.InetAddress;
  * @author Atan
  */
 public abstract class AbstractUDPClient extends Thread {
-    private static Logger log       = Logger.getLogger(AbstractUDPClient.class);
+    private static Logger logger       = Logger.getLogger(AbstractUDPClient.class.getName());
     private String         hostname  = "localhost";
     private int            port      = 6000;
     private boolean        isRunning = false;
@@ -88,7 +89,7 @@ public abstract class AbstractUDPClient extends Thread {
     @Override
     public void run() {
         try {
-            log.info("UDP - client started: " + this.hostname + ":" + this.port);
+            logger.info("UDP - client started: " + this.hostname + ":" + this.port);
             isRunning = true;
             buf       = new ByteBuffer(5000);
             buf.setString(getInitMessage());    // A buffer size of 5000 to handle the server_param message.
@@ -113,7 +114,7 @@ public abstract class AbstractUDPClient extends Thread {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            log.error("Stopped running " + getName() + " " + getDescription() + " because: " + ex.toString());
+            logger.error("Stopped running " + getName() + " " + getDescription() + " because: " + ex.toString());
         }
 
         // Clean up.
@@ -121,14 +122,14 @@ public abstract class AbstractUDPClient extends Thread {
         try {
             buf.close();
         } catch (IOException ex) {
-            log.error("Error cleaning up thread - " + ex.getMessage());
+            logger.error("Error cleaning up thread - " + ex.getMessage());
         }
         try {
             this.finalize();
         } catch (Throwable ex) {
-            log.error("Error cleaning up thread - " + ex.getMessage());
+            logger.error("Error cleaning up thread - " + ex.getMessage());
         }
-        log.info("UDP - client terminated: " + this.hostname + ":" + this.port);
+        logger.info("UDP - client terminated: " + this.hostname + ":" + this.port);
     }
 
     /**
@@ -138,9 +139,21 @@ public abstract class AbstractUDPClient extends Thread {
      * @throws java.io.IOException if any.
      */
     public void send(String message) throws IOException {
+        logger.info(message);
         buf.setString(message);
-        DatagramPacket packet = new DatagramPacket(buf.getByteArray(), buf.length(), host, port);
-        socket.send(packet);
+        if (message.equals("(change_mode kick_off_l)") ||
+                message.equals("(move (player t1 1) 1.0 10.0)") ||
+                message.equals("(move (player t1 2) 1.0 5.0)") ||
+                message.equals("(move (ball) 0.0 0.0)") ||
+                message.equals("(eye on)")
+                ) {
+
+            DatagramPacket packet = new DatagramPacket(buf.getByteArray(), buf.length(), host, port);
+            socket.send(packet);
+        }
+        logger.info(buf.size() + " - " + buf.length());
+        buf.reset();
+        logger.info(buf.size() + " - " + buf.length());
     }
 
     /**
@@ -166,7 +179,7 @@ public abstract class AbstractUDPClient extends Thread {
     @Override
     public void start() {
         if (this.isRunning) {
-            log.info("started but was already running.");
+            logger.info("started but was already running.");
         } else {
             super.start();
         }
@@ -205,7 +218,7 @@ public abstract class AbstractUDPClient extends Thread {
         try {
             this.wait(ms);
         } catch (InterruptedException ex) {
-            log.warn("Interrupted Exception ", ex);
+            logger.warn("Interrupted Exception ", ex);
         }
     }
 }
