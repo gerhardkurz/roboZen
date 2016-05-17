@@ -37,7 +37,7 @@ public class GameRecorder implements IPolicy {
 
     public void record(Serializable stateOrAction) {
         try {
-            logger.info("recording: " + stateOrAction);
+            //logger.info("recording: " + stateOrAction);
             this.oos.writeObject(stateOrAction);
         } catch (Exception e) {
             e.printStackTrace();
