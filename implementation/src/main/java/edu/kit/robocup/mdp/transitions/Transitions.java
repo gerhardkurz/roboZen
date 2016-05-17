@@ -29,21 +29,21 @@ public class Transitions {
     static Logger logger = Logger.getLogger(Main.class.getName());
 
     // m games of T sequences, statesequence has to have the same length
-    private List<IGame> games;
+    private List<Game> games;
     private DoubleMatrix2D A;
     /**
      * contains matrices for all possible actions
      */
     private DoubleMatrix2D[] B;
 
-    public Transitions(List<IGame> games) {
+    public Transitions(List<Game> games) {
         this.games = games;
         int numberOfCombinations = (int) Math.pow(games.get(0).getNumberPlayers(), Action.values().length);
         B = new DoubleMatrix2D[numberOfCombinations];
     }
 
     // get sequences of m games
-    public List<IGame> getGames() {
+    public List<Game> getGames() {
         return this.games;
     }
 
@@ -204,24 +204,24 @@ public class Transitions {
         double[] test1Darray = {0, 1, 2, 3, 4, 5, 6, 5};
         DoubleMatrix2D zero = h.make(5, 3, 0);
 
-        List<IGame> games = new ArrayList<IGame>();
+        List<Game> games = new ArrayList<Game>();
 
         int numberplayers = 2;
-        Game g = new Game(getRandomStates(), getRandomActions(), numberplayers);
+        Game g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
-        g = new Game(getRandomStates(), getRandomActions(), numberplayers);
+        g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
-        g = new Game(getRandomStates(), getRandomActions(), numberplayers);
+        g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
-        g = new Game(getRandomStates(), getRandomActions(), numberplayers);
+        g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
-        g = new Game(getRandomStates(), getRandomActions(), numberplayers);
+        g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
-        g = new Game(getRandomStates(), getRandomActions(), numberplayers);
+        g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
-        g = new Game(getRandomStates(), getRandomActions(), numberplayers);
+        g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
-        g = new Game(getRandomStates(), getRandomActions(), numberplayers);
+        g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
 
         Transitions t = new Transitions(games);
