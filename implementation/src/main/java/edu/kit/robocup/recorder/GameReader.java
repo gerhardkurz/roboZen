@@ -55,12 +55,6 @@ public class GameReader {
                     }
                 }
             } catch (EOFException eof) {
-                if (!actions.isEmpty()) {
-                    ActionSet actionSet = new ActionSet(actions);
-                    actionSets.add(actionSet);
-                    actions.clear();
-                }
-
                 input.close();
                 logger.info("File (" + file + ") was read (" + stateCount + " states, " + actionCount + " actions) and closed successfully.");
             }
