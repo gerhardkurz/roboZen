@@ -47,9 +47,9 @@ public class LookParser {
                 String teamName = match.group("teamname");
                 int number = Integer.parseInt(match.group("playerNr"));
                 double bodyAngle = Double.parseDouble(match.group("fifth"));
-                //double neckAngle = Double.parseDouble(match.group("sixth"));
+                double neckAngle = Double.parseDouble(match.group("sixth"));
                 //double pointingDir = Double.parseDouble(match.group("seventh"));
-                PlayerState player = new PlayerState(teamName, number, positionX, positionY, velocityX, velocityY);
+                PlayerState player = new PlayerState(teamName, number, positionX, positionY, velocityX, velocityY, bodyAngle, neckAngle);
                 players.add(player);
             } else {
                 // unknown match. May be ok.

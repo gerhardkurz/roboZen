@@ -10,18 +10,22 @@ public class PlayerState implements IPlayerState, Serializable {
     private final double positionY;
     private final double velocityX;
     private final double velocityY;
+    private final double neckAngle;
+    private final double bodyAngle;
 
     public PlayerState(String teamName, int number, double positionX, double positionY) {
-        this(teamName, number, positionX, positionY, 0, 0);
+        this(teamName, number, positionX, positionY, 0, 0, 0, 0);
     }
 
-    public PlayerState(String teamName, int number, double positionX, double positionY, double velocityX, double velocityY) {
+    public PlayerState(String teamName, int number, double positionX, double positionY, double velocityX, double velocityY, double bodyAngle, double neckAngle) {
         this.teamName = teamName;
         this.number = number;
         this.positionX = positionX;
         this.positionY = positionY;
         this.velocityX = velocityX;
         this.velocityY = velocityY;
+        this.bodyAngle = bodyAngle;
+        this.neckAngle = neckAngle;
     }
 
     public String getTeamName() {
@@ -50,5 +54,15 @@ public class PlayerState implements IPlayerState, Serializable {
     @Override
     public double getVelocityY() {
         return velocityY;
+    }
+
+    @Override
+    public double getNeckAngle() {
+        return neckAngle;
+    }
+
+    @Override
+    public double getBodyAngle() {
+        return bodyAngle;
     }
 }

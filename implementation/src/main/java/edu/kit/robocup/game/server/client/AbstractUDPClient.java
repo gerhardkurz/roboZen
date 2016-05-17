@@ -139,6 +139,7 @@ public abstract class AbstractUDPClient extends Thread {
      * @throws java.io.IOException if any.
      */
     public void send(String message) throws IOException {
+        //logger.info("sending message: " + message);
         DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), host, port);
         socket.send(packet);
     }
