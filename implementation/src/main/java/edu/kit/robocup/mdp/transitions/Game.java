@@ -5,7 +5,7 @@ import java.util.List;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.IActionSet;
 
-public class Game implements IGame {
+public class Game {
 
 	// states s_0 to s_T
 	private List<State> states;
@@ -19,23 +19,21 @@ public class Game implements IGame {
 	// number of timesteps of a game, T
 	private int gamelength;
 	
-	public Game(List<State> states, List<IActionSet> actions, int numberPlayers) {
+	public Game(List<State> states, List<IActionSet> actions) {
 		this.states = states;
 		this.actions = actions;
-		this.numberPlayers = numberPlayers;
+		this.numberPlayers = actions.get(0).getActions().size();
 		this.gamelength = states.size();
 	}
 	
 	public int getNumberPlayers() {
 		return this.numberPlayers;
 	}
-	
-	@Override
+
 	public List<State> getStates() {
 		return this.states;
 	}
 
-	@Override
 	public List<IActionSet> getActions() {
 		return this.actions;
 	}

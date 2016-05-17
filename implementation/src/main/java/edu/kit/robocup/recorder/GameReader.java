@@ -67,7 +67,7 @@ public class GameReader {
             e.printStackTrace();
         }
 
-        return new Game(states, actionSets, actionSets.get(0).getActions().size());
+        return new Game(states, actionSets);
     }
 
 }
