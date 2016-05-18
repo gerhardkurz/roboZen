@@ -147,11 +147,10 @@ public class Transitions {
                     if (index == i) {
                         found = true;
                     }
-                    logger.info(index);
                 }
             }
             if (found == false) {
-                return "Error, Matrix will be singular because Actioncombination " + getActions(i, numberplayers) + " doesn't exist!";
+                return "Error, Matrix will be singular because Actioncombination " + i +": " + getActions(i, numberplayers) + " doesn't exist!";
             }
         }
         return "All Actioncombinations are found!";
@@ -169,8 +168,8 @@ public class Transitions {
         int[] types = new int[numberOfPlayers];
         int rest = actionsIndex;
         for (int i = numberOfPlayers; i > 0; i--) {
-            types[i - 1] = rest % (numberOfPlayers);
-            rest = rest / (numberOfPlayers);
+            types[i - 1] = rest % (Action.values().length);
+            rest = rest / (Action.values().length);
         }
         int dim = 0;
         ActionFactory a = new ActionFactory();
@@ -183,8 +182,8 @@ public class Transitions {
         int[] types = new int[numberOfPlayers];
         int rest = actionsIndex;
         for (int i = numberOfPlayers; i > 0; i--) {
-            types[i - 1] = rest % (numberOfPlayers);
-            rest = rest / (numberOfPlayers);
+            types[i - 1] = rest % (Action.values().length);
+            rest = rest / (Action.values().length);
         }
         int dim = 0;
         ActionFactory a = new ActionFactory();
@@ -205,7 +204,7 @@ public class Transitions {
      */
     private int getActionIndex(IActionSet actions) {
         int[] types = actions.getActionsType();
-        int n = actions.getActions().size();
+        int n = Action.values().length;
         int codednumber = 0;
         for (int i = 0; i < types.length; i++) {
             codednumber += (int) Math.pow(n, i) * types[i];
@@ -247,14 +246,8 @@ public class Transitions {
 
         List<Game> games = new ArrayList<Game>();
 
-        GameReader r = new GameReader("test");
+        GameReader r = new GameReader("allcombinations");
         games.add(r.getGameFromFile());
-        for (int i = 0; i < 10; i++) {
-            logger.info(games.get(0).getStates().get(i));
-            for (int j = 0; j < games.get(0).getActions().get(i).getActions().size(); j++) {
-                logger.info(games.get(0).getActions().get(i).getActions().get(j));
-            }
-        }
 
         /*int numberplayers = 2;
         Game g = new Game(getRandomStates(), getRandomActions());
@@ -275,6 +268,14 @@ public class Transitions {
         games.add(g);*/
 
         Transitions t = new Transitions(games);
+        /*ActionFactory a = new ActionFactory();
+        IAction ac = a.getAction(0);
+        IAction ad = a.getAction(3);
+        List<IAction> ent = new ArrayList<>();
+        ent.add(ac);
+        ent.add(ad);
+        ActionSet ente = new ActionSet(ent);
+        logger.info(t.getActionIndex(ente));*/
         logger.info(t.test());
 
         t.learn();
