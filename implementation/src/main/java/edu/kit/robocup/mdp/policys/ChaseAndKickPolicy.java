@@ -39,19 +39,15 @@ public class ChaseAndKickPolicy implements IPolicy {
     }
 
     private double getTurnAngleToFaceBall(IPlayerState playerState, Ball ball) {
-        double relX = ball.getPositionX() - playerState.getPositionX();
-        double relY = ball.getPositionY() - playerState.getPositionY();
-        //double rel = relY / relX;
 
-        double theta = Math.atan2(relX, relY);
-        double thetaDeg = Math.toDegrees(theta) - 90;
-        double degTurn90 = thetaDeg < -180? thetaDeg + 360 : thetaDeg;
+        double theta = Math.atan(Math.abs(ball.getPositionY()-playerState.getPositionY())/Math.abs(ball.getPositionX()-playerState.getPositionX()));
+        double thetaDeg = Math.toDegrees(theta);
 
-        double toTurn = degTurn90 - playerState.getBodyAngle();
+        double toTurn = thetaDeg - playerState.getBodyAngle();
         double toTurnCorrected = toTurn < -180? toTurn + 360 : (toTurn > 180? toTurn - 360 : toTurn);
 
 
-        logger.info("Player_" + playerState.getNumber() + " toTurnCorrected " + toTurnCorrected + " toTurn: " + toTurn + " thetaDeg: " + thetaDeg + " degTurn90: " + degTurn90 + " BodyAngle: " + playerState.getBodyAngle());
+        logger.info("Player_" + playerState.getNumber() + " toTurnCorrected " + toTurnCorrected + " toTurn: " + toTurn + " thetaDeg: " + thetaDeg  + " BodyAngle: " + playerState.getBodyAngle());
         return toTurn;
     }
 }
