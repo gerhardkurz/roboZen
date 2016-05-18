@@ -22,6 +22,7 @@ import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.ActionSet;
 import edu.kit.robocup.mdp.IActionSet;
+import edu.kit.robocup.recorder.GameReader;
 import org.apache.log4j.Logger;
 
 public class Transitions {
@@ -134,6 +135,29 @@ public class Transitions {
         }
     }
 
+    public String test(){
+        int numberplayers = games.get(0).getNumberPlayers();
+        // all possible combinations are numberofactions^numberofplayers
+        double combinations = Math.pow(Action.values().length, numberplayers);
+        for (int i = 0; i < combinations; i++) {
+            boolean found = false;
+            for (int m = 0; m < games.size(); m++) {
+                for (int k = 0; k < games.get(m).getActions().size(); k++) {
+                    int index = getActionIndex(games.get(m).getActions().get(k));
+                    if (index == i) {
+                        found = true;
+                    }
+                    logger.info(index);
+                }
+            }
+            if (found == false) {
+                return "Error, Matrix will be singular because Actioncombination " + getActions(i, numberplayers) + " doesn't exist!";
+            }
+        }
+        return "All Actioncombinations are found!";
+
+    }
+
     /**
      * recalculate actions from actionindex
      *
@@ -155,6 +179,23 @@ public class Transitions {
         }
         return dim;
     }
+    private ActionSet getActions(int actionsIndex, int numberOfPlayers) {
+        int[] types = new int[numberOfPlayers];
+        int rest = actionsIndex;
+        for (int i = numberOfPlayers; i > 0; i--) {
+            types[i - 1] = rest % (numberOfPlayers);
+            rest = rest / (numberOfPlayers);
+        }
+        int dim = 0;
+        ActionFactory a = new ActionFactory();
+        List<IAction> l = new ArrayList<>();
+        for (int i = 0; i < numberOfPlayers; i++) {
+            l.add(a.getAction(types[i]));
+        }
+        ActionSet result = new ActionSet(l);
+        return result;
+    }
+
 
     /**
      * calculate actions in a n-dimensional numeral system, i-th player is the i-th position of number. n = numberOfPlayers/Actions - 1
@@ -206,7 +247,16 @@ public class Transitions {
 
         List<Game> games = new ArrayList<Game>();
 
-        int numberplayers = 2;
+        GameReader r = new GameReader("test");
+        games.add(r.getGameFromFile());
+        for (int i = 0; i < 10; i++) {
+            logger.info(games.get(0).getStates().get(i));
+            for (int j = 0; j < games.get(0).getActions().get(i).getActions().size(); j++) {
+                logger.info(games.get(0).getActions().get(i).getActions().get(j));
+            }
+        }
+
+        /*int numberplayers = 2;
         Game g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
@@ -222,9 +272,10 @@ public class Transitions {
         g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
-        games.add(g);
+        games.add(g);*/
 
         Transitions t = new Transitions(games);
+        logger.info(t.test());
 
         t.learn();
     }

@@ -66,7 +66,7 @@ public class TransitionsMap {
                 State s = games.get(m).getStates().get(t);
                 List<IAction> a = new ArrayList<>();
                 for (int i = 0; i < s.getPlayers(games.get(m).getTeam()).size(); i++) {
-                    a.add(games.get(m).getActions().get(t).get(s.getPlayers(team).get(i)) );
+                    a.add(games.get(m).getActions().get(t).get(s.getPlayers(team).get(i)));
                 }
                 IActionSet actions = new ActionSet(a);
                 int actualaction = getActionIndex(actions);

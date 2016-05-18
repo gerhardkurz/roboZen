@@ -53,4 +53,12 @@ public class ActionSet implements IActionSet {
 		return t;
 	}
 
+	public String toString() {
+		String result = "";
+		for (int i = 0; i < actions.size(); i++) {
+			result += actions.get(i).toString() + " ";
+		}
+		return result;
+	}
+
 }
