@@ -2,6 +2,8 @@ package edu.kit.robocup.mdp;
 
 import java.util.List;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.interf.game.IPlayerState;
@@ -48,61 +50,33 @@ public class Reward {
 		
 		List<IPlayerState> pprev = prevState.getPlayers(teamname);
 		Ball bprev = prevState.getBall();
-		double bxprev = bprev.getPositionX();
-		double byprev = bprev.getPositionY();
 		List<IPlayerState> pnext = nextState.getPlayers(teamname);
 		Ball bnext = nextState.getBall();
-		double bxnext = bnext.getPositionX();
-		double bynext = bnext.getPositionY();
 		for (int i = 0; i < pprev.size(); i++) {
-			double pxprev = pprev.get(i).getPositionX();
-			double pyprev = pprev.get(i).getPositionY();
-			double distBallprev = calculateDist(pxprev, pyprev, bxprev, byprev);
-			double pxnext = pnext.get(i).getPositionX();
-			double pynext = pnext.get(i).getPositionY();
-			double distBallnext = calculateDist(pxnext, pynext, bxnext, bynext);
+			double distBallprev = bprev.getDistance(pprev.get(i));
+			double distBallnext = bnext.getDistance(pnext.get(i));
 			if (distBallnext > distBallprev) {
 				reward += gettingAwayFromBall * 1/distBallnext;
 			} else {
 				reward += gettingNearBall * 1/distBallnext;
 			}
-			// kickable margin in server.conf is 0.7
-			if (distBallnext <= 0.7) {
+			if (distBallnext <= Constants.KICKABLE_MARGIN) {
 				reward += havingBall;
 			}
 			
 		}
-		
-		double pitch_length = 105.0/2.0;
-		double goal_width = 14.02/2.0;
+
 		if (isTeamEast) {
-			if (bxnext == -pitch_length && Math.abs(bynext) <= goal_width) {
+			if (Constants.GOAL_WEST.getDistance(bnext) == 0) {
 				reward += goal;
 			}
-			if (bxnext == pitch_length && Math.abs(bynext) <= goal_width) {
+			if (Constants.GOAL_EAST.getDistance(bnext) == 0) {
 				reward += advGoal;
 			}
 
-			double distBallAdvGoalprev;
-			if (Math.abs(bxprev) > goal_width) {
-				if (bxprev > 0) {
-					distBallAdvGoalprev = calculateDist(-pitch_length, goal_width, bxprev, byprev);
-				} else {
-					distBallAdvGoalprev = calculateDist(-pitch_length, -goal_width, bxprev, byprev);
-				}
-			} else {
-				distBallAdvGoalprev = Math.abs(bxprev - (-pitch_length));
-			}
-			double distBallAdvGoalnext;
-			if (Math.abs(bxnext) > goal_width) {
-				if (bxnext > 0) {
-					distBallAdvGoalnext = calculateDist(-pitch_length, goal_width, bxnext, bynext);
-				} else {
-					distBallAdvGoalnext = calculateDist(-pitch_length, -goal_width, bxnext, bynext);
-				}
-			} else {
-				distBallAdvGoalnext = Math.abs(bxnext - (-pitch_length));
-			}
+			double distBallAdvGoalprev = Constants.GOAL_WEST.getDistance(bprev) ;
+
+			double distBallAdvGoalnext = Constants.GOAL_WEST.getDistance(bnext);
 			
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
 				reward += gettingNearGoal * 1/distBallAdvGoalnext;
@@ -110,33 +84,17 @@ public class Reward {
 				reward += gettingAwayFromGoal * 1/distBallAdvGoalnext;
 			}
 		} else {
-			if (bxnext == 52.5 && Math.abs(bynext) <= 7.01) {
+			if (Constants.GOAL_EAST.getDistance(bnext) == 0) {
 				reward += goal;
 			}
-			if (bxnext == -52.5 && Math.abs(bynext) <= 7.01) {
+			if (Constants.GOAL_WEST.getDistance(bnext) == 0) {
 				reward += advGoal;
 			}
-			double distBallAdvGoalprev;
-			if (Math.abs(bxprev) > goal_width) {
-				if (bxprev > 0) {
-					distBallAdvGoalprev = calculateDist(pitch_length, goal_width, bxprev, byprev);
-				} else {
-					distBallAdvGoalprev = calculateDist(pitch_length, -goal_width, bxprev, byprev);
-				}
-			} else {
-				distBallAdvGoalprev = Math.abs(bxprev - (pitch_length));
-			}
-			double distBallAdvGoalnext;
-			if (Math.abs(bxnext) > goal_width) {
-				if (bxnext > 0) {
-					distBallAdvGoalnext = calculateDist(pitch_length, goal_width, bxnext, bynext);
-				} else {
-					distBallAdvGoalnext = calculateDist(pitch_length, -goal_width, bxnext, bynext);
-				}
-			} else {
-				distBallAdvGoalnext = Math.abs(bxnext - (pitch_length));
-			}
-			
+
+			double distBallAdvGoalprev = Constants.GOAL_EAST.getDistance(bprev) ;
+
+			double distBallAdvGoalnext = Constants.GOAL_EAST.getDistance(bnext);
+
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
 				reward += gettingNearGoal * 1/distBallAdvGoalnext;
 			} else {
@@ -146,9 +104,4 @@ public class Reward {
 		
 		return reward;
 	}
-	
-	private double calculateDist(double x1, double y1, double x2, double y2) {
-		return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
-	}
-	
 }

@@ -1,6 +1,7 @@
 package edu.kit.robocup.constant;
 
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.kit.robocup.interf.game.IGameObject;
 import edu.kit.robocup.game.SimpleGameObject;
 
@@ -20,5 +21,18 @@ public class Goal extends SimpleGameObject {
 
     public IGameObject getLowerPost() {
         return lowerPost;
+    }
+
+    @Override
+    public double getDistance(IGameObject other) {
+        if (Math.abs(other.getPositionY()) <= upperPost.getPositionY()) {
+            return other.getPositionX() - upperPost.getPositionX() / 2.0;
+        } else {
+            if (other.getPositionY() > 0) {
+                return upperPost.getDistance(other);
+            } else {
+                return lowerPost.getDistance(other);
+            }
+        }
     }
 }
