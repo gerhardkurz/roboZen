@@ -2,9 +2,10 @@ package edu.kit.robocup.game.state;
 
 
 import edu.kit.robocup.game.IGameObject;
+import edu.kit.robocup.game.IMoveAbleObject;
 import edu.kit.robocup.game.IPlayer;
 
-public interface IPlayerState extends IPlayer, IGameObject {
+public interface IPlayerState extends IPlayer, IMoveAbleObject {
 
     double getNeckAngle();
     double getBodyAngle();

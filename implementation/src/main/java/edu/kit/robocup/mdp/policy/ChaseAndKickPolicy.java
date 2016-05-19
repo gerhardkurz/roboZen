@@ -1,8 +1,9 @@
 package edu.kit.robocup.mdp.policy;
 
+import edu.kit.robocup.constant.Constants;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.controller.IPlayerController;
-import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.IPlayerState;
 import edu.kit.robocup.mdp.IPolicy;
 import edu.kit.robocup.mdp.IState;
@@ -17,7 +18,7 @@ public class ChaseAndKickPolicy implements IPolicy {
 
     static Logger logger = Logger.getLogger(ChaseAndKickPolicy.class.getName());
 
-    public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> players) {
+    public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> players, PitchSide pitchSide) {
         Map<IPlayerController, IAction> action = new HashMap<>();
         for (IPlayerController playerController : players) {
             IPlayerState playerState = state.getPlayerState(playerController);
@@ -26,7 +27,16 @@ public class ChaseAndKickPolicy implements IPolicy {
             if (Math.abs(angle) >= 1) {
                 action.put(playerController, new Turn((int)angle));
             } else {
-                action.put(playerController, new Dash(20));
+                if (playerState.getDistance(state.getBall()) > Constants.KICKABLE_MARGIN) {
+                    action.put(playerController, new Dash(40));
+                } else {
+                    if (pitchSide == PitchSide.EAST) {
+                        action.put(playerController, new Kick(30, (int) playerState.getAngleTo(Constants.GOAL_WEST)));
+                    } else {
+                        action.put(playerController, new Kick(30, (int) playerState.getAngleTo(Constants.GOAL_EAST)));
+                    }
+                }
+
             }
         }
         return action;

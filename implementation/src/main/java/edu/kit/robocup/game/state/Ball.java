@@ -1,10 +1,10 @@
 package edu.kit.robocup.game.state;
 
-import edu.kit.robocup.game.IGameObject;
+import edu.kit.robocup.game.IMoveAbleObject;
 
 import java.io.Serializable;
 
-public class Ball implements IGameObject, Serializable {
+public class Ball implements IMoveAbleObject, Serializable {
     private final double positionX;
     private final double positionY;
     private final double velocityX;

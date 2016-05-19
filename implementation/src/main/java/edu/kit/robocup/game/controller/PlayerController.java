@@ -127,7 +127,7 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
     @Override
     public String toStateString() {
         return super.toStateString() +
-                "Team Name: " + team.getTeamName() +
+                "PitchSide Name: " + team.getTeamName() +
                 "\n" +
                 "Number: " + this.getNumber() +
                 "\n" +

@@ -69,7 +69,7 @@ public class PlayerState implements IPlayerState, Serializable {
     }
 
     public String toString() {
-        return "Team " + teamName + " Number: " + number + " Position: (" + positionX + ", " + positionY + ") Velocity: (" + velocityX + ", " + velocityY + ") Bodyangle: " + bodyAngle;
+        return "PitchSide " + teamName + " Number: " + number + " Position: (" + positionX + ", " + positionY + ") Velocity: (" + velocityX + ", " + velocityY + ") Bodyangle: " + bodyAngle;
     }
 
     @Override

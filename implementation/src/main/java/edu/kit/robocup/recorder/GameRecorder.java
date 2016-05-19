@@ -1,5 +1,6 @@
 package edu.kit.robocup.recorder;
 
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.IAction;
 import edu.kit.robocup.game.controller.Coach;
 import edu.kit.robocup.game.controller.IPlayerController;
@@ -53,9 +54,9 @@ public class GameRecorder implements IPolicy {
 
 
     @Override
-    public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers) {
+    public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers, PitchSide pitchSide) {
         record(state);
-        Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers);
+        Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers, pitchSide);
         //record(actions);
         for (Map.Entry<IPlayerController, IAction> entry : actions.entrySet())
         {

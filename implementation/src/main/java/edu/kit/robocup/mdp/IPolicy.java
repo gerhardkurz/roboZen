@@ -1,5 +1,6 @@
 package edu.kit.robocup.mdp;
 
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.IAction;
 import edu.kit.robocup.game.IPlayer;
 import edu.kit.robocup.game.controller.IPlayerController;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 public interface IPolicy extends Serializable {
 
-    Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers);
+    Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers, PitchSide pitchSide);
 
     //FileOutputStream fout = new FileOutputStream("G:\\address.ser");
     //ObjectOutputStream oos = new ObjectOutputStream(fout);

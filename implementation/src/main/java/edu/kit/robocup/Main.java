@@ -1,6 +1,7 @@
 package edu.kit.robocup;
 
 import com.github.robocup_atan.atan.model.enums.PlayMode;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.controller.Team;
@@ -29,10 +30,10 @@ public class Main {
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Team team1 = new Team("t1", 2, new ChaseAndKickPolicy());
+        Team team1 = new Team("t1", PitchSide.WEST, 2, new ChaseAndKickPolicy());
         team1.connectAll();
 
-        Team team2 = new Team("t2", 2, new ChaseAndKickPolicy());
+        Team team2 = new Team("t2", PitchSide.EAST, 2, new ChaseAndKickPolicy());
         team2.connectAll();
 
         trainer.movePlayer(new PlayerState("t1", 1, 0, 0));
