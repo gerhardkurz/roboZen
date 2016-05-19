@@ -44,15 +44,18 @@ public class State implements IState {
      * entries are ballposition and ballvelocity
      */
     public double[] getArray() {
-		double[] pos = new double[2*(players.size() + 2)];
+		double[] pos = new double[5*(players.size() + 2)];
 		for (int i = 0; i < players.size(); i++) {
-			pos[2*i] = players.get(i).getPositionX();
-			pos[2*i+1] = players.get(i).getPositionY();
-		}
-		pos[2*(players.size())] = ball.getPositionX();
-		pos[2*(players.size())+1] = ball.getPositionY();
-		pos[2*(players.size()+1)] = ball.getVelocityX();
-		pos[2*(players.size()+1)+1] = ball.getVelocityY();
+			pos[5*i] = players.get(i).getPositionX();
+			pos[5*i+1] = players.get(i).getPositionY();
+            pos[5*i+2] = players.get(i).getVelocityX();
+            pos[5*i+3] = players.get(i).getVelocityY();
+            pos[5*i+4] = players.get(i).getBodyAngle();
+        }
+		pos[5*(players.size())] = ball.getPositionX();
+		pos[5*(players.size())+1] = ball.getPositionY();
+		pos[5*(players.size()+1)] = ball.getVelocityX();
+		pos[5*(players.size()+1)+1] = ball.getVelocityY();
 		return pos;
 	}
 }
