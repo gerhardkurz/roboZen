@@ -2,9 +2,9 @@ package edu.kit.robocup.mdp;
 
 import java.util.List;
 
-import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.Ball;
-import edu.kit.robocup.game.state.IPlayerState;
+import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.game.state.State;
 
 public class Reward {

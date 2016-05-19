@@ -1,9 +1,9 @@
-package edu.kit.robocup.mdp.transitions;
+package edu.kit.robocup.mdp.transition;
 
 import java.util.List;
 
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.mdp.IActionSet;
+import edu.kit.robocup.interf.mdp.IActionSet;
 
 public class Game {
 
@@ -13,7 +13,7 @@ public class Game {
 	// actions a_0 to a_(T-1), a_i is action between s_i and s_(i+1)
 	private List<IActionSet> actions;
 	
-	// number of players of Team that is doing actions
+	// number of players of PitchSide that is doing actions
 	private int numberPlayers;
 	
 	// number of timesteps of a game, T

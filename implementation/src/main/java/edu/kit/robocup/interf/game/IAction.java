@@ -1,4 +1,6 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.interf.game;
+
+import edu.kit.robocup.game.Action;
 
 import java.io.Serializable;
 

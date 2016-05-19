@@ -2,11 +2,12 @@ package edu.kit.robocup.recorder;
 
 import com.github.robocup_atan.atan.model.enums.PlayMode;
 import edu.kit.robocup.Util;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
-import edu.kit.robocup.mdp.policys.RandomPolicy;
+import edu.kit.robocup.mdp.policy.RandomPolicy;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.IOException;
@@ -25,10 +26,10 @@ public class Recorder {
 
         GameRecorder recorder = new GameRecorder("test", new RandomPolicy());
 
-        Team team1 = new Team("t1", 1, recorder);
+        Team team1 = new Team("t1", PitchSide.WEST, 1, recorder);
         team1.connectAll();
 
-        Team team2 = new Team("t2", 2, new RandomPolicy());
+        Team team2 = new Team("t2", PitchSide.EAST, 2, new RandomPolicy());
         team2.connectAll();
 
         trainer.movePlayer(new PlayerState("t1", 1, 20, 20));

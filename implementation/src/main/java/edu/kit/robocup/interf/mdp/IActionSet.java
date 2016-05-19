@@ -1,7 +1,6 @@
-package edu.kit.robocup.mdp;
+package edu.kit.robocup.interf.mdp;
 
-import edu.kit.robocup.game.Action;
-import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.interf.game.IAction;
 
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
 public interface IActionSet {
 	List<IAction> getActions();
 	int getDimension();
-	// returns values for transitions in array
+	// returns values for transition in array
 	double[] getArray();
 	//returns coded types of action
 	int[] getActionsType();

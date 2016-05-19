@@ -1,20 +1,20 @@
-package edu.kit.robocup.mdp.policys;
+package edu.kit.robocup.mdp.policy;
 
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.controller.IPlayerController;
-import edu.kit.robocup.mdp.IPolicy;
-import edu.kit.robocup.mdp.IState;
+import edu.kit.robocup.interf.game.IAction;
+import edu.kit.robocup.interf.mdp.IPolicy;
+import edu.kit.robocup.interf.mdp.IState;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-/**
- * Created by dani on 18.05.2016.
- */
+
 public class AllActionCombinationsPolicy implements IPolicy {
-    public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> players) {
+    public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> players, PitchSide pitchSide) {
         Map<IPlayerController, IAction> action = new HashMap<>();
         for (IPlayerController playerController : players) {
             if (yoloGen(0.25f)) {

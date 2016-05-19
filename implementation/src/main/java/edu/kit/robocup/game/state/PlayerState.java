@@ -1,9 +1,11 @@
 package edu.kit.robocup.game.state;
 
 
-import java.io.Serializable;
+import edu.kit.robocup.interf.game.IPlayer;
+import edu.kit.robocup.interf.game.IPlayerState;
 
-public class PlayerState implements IPlayerState, Serializable {
+
+public class PlayerState implements IPlayerState {
     private final String teamName;
     private final int number;
     private final double positionX;
@@ -67,6 +69,15 @@ public class PlayerState implements IPlayerState, Serializable {
     }
 
     public String toString() {
-        return "Team " + teamName + " Number: " + number + " Position: (" + positionX + ", " + positionY + ") Velocity: (" + velocityX + ", " + velocityY + ") Bodyangle: " + bodyAngle;
+        return "PitchSide " + teamName + " Number: " + number + " Position: (" + positionX + ", " + positionY + ") Velocity: (" + velocityX + ", " + velocityY + ") Bodyangle: " + bodyAngle;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !IPlayer.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+        IPlayer player = (IPlayer) obj;
+        return getTeamName().equals(player.getTeamName()) && getNumber() == player.getNumber();
     }
 }

@@ -1,10 +1,10 @@
 package edu.kit.robocup.game.controller;
 
 
-import edu.kit.robocup.game.IAction;
-import edu.kit.robocup.game.IPlayer;
+import edu.kit.robocup.constant.PitchSide;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.mdp.IPolicy;
+import edu.kit.robocup.interf.mdp.IPolicy;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -14,15 +14,16 @@ import java.util.Map;
 
 public class Team {
     private static final Logger logger = Logger.getLogger(Team.class);
-    private final IPolicy policy;
     private final String teamName;
-    protected boolean isTeamEast;
+    private PitchSide pitchSide;
+    private final IPolicy policy;
     private List<PlayerController> playerControllers = new ArrayList<>();
     private Coach coach;
 
 
-    public Team(String teamName, int numberPlayers, IPolicy policy) {
+    public Team(String teamName, PitchSide pitchSide, int numberPlayers, IPolicy policy) {
         this.teamName = teamName;
+        this.pitchSide = pitchSide;
         this.policy = policy;
         for (int i = 0; i < numberPlayers; i++) {
             playerControllers.add(new PlayerController(this, i + 1));
@@ -31,7 +32,7 @@ public class Team {
     }
 
     public void handleState(State state) {
-        Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers);
+        Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers, pitchSide);
         actions.entrySet().forEach(e -> e.getKey().execute(e.getValue()));
     }
 
@@ -109,11 +110,11 @@ public class Team {
         CONNECT, RECONNECT, KILL;
     }
 
-    public boolean isTeamEast() {
-        return isTeamEast;
+    public PitchSide getPitchSide() {
+        return pitchSide;
     }
 
-    public void setTeamEast(boolean teamEast) {
-        isTeamEast = teamEast;
+    public void setPitchSide(PitchSide pitchSide) {
+        this.pitchSide = pitchSide;
     }
 }

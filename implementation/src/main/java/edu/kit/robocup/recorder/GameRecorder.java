@@ -1,17 +1,15 @@
 package edu.kit.robocup.recorder;
 
-import edu.kit.robocup.game.IAction;
-import edu.kit.robocup.game.controller.Coach;
+import edu.kit.robocup.constant.PitchSide;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.controller.IPlayerController;
-import edu.kit.robocup.game.server.message.CommandFactory;
-import edu.kit.robocup.game.state.State;
 
 import java.io.*;
 import java.util.List;
 import java.util.Map;
 
-import edu.kit.robocup.mdp.IPolicy;
-import edu.kit.robocup.mdp.IState;
+import edu.kit.robocup.interf.mdp.IPolicy;
+import edu.kit.robocup.interf.mdp.IState;
 import org.apache.log4j.Logger;
 
 public class GameRecorder implements IPolicy {
@@ -53,9 +51,9 @@ public class GameRecorder implements IPolicy {
 
 
     @Override
-    public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers) {
+    public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers, PitchSide pitchSide) {
         record(state);
-        Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers);
+        Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers, pitchSide);
         //record(actions);
         for (Map.Entry<IPlayerController, IAction> entry : actions.entrySet())
         {

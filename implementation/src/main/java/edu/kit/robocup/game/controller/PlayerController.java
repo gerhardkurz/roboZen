@@ -4,13 +4,10 @@ package edu.kit.robocup.game.controller;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import edu.kit.robocup.game.*;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.server.client.StaffClientBase;
 import edu.kit.robocup.game.server.message.CommandFactory;
-import edu.kit.robocup.game.state.IPlayerState;
-import edu.kit.robocup.mdp.IState;
 import org.apache.log4j.Logger;
-
-import java.util.List;
 
 public class PlayerController extends StaffClientBase implements IPlayerController {
     private static Logger logger = Logger.getLogger(PlayerController.class);
@@ -127,7 +124,7 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
     @Override
     public String toStateString() {
         return super.toStateString() +
-                "Team Name: " + team.getTeamName() +
+                "PitchSide Name: " + team.getTeamName() +
                 "\n" +
                 "Number: " + this.getNumber() +
                 "\n" +
@@ -154,18 +151,5 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
             nam.append("<undefined>");
         }
         return nam.toString();
-    }
-
-    @Override
-    public IPlayerState getPlayerStateFromState(IState state) {
-        List<IPlayerState> players = state.getPlayers(getTeamName());
-
-        for (IPlayerState playerState : players) {
-            if(playerState.getNumber() == getNumber()) {
-                return playerState;
-            }
-        }
-        logger.error("PlayerState was not found!");
-        return null;
     }
 }

@@ -1,9 +1,8 @@
-package edu.kit.robocup.mdp.transitions;
+package edu.kit.robocup.mdp.transition;
 
-import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.controller.IPlayerController;
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.mdp.IActionSet;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ public class GameMap {
 	// actions a_0 to a_(T-1), a_i is action between s_i and s_(i+1)
 	private List<Map<IPlayerController, IAction>> actions;
 
-	// number of players of Team that is doing actions
+	// number of players of PitchSide that is doing actions
 	private int numberPlayers;
 
 	// number of timesteps of a game, T

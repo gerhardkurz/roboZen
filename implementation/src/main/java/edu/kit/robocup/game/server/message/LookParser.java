@@ -2,7 +2,7 @@ package edu.kit.robocup.game.server.message;
 
 
 import edu.kit.robocup.game.state.Ball;
-import edu.kit.robocup.game.state.IPlayerState;
+import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
 
