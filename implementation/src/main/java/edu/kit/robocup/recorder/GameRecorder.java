@@ -37,7 +37,7 @@ public class GameRecorder implements IPolicy {
 
     public void record(Serializable stateOrAction) {
         try {
-            //logger.info("recording: " + stateOrAction);
+            logger.info("recording: " + stateOrAction);
             this.oos.writeObject(stateOrAction);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,6 +60,7 @@ public class GameRecorder implements IPolicy {
         for (Map.Entry<IPlayerController, IAction> entry : actions.entrySet())
         {
             record(entry.getValue());
+            logger.info("recording: Player " + entry.getKey().getNumber() + " " + entry.getValue());
         }
         return actions;
     }
