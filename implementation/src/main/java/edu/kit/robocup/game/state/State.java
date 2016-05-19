@@ -1,5 +1,6 @@
 package edu.kit.robocup.game.state;
 
+import edu.kit.robocup.game.IPlayer;
 import edu.kit.robocup.mdp.IState;
 
 import java.io.Serializable;
@@ -21,6 +22,11 @@ public class State implements IState {
 
     public List<IPlayerState> getPlayers(final String teamName) {
         return players.stream().filter(p -> p.getTeamName().equals(teamName)).collect(Collectors.toList());
+    }
+
+    @Override
+    public IPlayerState getPlayerState(IPlayer player) {
+        return players.stream().filter(p -> p.equals(player)).findAny().get();
     }
 
     public int getPlayerCount() {

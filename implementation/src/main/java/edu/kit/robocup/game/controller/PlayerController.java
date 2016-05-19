@@ -155,17 +155,4 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
         }
         return nam.toString();
     }
-
-    @Override
-    public IPlayerState getPlayerStateFromState(IState state) {
-        List<IPlayerState> players = state.getPlayers(getTeamName());
-
-        for (IPlayerState playerState : players) {
-            if(playerState.getNumber() == getNumber()) {
-                return playerState;
-            }
-        }
-        logger.error("PlayerState was not found!");
-        return null;
-    }
 }

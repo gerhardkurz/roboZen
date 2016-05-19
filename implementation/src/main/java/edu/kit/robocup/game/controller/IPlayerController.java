@@ -18,5 +18,4 @@ public interface IPlayerController extends IPlayer, Serializable {
     void turnNeck(double angle);
     void catchBall(double direction);
     void execute(IAction action);
-    IPlayerState getPlayerStateFromState(IState state);
 }

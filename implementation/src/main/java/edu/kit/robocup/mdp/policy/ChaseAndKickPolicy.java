@@ -20,32 +20,16 @@ public class ChaseAndKickPolicy implements IPolicy {
     public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> players) {
         Map<IPlayerController, IAction> action = new HashMap<>();
         for (IPlayerController playerController : players) {
-            IPlayerState playerState = playerController.getPlayerStateFromState(state);
-            double angle = getTurnAngleToFaceBall(playerState, state.getBall());
-
-
-            //action.put(playerController, new Turn(45));
-            action.put(playerController, new Turn((int)angle));
-/*
-            Move move = new Move((int) state.getBall().getPositionX(), (int) state.getBall().getPositionY());
-            logger.info(move);
-            action.put(playerController, move);
-            */
+            IPlayerState playerState = state.getPlayerState(playerController);
+            double angle = playerState.getAngleTo(state.getBall());
+            logger.info(playerState);
+            if (Math.abs(angle) >= 1) {
+                action.put(playerController, new Turn((int)angle));
+            } else {
+                action.put(playerController, new Dash(20));
+            }
         }
-        logger.info("-------------------");
         return action;
     }
 
-    private double getTurnAngleToFaceBall(IPlayerState playerState, Ball ball) {
-
-        double theta = Math.atan(Math.abs(ball.getPositionY()-playerState.getPositionY())/Math.abs(ball.getPositionX()-playerState.getPositionX()));
-        double thetaDeg = Math.toDegrees(theta);
-
-        double toTurn = thetaDeg - playerState.getBodyAngle();
-        double toTurnCorrected = toTurn < -180? toTurn + 360 : (toTurn > 180? toTurn - 360 : toTurn);
-
-
-        logger.info("Player_" + playerState.getNumber() + " toTurnCorrected " + toTurnCorrected + " toTurn: " + toTurn + " thetaDeg: " + thetaDeg  + " BodyAngle: " + playerState.getBodyAngle());
-        return toTurn;
-    }
 }
