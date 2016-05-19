@@ -43,7 +43,6 @@ public abstract class UDPClientBase extends AbstractUDPClient {
             try {
                 log(cmd, false);
                 send(cmd);
-                pause(50);
             } catch (Exception ex) {
                 logger.error("Error while sending command: " + cmd + " " + ex.getMessage(), ex);
             }
