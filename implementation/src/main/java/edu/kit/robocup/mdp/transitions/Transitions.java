@@ -225,32 +225,6 @@ public class Transitions {
         return codednumber;
     }
 
-    /*
-     * returns matrix where array is diagonal entered
-     *
-     * @param value entered values
-     * @param size  number of repeating value
-     * @return diagonal matrix
-     */
-    /*private DoubleMatrix2D getkDiagonalMatrix(double[] value, int size) {
-        double[][] values = new double[size][size * value.length];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size * value.length; j++) {
-                if (j == i * value.length) {
-                    for (int k = 0; k < value.length; k++) {
-                        values[i][j + k] = value[k];
-                    }
-                    j = j + value.length;
-                } else {
-                    values[i][j] = 0;
-                }
-            }
-        }
-        DoubleFactory2D h = DoubleFactory2D.sparse;
-        DoubleMatrix2D result = h.make(values);
-        return result;
-    }*/
-
     public static void main(String[] args) {
         DoubleFactory2D h = DoubleFactory2D.sparse;
         double[][] testarray = {{0, 0}, {1, 2}};
@@ -377,32 +351,4 @@ public class Transitions {
         actions.add(a1111);
         return actions;
     }
-
-//	/**
-//	 * concat Matrix, so that C = (A B)
-//	 * @param a first matrix
-//	 * @param b second matrix
-//	 * @return concatenation
-//	 */
-//	private Matrix concatMatrix(Matrix a, Matrix b) {
-//		double[][] avalues = a.getArray();
-//		double[][] bvalues = b.getArray();
-//		double[][] cvalues = new double[avalues.length][avalues[0].length];
-//		if (avalues.length != bvalues.length) {
-//			throw new IllegalArgumentException("wrong dimensions of matrices");
-//		} else {
-//			for (int i = 0; i < avalues.length; i++) {
-//				for (int j = 0; j < avalues[0].length; j++) {
-//					cvalues[i][j] = avalues[i][j];
-//				}
-//			}
-//			for (int i = 0; i < bvalues.length; i++) {
-//				for (int j = 0; j < bvalues[0].length; j++) {
-//					cvalues[i + avalues.length][j] = bvalues[i][j];
-//				}
-//			}
-//		}
-//		return new Matrix(cvalues);
-//	}
-
 }
