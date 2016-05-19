@@ -1,9 +1,5 @@
-package edu.kit.robocup.game.state;
+package edu.kit.robocup.interf.game;
 
-
-import edu.kit.robocup.game.IGameObject;
-import edu.kit.robocup.game.IMoveAbleObject;
-import edu.kit.robocup.game.IPlayer;
 
 public interface IPlayerState extends IPlayer, IMoveAbleObject {
 

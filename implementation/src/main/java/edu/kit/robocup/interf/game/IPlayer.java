@@ -1,4 +1,4 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.interf.game;
 
 
 public interface IPlayer {

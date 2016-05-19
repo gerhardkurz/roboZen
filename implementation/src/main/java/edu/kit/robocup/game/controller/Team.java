@@ -2,10 +2,9 @@ package edu.kit.robocup.game.controller;
 
 
 import edu.kit.robocup.constant.PitchSide;
-import edu.kit.robocup.game.IAction;
-import edu.kit.robocup.game.IPlayer;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.mdp.IPolicy;
+import edu.kit.robocup.interf.mdp.IPolicy;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

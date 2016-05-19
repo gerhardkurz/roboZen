@@ -1,12 +1,10 @@
 package edu.kit.robocup.game.state;
 
-import edu.kit.robocup.game.IMoveAbleObject;
+import edu.kit.robocup.interf.game.IMoveAbleObject;
+import edu.kit.robocup.game.SimpleGameObject;
 
-import java.io.Serializable;
 
-public class Ball implements IMoveAbleObject, Serializable {
-    private final double positionX;
-    private final double positionY;
+public class Ball extends SimpleGameObject implements IMoveAbleObject {
     private final double velocityX;
     private final double velocityY;
 
@@ -16,8 +14,7 @@ public class Ball implements IMoveAbleObject, Serializable {
     }
 
     public Ball(double positionX, double positionY, double velocityX, double velocityY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
+        super(positionX, positionY);
         this.velocityX = velocityX;
         this.velocityY = velocityY;
     }
@@ -25,16 +22,6 @@ public class Ball implements IMoveAbleObject, Serializable {
     @Override
     public String toString() {
         return "Ball{x:" + getPositionX() + " y: " + getPositionY() + " velX: " + getVelocityX() + " velY: " + getVelocityY() + "}";
-    }
-
-    @Override
-    public double getPositionX() {
-        return positionX;
-    }
-
-    @Override
-    public double getPositionY() {
-        return positionY;
     }
 
     @Override

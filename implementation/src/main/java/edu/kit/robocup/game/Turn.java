@@ -1,5 +1,7 @@
 package edu.kit.robocup.game;
 
+import edu.kit.robocup.interf.game.IAction;
+
 import java.io.Serializable;
 
 public class Turn implements IAction, Serializable {

@@ -2,7 +2,8 @@ package edu.kit.robocup.mdp;
 
 import java.util.List;
 
-import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.interf.game.IAction;
+import edu.kit.robocup.interf.mdp.IActionSet;
 
 public class ActionSet implements IActionSet {
 	

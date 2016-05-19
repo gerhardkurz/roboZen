@@ -4,9 +4,10 @@ import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.controller.IPlayerController;
-import edu.kit.robocup.game.state.IPlayerState;
-import edu.kit.robocup.mdp.IPolicy;
-import edu.kit.robocup.mdp.IState;
+import edu.kit.robocup.interf.game.IAction;
+import edu.kit.robocup.interf.game.IPlayerState;
+import edu.kit.robocup.interf.mdp.IPolicy;
+import edu.kit.robocup.interf.mdp.IState;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -23,7 +24,6 @@ public class ChaseAndKickPolicy implements IPolicy {
         for (IPlayerController playerController : players) {
             IPlayerState playerState = state.getPlayerState(playerController);
             double angle = playerState.getAngleTo(state.getBall());
-            logger.info(playerState);
             if (Math.abs(angle) >= 1) {
                 action.put(playerController, new Turn((int)angle));
             } else {

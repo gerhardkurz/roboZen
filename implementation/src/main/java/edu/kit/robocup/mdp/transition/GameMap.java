@@ -1,6 +1,6 @@
 package edu.kit.robocup.mdp.transition;
 
-import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.controller.IPlayerController;
 import edu.kit.robocup.game.state.State;
 

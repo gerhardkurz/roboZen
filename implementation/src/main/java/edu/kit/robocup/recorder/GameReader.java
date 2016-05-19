@@ -1,9 +1,9 @@
 package edu.kit.robocup.recorder;
 
-import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.ActionSet;
-import edu.kit.robocup.mdp.IActionSet;
+import edu.kit.robocup.interf.mdp.IActionSet;
 import edu.kit.robocup.mdp.transition.Game;
 import org.apache.log4j.Logger;
 

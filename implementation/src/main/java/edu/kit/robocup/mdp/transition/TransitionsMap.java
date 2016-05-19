@@ -14,14 +14,14 @@ import edu.kit.robocup.Main;
 import edu.kit.robocup.game.Action;
 import edu.kit.robocup.game.ActionFactory;
 import edu.kit.robocup.game.Dash;
-import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.Kick;
 import edu.kit.robocup.game.state.Ball;
-import edu.kit.robocup.game.state.IPlayerState;
+import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.ActionSet;
-import edu.kit.robocup.mdp.IActionSet;
+import edu.kit.robocup.interf.mdp.IActionSet;
 import edu.kit.robocup.recorder.GameReader;
 import org.apache.log4j.Logger;
 

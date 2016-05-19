@@ -1,4 +1,4 @@
-package edu.kit.robocup.mdp;
+package edu.kit.robocup.interf.mdp;
 
 
 public interface ISolver {

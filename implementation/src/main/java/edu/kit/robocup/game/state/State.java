@@ -1,9 +1,9 @@
 package edu.kit.robocup.game.state;
 
-import edu.kit.robocup.game.IPlayer;
-import edu.kit.robocup.mdp.IState;
+import edu.kit.robocup.interf.game.IPlayer;
+import edu.kit.robocup.interf.game.IPlayerState;
+import edu.kit.robocup.interf.mdp.IState;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 

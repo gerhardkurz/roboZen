@@ -1,24 +1,24 @@
 package edu.kit.robocup.constant;
 
 
-import edu.kit.robocup.game.IGameObject;
+import edu.kit.robocup.interf.game.IGameObject;
+import edu.kit.robocup.game.SimpleGameObject;
 
-public class Goal implements IGameObject {
-    private final double positionX;
-    private final double positionY;
+public class Goal extends SimpleGameObject {
+    private final IGameObject upperPost;
+    private final IGameObject lowerPost;
 
-    public Goal(double positionX, double positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
+    public Goal(double positionX, double width) {
+        super(positionX, 0);
+        upperPost = new SimpleGameObject(positionX, width / 2);
+        lowerPost = new SimpleGameObject(positionX, -width / 2);
     }
 
-    @Override
-    public double getPositionX() {
-        return positionX;
+    public IGameObject getUpperPost() {
+        return upperPost;
     }
 
-    @Override
-    public double getPositionY() {
-        return positionY;
+    public IGameObject getLowerPost() {
+        return lowerPost;
     }
 }

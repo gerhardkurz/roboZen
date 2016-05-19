@@ -1,4 +1,7 @@
 package edu.kit.robocup.game;
+
+import edu.kit.robocup.interf.game.IAction;
+
 /**
  * creates an action of actionsIndex
  * @author dani

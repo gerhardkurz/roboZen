@@ -3,7 +3,7 @@ package edu.kit.robocup.mdp.transition;
 import java.util.List;
 
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.mdp.IActionSet;
+import edu.kit.robocup.interf.mdp.IActionSet;
 
 public class Game {
 

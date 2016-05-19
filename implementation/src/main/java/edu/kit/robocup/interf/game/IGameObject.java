@@ -1,7 +1,9 @@
-package edu.kit.robocup.game;
+package edu.kit.robocup.interf.game;
 
 
-public interface IGameObject {
+import java.io.Serializable;
+
+public interface IGameObject extends Serializable {
     double getPositionX();
     double getPositionY();
 

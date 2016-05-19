@@ -1,7 +1,6 @@
-package edu.kit.robocup.mdp;
+package edu.kit.robocup.interf.mdp;
 
-import edu.kit.robocup.game.Action;
-import edu.kit.robocup.game.IAction;
+import edu.kit.robocup.interf.game.IAction;
 
 import java.util.List;
 

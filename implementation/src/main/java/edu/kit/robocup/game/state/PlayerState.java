@@ -1,11 +1,11 @@
 package edu.kit.robocup.game.state;
 
 
-import edu.kit.robocup.game.IPlayer;
+import edu.kit.robocup.interf.game.IPlayer;
+import edu.kit.robocup.interf.game.IPlayerState;
 
-import java.io.Serializable;
 
-public class PlayerState implements IPlayerState, Serializable {
+public class PlayerState implements IPlayerState {
     private final String teamName;
     private final int number;
     private final double positionX;

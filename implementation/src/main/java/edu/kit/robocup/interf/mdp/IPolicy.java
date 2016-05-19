@@ -1,8 +1,7 @@
-package edu.kit.robocup.mdp;
+package edu.kit.robocup.interf.mdp;
 
 import edu.kit.robocup.constant.PitchSide;
-import edu.kit.robocup.game.IAction;
-import edu.kit.robocup.game.IPlayer;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.controller.IPlayerController;
 
 import java.io.Serializable;

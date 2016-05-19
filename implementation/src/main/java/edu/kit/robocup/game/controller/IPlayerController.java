@@ -2,12 +2,10 @@ package edu.kit.robocup.game.controller;
 
 
 import edu.kit.robocup.game.*;
-import edu.kit.robocup.game.state.IPlayerState;
-import edu.kit.robocup.mdp.IState;
+import edu.kit.robocup.interf.game.IAction;
+import edu.kit.robocup.interf.game.IPlayer;
 
 import java.io.Serializable;
-
-import static sun.audio.AudioPlayer.player;
 
 public interface IPlayerController extends IPlayer, Serializable {
     void dash(Dash dashAction);

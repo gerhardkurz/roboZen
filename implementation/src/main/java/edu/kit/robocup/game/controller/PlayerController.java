@@ -4,13 +4,10 @@ package edu.kit.robocup.game.controller;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import edu.kit.robocup.game.*;
+import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.server.client.StaffClientBase;
 import edu.kit.robocup.game.server.message.CommandFactory;
-import edu.kit.robocup.game.state.IPlayerState;
-import edu.kit.robocup.mdp.IState;
 import org.apache.log4j.Logger;
-
-import java.util.List;
 
 public class PlayerController extends StaffClientBase implements IPlayerController {
     private static Logger logger = Logger.getLogger(PlayerController.class);
