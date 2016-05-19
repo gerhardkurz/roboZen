@@ -1,4 +1,4 @@
-package edu.kit.robocup.mdp.policys;
+package edu.kit.robocup.mdp.policy;
 
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.controller.IPlayerController;

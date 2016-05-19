@@ -6,7 +6,7 @@ import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
-import edu.kit.robocup.mdp.policys.RandomPolicy;
+import edu.kit.robocup.mdp.policy.RandomPolicy;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.IOException;

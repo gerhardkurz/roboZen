@@ -1,4 +1,4 @@
-package edu.kit.robocup.mdp.transitions;
+package edu.kit.robocup.mdp.transition;
 
 
 import java.util.ArrayList;

@@ -1,34 +1,28 @@
-package edu.kit.robocup.mdp.transitions;
+package edu.kit.robocup.mdp.transition;
 
-import edu.kit.robocup.game.IAction;
-import edu.kit.robocup.game.controller.IPlayerController;
+import java.util.List;
+
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.IActionSet;
 
-import java.util.List;
-import java.util.Map;
-
-public class GameMap {
+public class Game {
 
 	// states s_0 to s_T
 	private List<State> states;
-
+	
 	// actions a_0 to a_(T-1), a_i is action between s_i and s_(i+1)
-	private List<Map<IPlayerController, IAction>> actions;
-
+	private List<IActionSet> actions;
+	
 	// number of players of Team that is doing actions
 	private int numberPlayers;
-
+	
 	// number of timesteps of a game, T
 	private int gamelength;
-
-	private String team;
-
-	public GameMap(List<State> states, List<Map<IPlayerController, IAction>> actions, String team) {
+	
+	public Game(List<State> states, List<IActionSet> actions) {
 		this.states = states;
 		this.actions = actions;
-		this.team = team;
-		this.numberPlayers = actions.get(0).size();
+		this.numberPlayers = actions.get(0).getActions().size();
 		this.gamelength = states.size();
 	}
 	
@@ -36,15 +30,11 @@ public class GameMap {
 		return this.numberPlayers;
 	}
 
-	public String getTeam() {
-		return this.team;
-	}
-
 	public List<State> getStates() {
 		return this.states;
 	}
 
-	public List<Map<IPlayerController, IAction>> getActions() {
+	public List<IActionSet> getActions() {
 		return this.actions;
 	}
 

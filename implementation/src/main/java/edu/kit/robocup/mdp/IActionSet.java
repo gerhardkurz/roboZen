@@ -9,7 +9,7 @@ import java.util.List;
 public interface IActionSet {
 	List<IAction> getActions();
 	int getDimension();
-	// returns values for transitions in array
+	// returns values for transition in array
 	double[] getArray();
 	//returns coded types of action
 	int[] getActionsType();

@@ -3,7 +3,6 @@ package edu.kit.robocup.recorder;
 
 import java.io.*;
 
-import edu.kit.robocup.mdp.transitions.Game;
 import org.apache.log4j.Logger;
 
 

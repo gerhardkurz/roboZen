@@ -5,8 +5,8 @@ import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
-import edu.kit.robocup.mdp.policys.ChaseAndKickPolicy;
-import edu.kit.robocup.mdp.policys.RandomPolicy;
+import edu.kit.robocup.mdp.policy.ChaseAndKickPolicy;
+import edu.kit.robocup.mdp.policy.RandomPolicy;
 import edu.kit.robocup.recorder.GameRecorder;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -24,7 +24,7 @@ public class Main {
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Team team1 = new Team("t1", 2, new GameRecorder("test", new ChaseAndKickPolicy()));
+        Team team1 = new Team("t1", 2, new ChaseAndKickPolicy());
         team1.connectAll();
 
         Team team2 = new Team("t2", 2, new RandomPolicy());

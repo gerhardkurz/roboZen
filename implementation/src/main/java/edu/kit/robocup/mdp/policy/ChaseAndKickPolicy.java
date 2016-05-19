@@ -1,4 +1,4 @@
-package edu.kit.robocup.mdp.policys;
+package edu.kit.robocup.mdp.policy;
 
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.controller.IPlayerController;
@@ -12,9 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by A1m on 17.05.2016.
- */
+
 public class ChaseAndKickPolicy implements IPolicy {
 
     static Logger logger = Logger.getLogger(ChaseAndKickPolicy.class.getName());
