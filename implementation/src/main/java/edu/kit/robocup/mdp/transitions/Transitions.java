@@ -53,38 +53,50 @@ public class Transitions {
         int statedim = games.get(0).getStates().get(0).getDimension();
 
         int numberplayers = games.get(0).getNumberPlayers();
+
         // all possible combinations are numberofactions^numberofplayers
         double combinations = Math.pow(Action.values().length, numberplayers);
 
-
         //T
         int gamelength = games.get(0).getGamelength();
-        //m
-        int numberOfGames = games.size();
 
         DoubleFactory2D h = DoubleFactory2D.sparse;
-        DoubleMatrix2D M = h.make(0, 0, 0);
+        int dimensionsMrow = (gamelength - 1) * games.size() * statedim;
+        int dimensionsMcol = statedim * games.get(0).getStates().get(0).getArray().length;
+        for (int i = 0; i < combinations; i++) {
+            dimensionsMcol += getDimension(i, numberplayers) * statedim;
+        }
+        DoubleMatrix2D M = h.make(dimensionsMrow, dimensionsMcol);
+        logger.info("Matrix M has size " + dimensionsMrow + ", " + dimensionsMcol);
+        for (int i = 0; i < B.length; i++) {
+            B[i] = h.make(getDimension(i, numberplayers), statedim);
+        }
+
         for (int m = 0; m < games.size(); m++) {
             for (int t = 0; t < gamelength - 1; t++) {
-                DoubleMatrix2D S = getkDiagonalMatrix(games.get(m).getStates().get(t).getArray(), statedim);
-                int actualaction = getActionIndex(games.get(m).getActions().get(t));
-                for (int i = 0; i < combinations; i++) {
-                    if (actualaction == i) {
-                        DoubleMatrix2D action = getkDiagonalMatrix(games.get(m).getActions().get(t).getArray(), statedim);
-                        S = h.appendColumns(S, action);
-                    } else {
-                        int actiondim = getDimension(i, numberplayers);
-                        DoubleMatrix2D zero = h.make(statedim, actiondim * statedim, 0);
-                        S = h.appendColumns(S, zero);
+                double[] s = games.get(m).getStates().get(t).getArray();
+                for (int j = 0; j < statedim; j++) {
+                    for (int c = 0; c < s.length; c++) {
+                        M.set(j + ((m*(gamelength-1) + t) * statedim), j*statedim + c, s[c]);
                     }
                 }
-                if (M.size() == 0) {
-                    M = S;
-                } else {
-                    M = h.appendRows(M, S);
+                int actualaction = getActionIndex(games.get(m).getActions().get(t));
+                int columnindex = statedim * statedim;
+                for (int i = 0; i < combinations; i++) {
+                    if (actualaction == i) {
+                        double[] d = games.get(m).getActions().get(t).getArray();
+                        for (int j = 0; j < statedim; j++) {
+                            for (int c = 0; c < d.length; c++) {
+                                M.set(j + ((m * (gamelength - 1) + t) * statedim), columnindex + j * d.length + c, d[c]);
+                            }
+                        }
+                    }
+                    columnindex += statedim * getDimension(i, numberplayers);
                 }
             }
         }
+
+        logger.info("M is created");
 
         // constructs b as vector / 1xn-Matrix of s_t+1 values
         DoubleMatrix2D b = h.make(0, 0, 0);
@@ -103,9 +115,10 @@ public class Transitions {
             }
         }
 
+        logger.info("b is created");
+
         // M*x = b is solved by x = (M^T*M)^-1 * M^T * b
         Algebra a = new Algebra();
-        System.out.println(M.columns() + " " + M.rows());
         DoubleMatrix2D hasToInvert = a.mult(M.viewDice(), M);
         DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), M.viewDice());
 
@@ -212,14 +225,14 @@ public class Transitions {
         return codednumber;
     }
 
-    /**
+    /*
      * returns matrix where array is diagonal entered
      *
      * @param value entered values
      * @param size  number of repeating value
      * @return diagonal matrix
      */
-    private DoubleMatrix2D getkDiagonalMatrix(double[] value, int size) {
+    /*private DoubleMatrix2D getkDiagonalMatrix(double[] value, int size) {
         double[][] values = new double[size][size * value.length];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size * value.length; j++) {
@@ -236,7 +249,7 @@ public class Transitions {
         DoubleFactory2D h = DoubleFactory2D.sparse;
         DoubleMatrix2D result = h.make(values);
         return result;
-    }
+    }*/
 
     public static void main(String[] args) {
         DoubleFactory2D h = DoubleFactory2D.sparse;
@@ -246,7 +259,7 @@ public class Transitions {
 
         List<Game> games = new ArrayList<Game>();
 
-        GameReader r = new GameReader("allcombinations");
+        GameReader r = new GameReader("allcombinations1000WithBall");
         games.add(r.getGameFromFile());
 
         /*int numberplayers = 2;
@@ -334,14 +347,14 @@ public class Transitions {
 
     private static List<IActionSet> getRandomActions() {
         List<IActionSet> actions = new ArrayList<IActionSet>();
-        IAction a0 = new Kick((int) Math.random(), (int) Math.random());
-        IAction a1 = new Dash((int) Math.random());
-        IAction a2 = new Dash((int) Math.random());
-        IAction a3 = new Kick((int) Math.random(), (int) Math.random());
-        IAction a4 = new Kick((int) Math.random(), (int) Math.random());
-        IAction a5 = new Kick((int) Math.random(), (int) Math.random());
-        IAction a6 = new Dash((int) Math.random());
-        IAction a7 = new Dash((int) Math.random());
+        IAction a0 = new Kick((int) (Math.random() * 30), (int) (Math.random() * 30));
+        IAction a1 = new Dash((int) (Math.random() * 30));
+        IAction a2 = new Dash((int) (Math.random() * 30));
+        IAction a3 = new Kick((int) (Math.random() * 30), (int) (Math.random() * 30));
+        IAction a4 = new Kick((int) (Math.random() * 30), (int) (Math.random() * 30));
+        IAction a5 = new Kick((int) (Math.random() * 30), (int) (Math.random() * 30));
+        IAction a6 = new Dash((int) (Math.random() * 30));
+        IAction a7 = new Dash((int) (Math.random() * 30));
         List<IAction> helper = new ArrayList<IAction>();
         List<IAction> helper1 = new ArrayList<IAction>();
         List<IAction> helper2 = new ArrayList<IAction>();
