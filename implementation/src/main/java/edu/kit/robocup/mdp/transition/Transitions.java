@@ -93,7 +93,7 @@ public class Transitions {
         //logger.info("Covariance Matrix is " + covarianceMatrix.toString());
         dist = new MultivariateNormalDistribution(mean, covarianceMatrix.toArray());
     }
-    private List<double[]> getSamples(int numberOfSamples) {
+    public List<double[]> getSamples(int numberOfSamples) {
         List<double[]> samples = new ArrayList<>();
         for (int i = 0; i < numberOfSamples; i++) {
             double[] sample = dist.sample();
