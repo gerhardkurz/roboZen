@@ -37,7 +37,7 @@ public class State implements IState {
      * @returns Dimension of state. Players get x and y coordinates, x, y velocity and body angle, ball gets x, y coordinate and x, y velocity
      */
     public int getDimension() {
-    	return 5*(players.size() + 2);
+    	return 5*(players.size()) + 4;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class State implements IState {
      * entries are ballposition and ballvelocity
      */
     public double[] getArray() {
-		double[] pos = new double[5*(players.size() + 2)];
+		double[] pos = new double[5*(players.size()) + 4];
 		for (int i = 0; i < players.size(); i++) {
 			pos[5*i] = players.get(i).getPositionX();
 			pos[5*i+1] = players.get(i).getPositionY();
@@ -60,8 +60,8 @@ public class State implements IState {
         }
 		pos[5*(players.size())] = ball.getPositionX();
 		pos[5*(players.size())+1] = ball.getPositionY();
-		pos[5*(players.size()+1)] = ball.getVelocityX();
-		pos[5*(players.size()+1)+1] = ball.getVelocityY();
+		pos[5*(players.size()) +2] = ball.getVelocityX();
+		pos[5*(players.size())+3] = ball.getVelocityY();
 		return pos;
 	}
 }

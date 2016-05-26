@@ -47,7 +47,6 @@ public class Reward {
 
 	public int calculateReward(State prevState, IAction action, State nextState, String teamname, boolean isTeamEast) {
 		int reward = 0;
-		
 		List<IPlayerState> pprev = prevState.getPlayers(teamname);
 		Ball bprev = prevState.getBall();
 		List<IPlayerState> pnext = nextState.getPlayers(teamname);

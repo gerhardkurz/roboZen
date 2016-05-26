@@ -1,10 +1,6 @@
 package edu.kit.robocup.mdp.transition;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -14,16 +10,24 @@ import edu.kit.robocup.Main;
 import edu.kit.robocup.game.Action;
 import edu.kit.robocup.game.ActionFactory;
 import edu.kit.robocup.game.Dash;
-import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.Kick;
 import edu.kit.robocup.game.state.Ball;
-import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.mdp.ActionSet;
+import edu.kit.robocup.interf.game.IAction;
+import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IActionSet;
-import edu.kit.robocup.recorder.GameReader;
+import edu.kit.robocup.mdp.ActionSet;
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
+import org.apache.commons.math3.random.JDKRandomGenerator;
+import org.apache.commons.math3.random.RandomGenerator;
+import org.apache.commons.math3.random.RandomGeneratorFactory;
+import org.apache.commons.math3.random.Well19937c;
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Transitions {
 
@@ -36,6 +40,7 @@ public class Transitions {
      * contains matrices for all possible actions
      */
     private DoubleMatrix2D[] B;
+    MultivariateNormalDistribution dist;
 
     public Transitions(List<Game> games) {
         this.games = games;
@@ -43,12 +48,74 @@ public class Transitions {
         B = new DoubleMatrix2D[numberOfCombinations];
     }
 
+    public void startLearning() {
+        this.calculateCovarianceMatrix();
+        logger.info(this.test());
+        this.learn();
+    }
+
+    public MultivariateNormalDistribution getDist() {
+        return this.dist;
+    }
+
+    private void calculateCovarianceMatrix(){
+        DoubleFactory2D h = DoubleFactory2D.sparse;
+        DoubleMatrix2D covarianceMatrix = h.make(games.get(0).getStates().get(0).getDimension(), games.get(0).getStates().get(0).getDimension());
+        int s = covarianceMatrix.columns();
+        //logger.info("Statedimension is " + s);
+        double[] mean = new double[s];
+        for (int i = 0; i < s; i++) {
+            double curmean = 0;
+            double count = 0;
+            for (int m = 0; m < games.size(); m++) {
+                for (int t = 0; t < games.get(m).getGamelength(); t++) {
+                    curmean += games.get(m).getStates().get(t).getArray()[i];
+                    count++;
+                }
+            }
+            mean[i] = curmean/count;
+        }
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < s; j++) {
+                double cov = 0;
+                for (int m = 0; m < games.size(); m++) {
+                    for (int t = 0; t < games.get(m).getGamelength(); t++) {
+                        cov += (games.get(m).getStates().get(t).getArray()[i] - mean[i]) * (games.get(m).getStates().get(t).getArray()[j] - mean[j]);
+                    }
+                }
+                cov = cov/(covarianceMatrix.columns() - 1);
+                covarianceMatrix.set(i, j, cov);
+            }
+        }
+        for (int i = 0; i < s; i++) {
+            mean[i] = 0;
+        }
+        //logger.info("Covariance Matrix is " + covarianceMatrix.toString());
+        dist = new MultivariateNormalDistribution(mean, covarianceMatrix.toArray());
+    }
+    private List<double[]> getSamples(int numberOfSamples) {
+        List<double[]> samples = new ArrayList<>();
+        for (int i = 0; i < numberOfSamples; i++) {
+            double[] sample = dist.sample();
+            samples.add(sample);
+        }
+        return samples;
+    }
+
+    public DoubleMatrix2D getA() {
+        return this.A;
+    }
+
+    public DoubleMatrix2D[] getB() {
+        return this.B;
+    }
+
     // get sequences of m games
     public List<Game> getGames() {
         return this.games;
     }
 
-    public void learn() {
+    private void learn() {
         // TODO learn A, B
         int statedim = games.get(0).getStates().get(0).getDimension();
 
@@ -148,7 +215,7 @@ public class Transitions {
         }
     }
 
-    public String test(){
+    private String test(){
         int numberplayers = games.get(0).getNumberPlayers();
         // all possible combinations are numberofactions^numberofplayers
         double combinations = Math.pow(Action.values().length, numberplayers);
@@ -233,10 +300,10 @@ public class Transitions {
 
         List<Game> games = new ArrayList<Game>();
 
-        GameReader r = new GameReader("allcombinations1000WithBall");
-        games.add(r.getGameFromFile());
+        //GameReader r = new GameReader("allcombinations1000WithBall");
+        //games.add(r.getGameFromFile());
 
-        /*int numberplayers = 2;
+        int numberplayers = 2;
         Game g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
@@ -252,7 +319,7 @@ public class Transitions {
         g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
-        games.add(g);*/
+        games.add(g);
 
         Transitions t = new Transitions(games);
         /*ActionFactory a = new ActionFactory();
@@ -263,35 +330,32 @@ public class Transitions {
         ent.add(ad);
         ActionSet ente = new ActionSet(ent);
         logger.info(t.getActionIndex(ente));*/
-        logger.info(t.test());
-
-        t.learn();
     }
 
     private static List<State> getRandomStates() {
-        Ball ball = new Ball(Math.random(), Math.random(), Math.random(), Math.random());
-        Ball ball1 = new Ball(Math.random(), Math.random(), Math.random(), Math.random());
+        Ball ball = new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        Ball ball1 = new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
 
         List<IPlayerState> players = new ArrayList<IPlayerState>();
         List<IPlayerState> players1 = new ArrayList<IPlayerState>();
-        PlayerState p = new PlayerState("munich", 0, Math.random(), Math.random());
-        PlayerState p1 = new PlayerState("munich", 1, Math.random(), Math.random());
-        PlayerState p2 = new PlayerState("munich", 2, Math.random(), Math.random());
-        PlayerState p3 = new PlayerState("munich", 3, Math.random(), Math.random());
+        PlayerState p = new PlayerState("munich", 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState p1 = new PlayerState("munich", 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState p2 = new PlayerState("munich", 2, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState p3 = new PlayerState("munich", 3, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
         players.add(p);
         players.add(p1);
         players1.add(p2);
         players1.add(p3);
 
-        Ball qball = new Ball(Math.random(), Math.random(), Math.random(), Math.random());
-        Ball qball1 = new Ball(Math.random(), Math.random(), Math.random(), Math.random());
+        Ball qball =  new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        Ball qball1 = new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
 
         List<IPlayerState> qplayers = new ArrayList<IPlayerState>();
         List<IPlayerState> qplayers1 = new ArrayList<IPlayerState>();
-        PlayerState qp = new PlayerState("munich", 0, Math.random(), Math.random());
-        PlayerState qp1 = new PlayerState("munich", 1, Math.random(), Math.random());
-        PlayerState qp2 = new PlayerState("munich", 2, Math.random(), Math.random());
-        PlayerState qp3 = new PlayerState("munich", 3, Math.random(), Math.random());
+        PlayerState qp = new PlayerState("munich", 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp1 = new PlayerState("munich", 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp2 = new PlayerState("munich", 2, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp3 = new PlayerState("munich", 3, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
         qplayers.add(qp);
         qplayers.add(qp1);
         qplayers1.add(qp2);
@@ -307,11 +371,11 @@ public class Transitions {
         states.add(qs);
         states.add(qs1);
 
-        Ball qball11 = new Ball(Math.random(), Math.random(), Math.random(), Math.random());
+        Ball qball11 = new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
 
         List<IPlayerState> qplayers11 = new ArrayList<IPlayerState>();
-        PlayerState qp11 = new PlayerState("munich", 0, Math.random(), Math.random());
-        PlayerState qp111 = new PlayerState("munich", 1, Math.random(), Math.random());
+        PlayerState qp11 = new PlayerState("munich", 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp111 = new PlayerState("munich", 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
         qplayers11.add(qp11);
         qplayers11.add(qp111);
         State qs111 = new State(qball11, qplayers11);
