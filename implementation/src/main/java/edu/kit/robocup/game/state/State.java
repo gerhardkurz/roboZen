@@ -4,6 +4,7 @@ import edu.kit.robocup.interf.game.IPlayer;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IState;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,15 @@ public class State implements IState {
     public State(Ball ball, List<IPlayerState> players) {
         this.ball = ball;
         this.players = players;
+    }
+
+    public State(double[] state) {
+        players = new ArrayList<>();
+        for (int i = 0; i < state.length/5; i++) {
+            players.add(new PlayerState("dummy", i, state[i], state[i+1], state[i+2], state[i+3], state[i+4], 0));
+        }
+        int cut = (state.length/5)*5;
+        ball = new Ball(state[cut], state[cut+1], state[cut+2], state[cut+3]);
     }
 
     public Ball getBall() {
@@ -63,5 +73,5 @@ public class State implements IState {
 		pos[5*(players.size()) +2] = ball.getVelocityX();
 		pos[5*(players.size())+3] = ball.getVelocityY();
 		return pos;
-	}
+    }
 }

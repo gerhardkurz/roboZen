@@ -8,6 +8,7 @@ import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.game.state.State;
+import edu.kit.robocup.interf.mdp.IActionSet;
 
 public class Reward {
 	
@@ -45,7 +46,7 @@ public class Reward {
 		this.gettingAwayFromGoal = gettingAwayFromGoal;
 	}
 
-	public int calculateReward(State prevState, IAction action, State nextState, String teamname, boolean isTeamEast) {
+	public int calculateReward(State prevState, IActionSet action, State nextState, String teamname, boolean isTeamEast) {
 		int reward = 0;
 		List<IPlayerState> pprev = prevState.getPlayers(teamname);
 		Ball bprev = prevState.getBall();

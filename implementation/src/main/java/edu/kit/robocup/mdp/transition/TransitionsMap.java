@@ -43,6 +43,14 @@ public class TransitionsMap {
         B = new DoubleMatrix2D[numberOfCombinations];
     }
 
+    public DoubleMatrix2D getA() {
+        return this.A;
+    }
+
+    public DoubleMatrix2D[] getB() {
+        return this.B;
+    }
+
     // get sequences of m games
     public List<GameMap> getGames() {
         return this.games;
@@ -276,9 +284,6 @@ public class TransitionsMap {
         ent.add(ad);
         ActionSet ente = new ActionSet(ent);
         logger.info(t.getActionIndex(ente));*/
-        logger.info(t.test());
-
-        t.learn();
     }
 
     private static List<State> getRandomStates() {

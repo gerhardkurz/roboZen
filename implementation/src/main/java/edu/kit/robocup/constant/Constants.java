@@ -18,4 +18,14 @@ public class Constants {
     public static final double CORNER_ARC_R = 1.0;
     public static final Goal GOAL_EAST = new Goal(PITCH_LENGTH / 2.0, GOAL_WIDTH);
     public static final Goal GOAL_WEST = new Goal(-PITCH_LENGTH / 2.0, GOAL_WIDTH);
+    public static final double maxmoment = 180;
+    public static final double maxneckang = 90;
+    public static final double maxneckmoment = 180;
+    public static final double maxpower = 100;
+    public static final double min_dash_angle = -180;
+    public static final double min_dash_power = -100;
+    public static final double minmoment = -180;
+    public static final double minneckang = -90;
+    public static final double minneckmoment = -180;
+    public static final double minpower = -100;
 }

@@ -5,6 +5,7 @@ import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.impl.SparseDoubleMatrix1D;
 import cern.colt.matrix.linalg.Algebra;
 import edu.kit.robocup.Main;
 import edu.kit.robocup.game.Action;
@@ -93,13 +94,23 @@ public class Transitions {
         //logger.info("Covariance Matrix is " + covarianceMatrix.toString());
         dist = new MultivariateNormalDistribution(mean, covarianceMatrix.toArray());
     }
-    public List<double[]> getSamples(int numberOfSamples) {
-        List<double[]> samples = new ArrayList<>();
-        for (int i = 0; i < numberOfSamples; i++) {
-            double[] sample = dist.sample();
-            samples.add(sample);
+
+    public State getNewStateSample(State s, ActionSet a) {
+        int actionindex = getActionIndex(a);
+        Algebra alg = new Algebra();
+        DoubleFactory1D h = DoubleFactory1D.sparse;
+        DoubleMatrix1D state = h.make(s.getArray());
+        DoubleMatrix1D calculationAs = h.make(s.getDimension());
+        A.zMult(state, calculationAs);
+        DoubleMatrix1D action = h.make(a.getArray());
+        DoubleMatrix1D calculationBa = h.make(s.getDimension());
+        B[actionindex].zMult(action, calculationBa);
+        DoubleMatrix1D calculationEpsiolon = h.make(dist.sample());
+        DoubleMatrix1D result = h.make(s.getDimension());
+        for (int i = 0; i < calculationAs.size(); i++) {
+            result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsiolon.get(i));
         }
-        return samples;
+        return new State(result.toArray());
     }
 
     public DoubleMatrix2D getA() {
