@@ -31,6 +31,7 @@ public class ValueIteration implements ISolver {
     @Override
     public IPolicy solve() {
         int numberSamples = 1000;
+        double gamma = 0.7;
         int K = 10;
         t.startLearning();
         List<State> samples = new ArrayList<>();
@@ -57,7 +58,7 @@ public class ValueIteration implements ISolver {
                     double reward = 0;
                     for (int i = 0; i < K; i++) {
                         reward += r.calculateReward(samples.get(n), a, resultingSamples.get(i));
-                        reward += theta.zDotProduct(h.make(resultingSamples.get(i).getArray()));
+                        reward += gamma * theta.zDotProduct(h.make(resultingSamples.get(i).getArray()));
                     }
                     q[act] = 1/(K*1.0) * reward;
                     if (max < q[act]) {
