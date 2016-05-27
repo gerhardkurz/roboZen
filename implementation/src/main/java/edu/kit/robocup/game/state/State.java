@@ -17,10 +17,10 @@ public class State implements IState {
         this.players = players;
     }
 
-    public State(double[] state) {
+    public State(double[] state, String teamname) {
         players = new ArrayList<>();
         for (int i = 0; i < state.length/5; i++) {
-            players.add(new PlayerState("dummy", i, state[i], state[i+1], state[i+2], state[i+3], state[i+4], 0));
+            players.add(new PlayerState(teamname, i, state[i], state[i+1], state[i+2], state[i+3], state[i+4], 0));
         }
         int cut = (state.length/5)*5;
         ball = new Ball(state[cut], state[cut+1], state[cut+2], state[cut+3]);

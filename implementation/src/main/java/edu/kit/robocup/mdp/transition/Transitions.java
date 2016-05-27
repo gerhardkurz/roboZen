@@ -95,7 +95,7 @@ public class Transitions {
         dist = new MultivariateNormalDistribution(mean, covarianceMatrix.toArray());
     }
 
-    public State getNewStateSample(State s, ActionSet a) {
+    public State getNewStateSample(State s, ActionSet a, String teamname) {
         int actionindex = getActionIndex(a);
         Algebra alg = new Algebra();
         DoubleFactory1D h = DoubleFactory1D.sparse;

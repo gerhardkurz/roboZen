@@ -50,13 +50,12 @@ public class ValueIteration implements ISolver {
                     //saves K states, that could be the next states after beeing in state samples[i] and doing action act
                     List<State> resultingSamples = new ArrayList<>();
                     for (int k = 0; k < K; k++) {
-                        State s = t.getNewStateSample(samples.get(n), a);
+                        State s = t.getNewStateSample(samples.get(n), a, r.getTeamname());
                         resultingSamples.add(s);
                     }
                     double reward = 0;
                     for (int i = 0; i < K; i++) {
-                        //TODO teamname has to be correct, random state has all players as dummies, isEast has to be correct
-                        reward += r.calculateReward(samples.get(n), a, resultingSamples.get(i), "dummy", true);
+                        reward += r.calculateReward(samples.get(n), a, resultingSamples.get(i));
                         reward += theta.zDotProduct(h.make(resultingSamples.get(i).getArray()));
                     }
                     q[act] = 1/(K*1.0) * reward;

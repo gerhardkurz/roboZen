@@ -19,6 +19,8 @@ public class Reward {
 	private int havingBall;
 	private int gettingNearGoal;
 	private int gettingAwayFromGoal;
+    private boolean isTeamEast;
+    private String teamname;
 	
 	/**
 	 * suggestion: Reward(200,-200,50, -50, 70, 170, -170)
@@ -36,7 +38,7 @@ public class Reward {
 	 * @param gettingNearGoal if ball gets nearer to adversary goal +gettingNearGoal
 	 * @param gettingAwayFromGoal if ball gets farer away of the adversary goal +gettingAwayFromGoal
 	 */
-	public Reward(int goal, int advGoal, int gettingNearBall, int gettingAwayFromBall, int havingBall, int gettingNearGoal, int gettingAwayFromGoal) {
+	public Reward(int goal, int advGoal, int gettingNearBall, int gettingAwayFromBall, int havingBall, int gettingNearGoal, int gettingAwayFromGoal, boolean isTeamEast, String teamname) {
 		this.goal = goal;
 		this.advGoal = advGoal;
 		this.gettingAwayFromBall = gettingAwayFromBall;
@@ -44,9 +46,11 @@ public class Reward {
 		this.havingBall = havingBall;
 		this.gettingNearGoal = gettingNearGoal;
 		this.gettingAwayFromGoal = gettingAwayFromGoal;
+		this.isTeamEast = isTeamEast;
+        this.teamname = teamname;
 	}
 
-	public int calculateReward(State prevState, IActionSet action, State nextState, String teamname, boolean isTeamEast) {
+	public int calculateReward(State prevState, IActionSet action, State nextState) {
 		int reward = 0;
 		List<IPlayerState> pprev = prevState.getPlayers(teamname);
 		Ball bprev = prevState.getBall();
@@ -104,4 +108,8 @@ public class Reward {
 		
 		return reward;
 	}
+
+    public String getTeamname() {
+        return teamname;
+    }
 }
