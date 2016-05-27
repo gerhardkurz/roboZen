@@ -17,11 +17,11 @@ public class StateFactory {
 
     public StateFactory() {};
 
-    public State getRandomState(int numberPlayers) {
+    public State getRandomState(int numberPlayers, String teamname) {
         Ball ball = new Ball(getRandomXPosition(), getRandomYPosition(), getRandomDouble(-100,100), getRandomDouble(-100,100));
         List<IPlayerState> p = new ArrayList<>();
         for (int i = 0; i < numberPlayers; i++) {
-            p.add(new PlayerState("dummy", i, getRandomXPosition(), getRandomYPosition(), getRandomDouble(-100, 100), getRandomDouble(-100, 100), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
+            p.add(new PlayerState(teamname, i, getRandomXPosition(), getRandomYPosition(), getRandomDouble(-100, 100), getRandomDouble(-100, 100), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
         }
         return new State(ball, p);
     }
@@ -42,7 +42,7 @@ public class StateFactory {
 
     public static void main(String[] args) {
         StateFactory s = new StateFactory();
-        State state = s.getRandomState(3);
+        State state = s.getRandomState(3, "dummy");
         System.out.println(state.toString());
     }
 

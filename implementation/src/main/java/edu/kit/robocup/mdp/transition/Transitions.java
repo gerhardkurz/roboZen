@@ -110,7 +110,7 @@ public class Transitions {
         for (int i = 0; i < calculationAs.size(); i++) {
             result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsiolon.get(i));
         }
-        return new State(result.toArray());
+        return new State(result.toArray(), teamname);
     }
 
     public DoubleMatrix2D getA() {

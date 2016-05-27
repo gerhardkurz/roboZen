@@ -35,7 +35,7 @@ public class ValueIteration implements ISolver {
         List<State> samples = new ArrayList<>();
         StateFactory f = new StateFactory();
         for (int i = 0; i < numberSamples; i++) {
-            samples.add(f.getRandomState(t.getGames().get(0).getNumberPlayers()));
+            samples.add(f.getRandomState(t.getGames().get(0).getNumberPlayers(), r.getTeamname()));
         }
         DoubleFactory1D h = DoubleFactory1D.dense;
         DoubleMatrix1D theta = h.make(t.getGames().get(0).getStates().get(0).getDimension(), 0);
