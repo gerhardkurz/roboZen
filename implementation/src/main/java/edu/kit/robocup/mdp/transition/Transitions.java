@@ -100,10 +100,10 @@ public class Transitions {
         Algebra alg = new Algebra();
         DoubleFactory1D h = DoubleFactory1D.sparse;
         DoubleMatrix1D state = h.make(s.getArray());
-        DoubleMatrix1D calculationAs = h.make(s.getDimension());
+        DoubleMatrix1D calculationAs = null;
         A.zMult(state, calculationAs);
         DoubleMatrix1D action = h.make(a.getArray());
-        DoubleMatrix1D calculationBa = h.make(s.getDimension());
+        DoubleMatrix1D calculationBa = null;
         B[actionindex].zMult(action, calculationBa);
         DoubleMatrix1D calculationEpsiolon = h.make(dist.sample());
         DoubleMatrix1D result = h.make(s.getDimension());

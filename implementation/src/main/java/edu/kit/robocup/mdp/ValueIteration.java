@@ -1,7 +1,10 @@
 package edu.kit.robocup.mdp;
 
 import cern.colt.matrix.DoubleFactory1D;
+import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
 import edu.kit.robocup.game.Action;
 import edu.kit.robocup.game.StateFactory;
 import edu.kit.robocup.game.state.State;
@@ -67,14 +70,28 @@ public class ValueIteration implements ISolver {
                 }
                 y[n] = max;
             }
-            theta = h.make(getRegression(samples, theta.toArray(), y));
+            theta = h.make(getRegression(samples, y));
         }
 
         return new ValueIterationPolicy(theta);
     }
 
-    //TODO update theta: y_i should be theta*samples_i
-    private double[] getRegression(List<State> samples, double[] theta, double[] y) {
-        return null;
+    // get best theta: y_i should be theta*samples_i
+    private double[] getRegression(List<State> samples, double[] y) {
+        DoubleFactory2D hh = DoubleFactory2D.dense;
+        double[][] sampmatrix = new double[samples.size()][samples.get(0).getDimension()];
+        for (int i = 0; i < samples.size(); i++) {
+            sampmatrix[i] = samples.get(i).getArray();
+        }
+        DoubleMatrix2D M = hh.make(sampmatrix);
+        DoubleFactory1D h = DoubleFactory1D.dense;
+        DoubleMatrix1D b = h.make(y);
+        // M*x = b is solved by x = (M^T*M)^-1 * M^T * b
+        Algebra a = new Algebra();
+        DoubleMatrix2D hasToInvert = a.mult(M.viewDice(), M);
+        DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), M.viewDice());
+        DoubleMatrix1D solution = null;
+        nearlyDone.zMult(b, solution);
+        return solution.toArray();
     }
 }
