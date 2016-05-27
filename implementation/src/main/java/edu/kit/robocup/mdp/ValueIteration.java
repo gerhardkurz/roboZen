@@ -8,6 +8,7 @@ import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.interf.mdp.ISolver;
+import edu.kit.robocup.mdp.policy.ValueIterationPolicy;
 import edu.kit.robocup.mdp.transition.Game;
 import edu.kit.robocup.mdp.transition.Transitions;
 
@@ -65,9 +66,14 @@ public class ValueIteration implements ISolver {
                 }
                 y[n] = max;
             }
-            //TODO update theta: y_i should be theta*samples_i
+            theta = h.make(getRegression(samples, theta.toArray(), y));
         }
 
+        return new ValueIterationPolicy(theta);
+    }
+
+    //TODO update theta: y_i should be theta*samples_i
+    private double[] getRegression(List<State> samples, double[] theta, double[] y) {
         return null;
     }
 }
