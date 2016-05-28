@@ -15,7 +15,7 @@ public class Move implements IAction, Serializable {
 	
 	@Override
 	public Action getActionType() {
-		return Action.MOVE;
+		return null;//Action.MOVE;
 	}
 
 	@Override

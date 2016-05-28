@@ -5,7 +5,6 @@ import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.impl.SparseDoubleMatrix1D;
 import cern.colt.matrix.linalg.Algebra;
 import edu.kit.robocup.Main;
 import edu.kit.robocup.game.Action;
@@ -19,11 +18,8 @@ import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IActionSet;
 import edu.kit.robocup.mdp.ActionSet;
+import edu.kit.robocup.recorder.GameReader;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
-import org.apache.commons.math3.random.JDKRandomGenerator;
-import org.apache.commons.math3.random.RandomGenerator;
-import org.apache.commons.math3.random.RandomGeneratorFactory;
-import org.apache.commons.math3.random.Well19937c;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -36,11 +32,14 @@ public class Transitions {
 
     // m games of T sequences, statesequence has to have the same length
     private List<Game> games;
+
     private DoubleMatrix2D A;
+
     /**
      * contains matrices for all possible actions
      */
     private DoubleMatrix2D[] B;
+
     MultivariateNormalDistribution dist;
 
     public Transitions(List<Game> games) {
@@ -49,16 +48,61 @@ public class Transitions {
         B = new DoubleMatrix2D[numberOfCombinations];
     }
 
-    public void startLearning() {
-        this.calculateCovarianceMatrix();
-        logger.info(this.test());
-        this.learn();
+    public DoubleMatrix2D getA() {
+        return this.A;
+    }
+
+    public DoubleMatrix2D[] getB() {
+        return this.B;
+    }
+
+    // get sequences of m games
+    public List<Game> getGames() {
+        return this.games;
     }
 
     public MultivariateNormalDistribution getDist() {
         return this.dist;
     }
 
+    public void startLearning() {
+        this.normalize();
+        this.calculateCovarianceMatrix();
+        logger.info(this.test());
+        this.learn();
+    }
+
+    /**
+     * reduce sequence of states and actions, so that every game has the same length
+     */
+    private void normalize() {
+        int minState = 1000000000;
+        int minAct = 1000000000;
+        for (int i = 0; i < games.size(); i++) {
+            if (minState > games.get(i).getStates().size()) {
+                minState = games.get(i).getStates().size();
+                minAct = games.get(i).getActions().size();
+            }
+        }
+        logger.info("Games will reduced so that they consists of " + minState + " states and " + minAct + " Actions");
+        List<Game> newGames = new ArrayList<>();
+        for (int i = 0; i < games.size(); i++) {
+            List<State> s = new ArrayList<>();
+            for (int j = 0; j < minState; j++) {
+                s.add(games.get(i).getStates().get(j));
+            }
+            List<IActionSet> a = new ArrayList<>();
+            for (int j = 0; j < minAct; j++) {
+                a.add(games.get(i).getActions().get(j));
+            }
+            newGames.add(new Game(s,a));
+        }
+        this.games = newGames;
+    }
+
+    /**
+     * calculates covarianzmatrix of all states that are in the games
+     */
     private void calculateCovarianceMatrix(){
         DoubleFactory2D h = DoubleFactory2D.sparse;
         DoubleMatrix2D covarianceMatrix = h.make(games.get(0).getStates().get(0).getDimension(), games.get(0).getStates().get(0).getDimension());
@@ -91,11 +135,18 @@ public class Transitions {
         for (int i = 0; i < s; i++) {
             mean[i] = 0;
         }
-        //logger.info("Covariance Matrix is " + covarianceMatrix.toString());
+        logger.info("Covariance Matrix is " + covarianceMatrix.toString());
         dist = new MultivariateNormalDistribution(mean, covarianceMatrix.toArray());
     }
 
-    public State getNewStateSample(State s, ActionSet a, String teamname) {
+    /**
+     * samples a resulting state when a specified action is taken in a specified state
+     * @param s actual state
+     * @param a actual chosen action
+     * @param teamname name of the team
+     * @return new state
+     */
+    public State getNewStateSample(State s, IActionSet a, String teamname) {
         int actionindex = getActionIndex(a);
         Algebra alg = new Algebra();
         DoubleFactory1D h = DoubleFactory1D.sparse;
@@ -108,26 +159,43 @@ public class Transitions {
         DoubleMatrix1D calculationEpsiolon = h.make(dist.sample());
         DoubleMatrix1D result = h.make(s.getDimension());
         for (int i = 0; i < calculationAs.size(); i++) {
+            // result = A*s+B*a+epsilon
             result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsiolon.get(i));
         }
         return new State(result.toArray(), teamname);
     }
 
-    public DoubleMatrix2D getA() {
-        return this.A;
+    /**
+     * tests, whether all action combinations do exist. If they don't, then there will be thrown an exception in the learn method
+     * there can still be thrown an exception, if a player or the ball doesn't move or just in one direction
+     * @return output whether all actioncombinations are found or not
+     */
+    private String test(){
+        int numberplayers = games.get(0).getNumberPlayers();
+        // all possible combinations are numberofactions^numberofplayers
+        double combinations = Math.pow(Action.values().length, numberplayers);
+        for (int i = 0; i < combinations; i++) {
+            boolean found = false;
+            for (int m = 0; m < games.size(); m++) {
+                for (int k = 0; k < games.get(m).getActions().size(); k++) {
+                    int index = getActionIndex(games.get(m).getActions().get(k));
+                    if (index == i) {
+                        found = true;
+                    }
+                }
+            }
+            if (found == false) {
+                return "Error, Matrix will be singular because Actioncombination " + i +": " + getActions(i, numberplayers) + " doesn't exist!";
+            }
+        }
+        return "All Actioncombinations are found!";
+
     }
 
-    public DoubleMatrix2D[] getB() {
-        return this.B;
-    }
-
-    // get sequences of m games
-    public List<Game> getGames() {
-        return this.games;
-    }
-
+    /**
+     * calculates best Matrices A and B[i], so that s_t+1 = A*s_t + B[i]*ai_t
+     */
     private void learn() {
-        // TODO learn A, B
         int statedim = games.get(0).getStates().get(0).getDimension();
 
         int numberplayers = games.get(0).getNumberPlayers();
@@ -226,28 +294,6 @@ public class Transitions {
         }
     }
 
-    private String test(){
-        int numberplayers = games.get(0).getNumberPlayers();
-        // all possible combinations are numberofactions^numberofplayers
-        double combinations = Math.pow(Action.values().length, numberplayers);
-        for (int i = 0; i < combinations; i++) {
-            boolean found = false;
-            for (int m = 0; m < games.size(); m++) {
-                for (int k = 0; k < games.get(m).getActions().size(); k++) {
-                    int index = getActionIndex(games.get(m).getActions().get(k));
-                    if (index == i) {
-                        found = true;
-                    }
-                }
-            }
-            if (found == false) {
-                return "Error, Matrix will be singular because Actioncombination " + i +": " + getActions(i, numberplayers) + " doesn't exist!";
-            }
-        }
-        return "All Actioncombinations are found!";
-
-    }
-
     /**
      * recalculate actions from actionindex
      *
@@ -269,6 +315,13 @@ public class Transitions {
         }
         return dim;
     }
+
+    /**
+     * get actions of given actionindex
+     * @param actionsIndex index of action combinations
+     * @param numberOfPlayers number of players
+     * @return actionset according to given actionindex
+     */
     private ActionSet getActions(int actionsIndex, int numberOfPlayers) {
         int[] types = new int[numberOfPlayers];
         int rest = actionsIndex;
@@ -303,18 +356,15 @@ public class Transitions {
         return codednumber;
     }
 
-    public static void main(String[] args) {
-        DoubleFactory2D h = DoubleFactory2D.sparse;
-        double[][] testarray = {{0, 0}, {1, 2}};
-        double[] test1Darray = {0, 1, 2, 3, 4, 5, 6, 5};
-        DoubleMatrix2D zero = h.make(5, 3, 0);
-
+    public static void main(String[] args) throws InterruptedException {
         List<Game> games = new ArrayList<Game>();
+        GameReader r = new GameReader("allPlayersActionReduced");
+        games.add(r.getGameFromFile());
+        r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
+        games.add(r.getGameFromFile());
 
-        //GameReader r = new GameReader("allcombinations1000WithBall");
-        //games.add(r.getGameFromFile());
 
-        int numberplayers = 2;
+        /*int numberplayers = 2;
         Game g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
@@ -330,17 +380,11 @@ public class Transitions {
         g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
-        games.add(g);
+        games.add(g);*/
 
         Transitions t = new Transitions(games);
-        /*ActionFactory a = new ActionFactory();
-        IAction ac = a.getAction(0);
-        IAction ad = a.getAction(3);
-        List<IAction> ent = new ArrayList<>();
-        ent.add(ac);
-        ent.add(ad);
-        ActionSet ente = new ActionSet(ent);
-        logger.info(t.getActionIndex(ente));*/
+        t.startLearning();
+        //ValueIteration v = new ValueIteration(t.getGames(), new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"));
     }
 
     private static List<State> getRandomStates() {

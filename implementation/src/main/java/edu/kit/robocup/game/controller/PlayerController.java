@@ -91,9 +91,9 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
             case TURN:
                 turn((Turn) action);
                 break;
-            case MOVE:
+            /*case MOVE:
                 move((Move) action);
-                break;
+                break;*/
         }
     }
 
