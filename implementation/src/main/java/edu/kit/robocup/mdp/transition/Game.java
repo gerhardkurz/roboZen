@@ -30,6 +30,10 @@ public class Game {
 		return this.numberPlayers;
 	}
 
+	public int getNumberofAllPlayers() {
+		return states.get(0).getPlayerCount();
+	}
+
 	public List<State> getStates() {
 		return this.states;
 	}

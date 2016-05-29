@@ -149,7 +149,8 @@ public class Transitions {
     public State getNewStateSample(State s, IActionSet a, String teamname) {
         int actionindex = getActionIndex(a);
         Algebra alg = new Algebra();
-        DoubleFactory1D h = DoubleFactory1D.sparse;
+        DoubleFactory1D h = DoubleFactory1D.dense;
+        //logger.info("A is size " + A.columns() + " , " + A.rows() + " and statedimension is " + s.getArray().length);
         DoubleMatrix1D state = h.make(s.getArray());
         DoubleMatrix1D calculationAs = null;
         A.zMult(state, calculationAs);
@@ -295,6 +296,8 @@ public class Transitions {
         // M*x = b is solved by x = (M^T*M)^-1 * M^T * b
         Algebra a = new Algebra();
         DoubleMatrix2D hasToInvert = a.mult(MNew.viewDice(), MNew);
+        a.property().generateNonSingular(hasToInvert);
+        //logger.info("Rank of matrix of size " + hasToInvert.rows() + " x " + hasToInvert.columns() + " is : " + a.rank(hasToInvert));
         DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), MNew.viewDice());
 
         DoubleMatrix2D ab = a.mult(nearlyDone, b);
@@ -312,10 +315,10 @@ public class Transitions {
         for (int k = 0; k < B.length; k++) {
             int matrixsize = getDimension(k, numberplayers);
             d = hh.make(Arrays.copyOfRange(solutionActions, 0, matrixsize * statedim));
-            B[k] = d.like2D(matrixsize, statedim);
-            for (int i = 0; i < matrixsize; i++) {
-                for (int j = 0; j < statedim; j++) {
-                    B[k].set(i, j, d.get(i + j * matrixsize));
+            B[k] = d.like2D(statedim, matrixsize);
+            for (int i = 0; i < statedim; i++) {
+                for (int j = 0; j < matrixsize; j++) {
+                    B[k].set(i, j, d.get(i + j * statedim));
                 }
             }
             logger.info(B[k].toString());
