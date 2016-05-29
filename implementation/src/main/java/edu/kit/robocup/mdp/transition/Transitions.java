@@ -84,7 +84,7 @@ public class Transitions {
                 minAct = games.get(i).getActions().size();
             }
         }
-        logger.info("Games will reduced so that they consists of " + minState + " states and " + minAct + " Actions");
+        logger.info("Games will be reduced so that they consists of " + minState + " states and " + minAct + " Actions");
         List<Game> newGames = new ArrayList<>();
         for (int i = 0; i < games.size(); i++) {
             List<State> s = new ArrayList<>();
@@ -218,45 +218,74 @@ public class Transitions {
             B[i] = h.make(getDimension(i, numberplayers), statedim);
         }
 
+        List<Information> info = new ArrayList<>();
+        List<Integer> leftOut = new ArrayList<>();
         for (int m = 0; m < games.size(); m++) {
             for (int t = 0; t < gamelength - 1; t++) {
-                double[] s = games.get(m).getStates().get(t).getArray();
-                for (int j = 0; j < statedim; j++) {
-                    for (int c = 0; c < s.length; c++) {
-                        M.set(j + ((m*(gamelength-1) + t) * statedim), j*statedim + c, s[c]);
+                Information cur = new Information(games.get(m).getStates().get(t), games.get(m).getActions().get(t));
+                boolean doubleInformation = false;
+                for (int i = 0; i < info.size(); i++) {
+                    if (info.get(i).equals(cur)) {
+                        doubleInformation = true;
                     }
                 }
-                int actualaction = getActionIndex(games.get(m).getActions().get(t));
-                int columnindex = statedim * statedim;
-                for (int i = 0; i < combinations; i++) {
-                    if (actualaction == i) {
-                        double[] d = games.get(m).getActions().get(t).getArray();
-                        for (int j = 0; j < statedim; j++) {
-                            for (int c = 0; c < d.length; c++) {
-                                M.set(j + ((m * (gamelength - 1) + t) * statedim), columnindex + j * d.length + c, d[c]);
-                            }
+                if (doubleInformation) {
+                    leftOut.add(m);
+                    leftOut.add(t);
+                } else {
+                    info.add(cur);
+                    double[] s = cur.getState().getArray();
+                    for (int j = 0; j < statedim; j++) {
+                        for (int c = 0; c < s.length; c++) {
+                            M.set(j + ((m * (gamelength - 1) + t) * statedim) - (leftOut.size()/2 * statedim), j * statedim + c, s[c]);
                         }
                     }
-                    columnindex += statedim * getDimension(i, numberplayers);
+                    int actualaction = getActionIndex(cur.getActionSet());
+                    int columnindex = statedim * statedim;
+                    for (int i = 0; i < combinations; i++) {
+                        if (actualaction == i) {
+                            double[] d = cur.getActionSet().getArray();
+                            for (int j = 0; j < statedim; j++) {
+                                for (int c = 0; c < d.length; c++) {
+                                    M.set(j + ((m * (gamelength - 1) + t) * statedim) - (leftOut.size()/2 * statedim), columnindex + j * d.length + c, d[c]);
+                                }
+                            }
+                        }
+                        columnindex += statedim * getDimension(i, numberplayers);
+                    }
                 }
             }
         }
-
+        DoubleMatrix2D MNew = h.make(dimensionsMrow-(leftOut.size()/2 * statedim), dimensionsMcol);
+        for (int i = 0; i < MNew.rows(); i++) {
+            for (int j = 0; j < MNew.columns(); j++) {
+                MNew.set(i, j, M.get(i, j));
+            }
+        }
+        logger.info("Double information found: " + leftOut.size()/2);
         logger.info("M is created");
 
         // constructs b as vector / 1xn-Matrix of s_t+1 values
         DoubleMatrix2D b = h.make(0, 0, 0);
         for (int m = 0; m < games.size(); m++) {
             for (int t = 1; t < gamelength; t++) {
-                double[] st = games.get(m).getStates().get(t).getArray();
-                double[][] stst = new double[1][st.length];
-                stst[0] = st;
-                DoubleMatrix2D bb = h.make(stst);
-                bb = bb.viewDice();
-                if (b.size() == 0) {
-                    b = bb;
-                } else {
-                    b = h.appendRows(b, bb);
+                boolean doubleInformation = false;
+                for (int i = 0; i < leftOut.size()/2; i++) {
+                    if (leftOut.get(2*i) == m && leftOut.get(2*i+1) == t - 1) {
+                        doubleInformation = true;
+                    }
+                }
+                if (! doubleInformation) {
+                    double[] st = games.get(m).getStates().get(t).getArray();
+                    double[][] stst = new double[1][st.length];
+                    stst[0] = st;
+                    DoubleMatrix2D bb = h.make(stst);
+                    bb = bb.viewDice();
+                    if (b.size() == 0) {
+                        b = bb;
+                    } else {
+                        b = h.appendRows(b, bb);
+                    }
                 }
             }
         }
@@ -265,8 +294,8 @@ public class Transitions {
 
         // M*x = b is solved by x = (M^T*M)^-1 * M^T * b
         Algebra a = new Algebra();
-        DoubleMatrix2D hasToInvert = a.mult(M.viewDice(), M);
-        DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), M.viewDice());
+        DoubleMatrix2D hasToInvert = a.mult(MNew.viewDice(), MNew);
+        DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), MNew.viewDice());
 
         DoubleMatrix2D ab = a.mult(nearlyDone, b);
         double[] solution = ab.viewColumn(0).toArray();
@@ -358,20 +387,21 @@ public class Transitions {
 
     public static void main(String[] args) throws InterruptedException {
         List<Game> games = new ArrayList<Game>();
-        GameReader r = new GameReader("allPlayersActionReduced");
+        /*GameReader r = new GameReader("allPlayersActionReduced");
         games.add(r.getGameFromFile());
         r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
-        games.add(r.getGameFromFile());
+        games.add(r.getGameFromFile());*/
 
 
-        /*int numberplayers = 2;
-        Game g = new Game(getRandomStates(), getRandomActions());
+        int numberplayers = 2;
+        /**Game g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
+        games.add(g);
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
