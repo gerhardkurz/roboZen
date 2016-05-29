@@ -71,13 +71,13 @@ public class ValueIteration implements ISolver {
         }
         DoubleFactory1D h = DoubleFactory1D.dense;
         DoubleMatrix1D theta = h.make(t.getGames().get(0).getStates().get(0).getDimension(), 0);
-        for (int horizon = 0; horizon < 1000; horizon++) {
+        for (int horizon = 0; horizon < 500; horizon++) {
+            logger.info("horizon: " + horizon);
             double[]  y = new double[numberSamples];
             for (int n = 0; n < numberSamples; n++) {
                 double[] q = new double[permutations.size()];
                 double max = 0;
                 for (int act = 0; act < permutations.size(); act++) {
-                    //TODO iterate over all actions and add them to the getNewStateSample method as parameter
                     //saves K states, that could be the next states after beeing in state samples[i] and doing action act
                     List<State> resultingSamples = new ArrayList<>();
                     for (int k = 0; k < K; k++) {
@@ -97,6 +97,7 @@ public class ValueIteration implements ISolver {
                 y[n] = max;
             }
             theta = h.make(getRegression(samples, y));
+            logger.info("Theta is: " + theta.toString());
         }
         logger.info("Theta is: " + theta.toString());
         return new ValueIterationPolicy(theta, r, t);
@@ -116,7 +117,7 @@ public class ValueIteration implements ISolver {
         Algebra a = new Algebra();
         DoubleMatrix2D hasToInvert = a.mult(M.viewDice(), M);
         DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), M.viewDice());
-        DoubleMatrix1D solution = h.make(samples.size());
+        DoubleMatrix1D solution = h.make(samples.get(0).getDimension());
         nearlyDone.zMult(b, solution);
         //logger.info(solution.toString());
         return solution.toArray();

@@ -6,6 +6,7 @@ import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
+import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.mdp.Reward;
 import edu.kit.robocup.mdp.ValueIteration;
 import edu.kit.robocup.mdp.policy.*;
@@ -31,21 +32,25 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
 //        getAngleBetween(-1, -1, 0, 1);
 //        System.exit(0);
-        /*List<Game> games = new ArrayList<Game>();
-        GameReader r = new GameReader("allPlayersActionReduced");
+        List<Game> games = new ArrayList<Game>();
+        GameReader r = new GameReader("allActionCombinationsReduced50");
+        //games.add(r.getGameFromFile());
+        //r = new GameReader("ChaseAndKickReduced50");
+        //games.add(r.getGameFromFile());
+        //r = new GameReader("ChaseAndKickReducedWithoutGoal1");
         games.add(r.getGameFromFile());
-        r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
-        games.add(r.getGameFromFile());
-        Transitions t = new Transitions(games);
-        t.startLearning();
-        ValueIteration v = new ValueIteration(t.getGames(), new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"));
-*/
+        //Transitions t = new Transitions(games);
+        //t.startLearning();
+        ValueIteration v = new ValueIteration(games, new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"));
+
+        IPolicy valueiterationPolicy = v.solve();
+
         initEnvironment();
 
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Team team1 = new Team("t1", PitchSide.WEST, 2, new GameRecorder("chaseAndKickReduced500",new ChaseAndKickPolicyReducedActions()));
+        Team team1 = new Team("t1", PitchSide.WEST, 2, new GameRecorder("test", valueiterationPolicy));
         team1.connectAll();
 
         Team team2 = new Team("t2", PitchSide.EAST, 2, new ChaseAndKickPolicy());
