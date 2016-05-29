@@ -44,7 +44,7 @@ public class Transitions {
 
     public Transitions(List<Game> games) {
         this.games = games;
-        int numberOfCombinations = (int) Math.pow(games.get(0).getNumberPlayers(), Action.values().length);
+        int numberOfCombinations = (int) Math.pow(Action.values().length, games.get(0).getNumberPlayers());
         B = new DoubleMatrix2D[numberOfCombinations];
     }
 
@@ -135,7 +135,7 @@ public class Transitions {
         for (int i = 0; i < s; i++) {
             mean[i] = 0;
         }
-        logger.info("Covariance Matrix is " + covarianceMatrix.toString());
+        //logger.info("Covariance Matrix is " + covarianceMatrix.toString());
         dist = new MultivariateNormalDistribution(mean, covarianceMatrix.toArray());
     }
 
@@ -152,16 +152,17 @@ public class Transitions {
         DoubleFactory1D h = DoubleFactory1D.dense;
         //logger.info("A is size " + A.columns() + " , " + A.rows() + " and statedimension is " + s.getArray().length);
         DoubleMatrix1D state = h.make(s.getArray());
-        DoubleMatrix1D calculationAs = null;
+        DoubleMatrix1D calculationAs = h.make(s.getArray().length);
         A.zMult(state, calculationAs);
         DoubleMatrix1D action = h.make(a.getArray());
-        DoubleMatrix1D calculationBa = null;
+        DoubleMatrix1D calculationBa = h.make(s.getArray().length);
         B[actionindex].zMult(action, calculationBa);
-        DoubleMatrix1D calculationEpsiolon = h.make(dist.sample());
+        DoubleMatrix1D calculationEpsilon = h.make(dist.sample());
         DoubleMatrix1D result = h.make(s.getDimension());
-        for (int i = 0; i < calculationAs.size(); i++) {
+        //logger.info("calculationAs " + calculationAs.size() + "calculationBa" + calculationBa.size() + "calculationEps" + calculationEpsilon.size());
+        for (int i = 0; i < s.getDimension(); i++) {
             // result = A*s+B*a+epsilon
-            result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsiolon.get(i));
+            result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsilon.get(i));
         }
         return new State(result.toArray(), teamname);
     }
@@ -312,6 +313,7 @@ public class Transitions {
         }
         logger.info("A: " + A.toString());
         double[] solutionActions = Arrays.copyOfRange(solution, statedim * statedim, solution.length);
+        logger.info("B will contain " + B.length + " Matrices.");
         for (int k = 0; k < B.length; k++) {
             int matrixsize = getDimension(k, numberplayers);
             d = hh.make(Arrays.copyOfRange(solutionActions, 0, matrixsize * statedim));

@@ -74,7 +74,7 @@ public class ValueIteration implements ISolver {
         for (int horizon = 0; horizon < 1000; horizon++) {
             double[]  y = new double[numberSamples];
             for (int n = 0; n < numberSamples; n++) {
-                double[] q = new double[Action.values().length];
+                double[] q = new double[permutations.size()];
                 double max = 0;
                 for (int act = 0; act < permutations.size(); act++) {
                     //TODO iterate over all actions and add them to the getNewStateSample method as parameter
