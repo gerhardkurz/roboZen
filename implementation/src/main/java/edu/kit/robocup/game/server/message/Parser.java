@@ -1,6 +1,7 @@
 package edu.kit.robocup.game.server.message;
 
 
+import edu.kit.robocup.game.PlayMode;
 import edu.kit.robocup.game.controller.Coach;
 import org.apache.log4j.Logger;
 
@@ -36,10 +37,10 @@ public class Parser {
     }
 
     private static void handleHear(Object handler, String msg) {
-        logger.info(msg);
+        String[] messageParts = msg.split(" ");
         if (Coach.class.isAssignableFrom(handler.getClass())) {
             Coach coach = (Coach) handler;
-//            coach.look(HearParser.parse(msg));
+            coach.hear(PlayMode.get(messageParts[3]));
         }
     }
 }
