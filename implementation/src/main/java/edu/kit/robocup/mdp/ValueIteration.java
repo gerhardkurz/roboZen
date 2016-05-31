@@ -20,12 +20,9 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by dani on 26.05.2016.
- */
 public class ValueIteration implements ISolver {
 
-    static Logger logger = Logger.getLogger(Main.class.getName());
+    static Logger logger = Logger.getLogger(ValueIteration.class.getName());
     private Transitions t;
     private Reward r;
 

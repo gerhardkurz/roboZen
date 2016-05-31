@@ -78,4 +78,7 @@ public class Coach extends StaffClientBase {
     }
 
 
+    public void init() {
+        eye(true);
+    }
 }

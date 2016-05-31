@@ -21,9 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by dani on 27.05.2016.
- */
+
+
 public class ValueIterationPolicy implements IPolicy {
 
     private DoubleMatrix1D theta;

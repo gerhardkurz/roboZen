@@ -10,8 +10,21 @@ public class Parser {
     private Parser() {}
 
     public static void parse(Object handler, String msg) {
-        if (msg.startsWith("(see_global ")) {
-            handleLook(handler, msg);
+        if (Thread.currentThread().getName().endsWith("Coach")) {
+            if (msg.startsWith("(init ")) {
+                handleInit(handler);
+            } else if (msg.startsWith("(see_global ")) {
+                handleLook(handler, msg);
+            } else if (msg.startsWith("(hear ") && msg.split(" ")[2].equals("referee")) {
+                handleHear(handler, msg);
+            }
+        }
+    }
+
+    private static void handleInit(Object handler) {
+        if (Coach.class.isAssignableFrom(handler.getClass())) {
+            Coach coach = (Coach) handler;
+            coach.init();
         }
     }
 
@@ -22,5 +35,11 @@ public class Parser {
         }
     }
 
-
+    private static void handleHear(Object handler, String msg) {
+        logger.info(msg);
+        if (Coach.class.isAssignableFrom(handler.getClass())) {
+            Coach coach = (Coach) handler;
+//            coach.look(HearParser.parse(msg));
+        }
+    }
 }

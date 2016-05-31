@@ -27,30 +27,28 @@ public class Main {
     static Logger logger = Logger.getLogger(Main.class.getName());
 
 
-
-
     public static void main(String[] args) throws IOException, InterruptedException {
 //        getAngleBetween(-1, -1, 0, 1);
-//        System.exit(0);
-        List<Game> games = new ArrayList<Game>();
-        GameReader r = new GameReader("allActionCombinationsReduced50");
-        //games.add(r.getGameFromFile());
-        //r = new GameReader("ChaseAndKickReduced50");
-        //games.add(r.getGameFromFile());
-        //r = new GameReader("ChaseAndKickReducedWithoutGoal1");
-        games.add(r.getGameFromFile());
-        //Transitions t = new Transitions(games);
-        //t.startLearning();
-        ValueIteration v = new ValueIteration(games, new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"));
-
-        IPolicy valueiterationPolicy = v.solve();
+////        System.exit(0);
+//        List<Game> games = new ArrayList<Game>();
+//        GameReader r = new GameReader("allActionCombinationsReduced50");
+//        //games.add(r.getGameFromFile());
+//        //r = new GameReader("ChaseAndKickReduced50");
+//        //games.add(r.getGameFromFile());
+//        //r = new GameReader("ChaseAndKickReducedWithoutGoal1");
+//        games.add(r.getGameFromFile());
+//        //Transitions t = new Transitions(games);
+//        //t.startLearning();
+//        ValueIteration v = new ValueIteration(games, new Reward(200, -200, 50, -50, 70, 170, -170, false, "t1"));
+//
+//        IPolicy valueiterationPolicy = v.solve();
 
         initEnvironment();
 
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Team team1 = new Team("t1", PitchSide.WEST, 2, new GameRecorder("test", valueiterationPolicy));
+        Team team1 = new Team("t1", PitchSide.WEST, 2, new ChaseAndKickPolicy());
         team1.connectAll();
 
         Team team2 = new Team("t2", PitchSide.EAST, 2, new ChaseAndKickPolicy());
@@ -64,8 +62,7 @@ public class Main {
         Thread.sleep(100);
         trainer.moveBall(new Ball(0, 0));
         trainer.changePlayMode(PlayMode.PLAY_ON);
-        team1.getCoach().eye(true);
-        team2.getCoach().eye(true);
+
     }
 
     private static void initEnvironment() {
