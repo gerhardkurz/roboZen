@@ -65,7 +65,7 @@ public class ValueIterationPolicy implements IPolicy {
         for (int i = 0; i < permutations.size(); i++) {
             int value = 0;
             for (int k = 0; k < K; k++) {
-                State s = t.getNewStateSample((State) state, permutations.get(i), r.getTeamname());
+                State s = t.getNewStateSample((State) state, permutations.get(i), r.getPitchSide());
                 DoubleFactory1D h = DoubleFactory1D.dense;
                 DoubleMatrix1D next = h.make(s.getArray());
                 value += r.calculateReward((State) state, permutations.get(i), s);

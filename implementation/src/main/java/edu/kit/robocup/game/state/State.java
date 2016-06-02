@@ -1,26 +1,31 @@
 package edu.kit.robocup.game.state;
 
+import edu.kit.robocup.constant.PitchSide;
+import edu.kit.robocup.game.PlayMode;
 import edu.kit.robocup.interf.game.IPlayer;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IState;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class State implements IState {
+    private PlayMode playMode;
     private final Ball ball;
     private final List<IPlayerState> players;
 
     public State(Ball ball, List<IPlayerState> players) {
         this.ball = ball;
+        Collections.sort(players, (p1, p2) -> p1.getNumber() - p2.getNumber());
         this.players = players;
     }
 
-    public State(double[] state, String teamname) {
+    public State(double[] state, PitchSide pitchSide) {
         players = new ArrayList<>();
         for (int i = 0; i < state.length/5; i++) {
-            players.add(new PlayerState(teamname, i, state[i], state[i+1], state[i+2], state[i+3], state[i+4], 0));
+            players.add(new PlayerState(pitchSide, i, state[i], state[i+1], state[i+2], state[i+3], state[i+4], 0));
         }
         int cut = (state.length/5)*5;
         ball = new Ball(state[cut], state[cut+1], state[cut+2], state[cut+3]);
@@ -30,8 +35,8 @@ public class State implements IState {
         return ball;
     }
 
-    public List<IPlayerState> getPlayers(final String teamName) {
-        return players.stream().filter(p -> p.getTeamName().equals(teamName)).collect(Collectors.toList());
+    public List<IPlayerState> getPlayers(final PitchSide pitchSide) {
+        return players.stream().filter(p -> p.getPitchSide() == pitchSide).collect(Collectors.toList());
     }
 
     @Override
@@ -44,7 +49,7 @@ public class State implements IState {
     }
 
     /**
-     * @returns Dimension of state. Players get x and y coordinates, x, y velocity and body angle, ball gets x, y coordinate and x, y velocity
+     * @return Dimension of state. Players get x and y coordinates, x, y velocity and body angle, ball gets x, y coordinate and x, y velocity
      */
     public int getDimension() {
     	return 5*(players.size()) + 4;
@@ -53,6 +58,15 @@ public class State implements IState {
     @Override
     public String toString() {
         return "State{" + ball.toString() + " " + players.toString() + "}";
+    }
+
+    @Override
+    public PlayMode getPlayMode() {
+        return playMode;
+    }
+
+    public void setPlayMode(PlayMode playMode) {
+        this.playMode = playMode;
     }
 
     /**

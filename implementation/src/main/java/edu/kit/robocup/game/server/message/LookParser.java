@@ -1,6 +1,7 @@
 package edu.kit.robocup.game.server.message;
 
 
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.game.state.PlayerState;
@@ -49,7 +50,8 @@ public class LookParser {
                 double bodyAngle = Double.parseDouble(match.group("fifth"));
                 double neckAngle = Double.parseDouble(match.group("sixth"));
                 //double pointingDir = Double.parseDouble(match.group("seventh"));
-                PlayerState player = new PlayerState(teamName, number, positionX, positionY, velocityX, velocityY, bodyAngle, neckAngle);
+
+                PlayerState player = new PlayerState(PitchSide.valueOf(teamName), number, positionX, positionY, velocityX, velocityY, bodyAngle, neckAngle);
                 players.add(player);
             } else {
                 // unknown match. May be ok.

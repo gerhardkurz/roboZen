@@ -26,14 +26,14 @@ public class Recorder {
 
         GameRecorder recorder = new GameRecorder("test", new RandomPolicy());
 
-        Team team1 = new Team("t1", PitchSide.WEST, 1, recorder);
+        Team team1 = new Team(PitchSide.WEST, 1, recorder);
         team1.connectAll();
 
-        Team team2 = new Team("t2", PitchSide.EAST, 2, new RandomPolicy());
+        Team team2 = new Team(PitchSide.EAST, 2, new RandomPolicy());
         team2.connectAll();
 
-        trainer.movePlayer(new PlayerState("t1", 1, 20, 20));
-        trainer.movePlayer(new PlayerState("t2", 1, 20, 20));
+        trainer.movePlayer(new PlayerState(PitchSide.WEST, 1, 20, 20));
+        trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, 20, 20));
 
         trainer.moveBall(new Ball(3, 3));
 

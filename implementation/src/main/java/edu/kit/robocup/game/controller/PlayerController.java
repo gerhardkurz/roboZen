@@ -3,6 +3,7 @@ package edu.kit.robocup.game.controller;
 
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.server.client.StaffClientBase;
@@ -26,15 +27,15 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
      */
     public void connect(boolean isGoalie) {
         CommandFactory f = new CommandFactory();
-        f.addPlayerInitCommand(team.getTeamName(), isGoalie);
+        f.addPlayerInitCommand(team.getPitchSide().toString(), isGoalie);
         initMessage = f.next();
         super.start();
     }
 
     public void reconnect() {
         CommandFactory f = new CommandFactory();
-        f.addReconnectCommand(team.getTeamName(), number);
-        super.start(f.next(), team.getTeamName() + " " + number);
+        f.addReconnectCommand(team.getPitchSide().toString(), number);
+        super.start(f.next(), team.getPitchSide().toString() + " " + number);
     }
 
     /**
@@ -110,7 +111,12 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
 
     public void setNumber(int number) {
         this.number = number;
-        super.setName(team.getTeamName() + " " + getNumber());
+        super.setName(team.getPitchSide().toString() + " " + getNumber());
+    }
+
+    @Override
+    public PitchSide getPitchSide() {
+        return team.getPitchSide();
     }
 
     public int getNumber() {
@@ -124,7 +130,7 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
     @Override
     public String toStateString() {
         return super.toStateString() +
-                "PitchSide Name: " + team.getTeamName() +
+                "PitchSide Name: " + team.getPitchSide().toString() +
                 "\n" +
                 "Number: " + this.getNumber() +
                 "\n" +
@@ -143,7 +149,7 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
      */
     @Override
     protected String getDescription() {
-        StringBuilder nam = new StringBuilder(team.getTeamName());
+        StringBuilder nam = new StringBuilder(team.getPitchSide().toString());
         nam.append(" ");
         if (number >= 0) {
             nam.append(number);

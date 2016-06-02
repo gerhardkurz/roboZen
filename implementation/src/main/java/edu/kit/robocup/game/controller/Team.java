@@ -14,15 +14,13 @@ import java.util.Map;
 
 public class Team {
     private static final Logger logger = Logger.getLogger(Team.class);
-    private final String teamName;
     private PitchSide pitchSide;
     private final IPolicy policy;
     private List<PlayerController> playerControllers = new ArrayList<>();
     private Coach coach;
 
 
-    public Team(String teamName, PitchSide pitchSide, int numberPlayers, IPolicy policy) {
-        this.teamName = teamName;
+    public Team(PitchSide pitchSide, int numberPlayers, IPolicy policy) {
         this.pitchSide = pitchSide;
         this.policy = policy;
         for (int i = 0; i < numberPlayers; i++) {
@@ -39,10 +37,6 @@ public class Team {
 
     public PlayerController getPlayer(int number) {
         return playerControllers.stream().filter(p -> p.getNumber() == number).findAny().get();
-    }
-
-    public String getTeamName() {
-        return teamName;
     }
 
 

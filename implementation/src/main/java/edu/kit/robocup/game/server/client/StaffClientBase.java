@@ -14,8 +14,4 @@ public abstract class StaffClientBase extends UDPClientBase {
     public Team getTeam() {
         return team;
     }
-
-    public String getTeamName() {
-        return team.getTeamName();
-    }
 }

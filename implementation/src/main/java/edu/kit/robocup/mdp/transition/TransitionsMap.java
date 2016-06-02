@@ -11,6 +11,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import edu.kit.robocup.Main;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.Action;
 import edu.kit.robocup.game.ActionFactory;
 import edu.kit.robocup.game.Dash;
@@ -81,7 +82,7 @@ public class TransitionsMap {
         }
 
         for (int m = 0; m < games.size(); m++) {
-            String team = games.get(m).getTeam();
+            PitchSide pitchSide = games.get(m).getPitchSide();
             for (int t = 0; t < gamelength - 1; t++) {
                 double[] s = games.get(m).getStates().get(t).getArray();
                 for (int j = 0; j < statedim; j++) {
@@ -91,8 +92,8 @@ public class TransitionsMap {
                 }
                 State state = games.get(m).getStates().get(t);
                 List<IAction> a = new ArrayList<>();
-                for (int i = 0; i < state.getPlayers(team).size(); i++) {
-                    a.add(games.get(m).getActions().get(t).get(state.getPlayers(team).get(i)));
+                for (int i = 0; i < state.getPlayers(pitchSide).size(); i++) {
+                    a.add(games.get(m).getActions().get(t).get(state.getPlayers(pitchSide).get(i)));
                 }
                 IActionSet actions = new ActionSet(a);
                 int actualaction = getActionIndex(actions);
@@ -173,8 +174,8 @@ public class TransitionsMap {
                 for (int k = 0; k < games.get(m).getActions().size(); k++) {
                     State state = games.get(m).getStates().get(k);
                     List<IAction> a = new ArrayList<>();
-                    for (int j = 0; j < state.getPlayers(games.get(m).getTeam()).size(); j++) {
-                        a.add(games.get(m).getActions().get(k).get(state.getPlayers(games.get(m).getTeam()).get(i)));
+                    for (int j = 0; j < state.getPlayers(games.get(m).getPitchSide()).size(); j++) {
+                        a.add(games.get(m).getActions().get(k).get(state.getPlayers(games.get(m).getPitchSide()).get(i)));
                     }
                     IActionSet actions = new ActionSet(a);
                     int index = getActionIndex(actions);
@@ -292,10 +293,10 @@ public class TransitionsMap {
 
         List<IPlayerState> players = new ArrayList<IPlayerState>();
         List<IPlayerState> players1 = new ArrayList<IPlayerState>();
-        PlayerState p = new PlayerState("munich", 0, Math.random(), Math.random());
-        PlayerState p1 = new PlayerState("munich", 1, Math.random(), Math.random());
-        PlayerState p2 = new PlayerState("munich", 2, Math.random(), Math.random());
-        PlayerState p3 = new PlayerState("munich", 3, Math.random(), Math.random());
+        PlayerState p = new PlayerState(PitchSide.WEST, 0, Math.random(), Math.random());
+        PlayerState p1 = new PlayerState(PitchSide.WEST, 1, Math.random(), Math.random());
+        PlayerState p2 = new PlayerState(PitchSide.WEST, 2, Math.random(), Math.random());
+        PlayerState p3 = new PlayerState(PitchSide.WEST, 3, Math.random(), Math.random());
         players.add(p);
         players.add(p1);
         players1.add(p2);
@@ -306,10 +307,10 @@ public class TransitionsMap {
 
         List<IPlayerState> qplayers = new ArrayList<IPlayerState>();
         List<IPlayerState> qplayers1 = new ArrayList<IPlayerState>();
-        PlayerState qp = new PlayerState("munich", 0, Math.random(), Math.random());
-        PlayerState qp1 = new PlayerState("munich", 1, Math.random(), Math.random());
-        PlayerState qp2 = new PlayerState("munich", 2, Math.random(), Math.random());
-        PlayerState qp3 = new PlayerState("munich", 3, Math.random(), Math.random());
+        PlayerState qp = new PlayerState(PitchSide.WEST, 0, Math.random(), Math.random());
+        PlayerState qp1 = new PlayerState(PitchSide.WEST, 1, Math.random(), Math.random());
+        PlayerState qp2 = new PlayerState(PitchSide.WEST, 2, Math.random(), Math.random());
+        PlayerState qp3 = new PlayerState(PitchSide.WEST, 3, Math.random(), Math.random());
         qplayers.add(qp);
         qplayers.add(qp1);
         qplayers1.add(qp2);
@@ -328,8 +329,8 @@ public class TransitionsMap {
         Ball qball11 = new Ball(Math.random(), Math.random(), Math.random(), Math.random());
 
         List<IPlayerState> qplayers11 = new ArrayList<IPlayerState>();
-        PlayerState qp11 = new PlayerState("munich", 0, Math.random(), Math.random());
-        PlayerState qp111 = new PlayerState("munich", 1, Math.random(), Math.random());
+        PlayerState qp11 = new PlayerState(PitchSide.WEST, 0, Math.random(), Math.random());
+        PlayerState qp111 = new PlayerState(PitchSide.WEST, 1, Math.random(), Math.random());
         qplayers11.add(qp11);
         qplayers11.add(qp111);
         State qs111 = new State(qball11, qplayers11);

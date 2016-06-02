@@ -21,4 +21,8 @@ public class SimpleGameObject implements IGameObject {
     public double getPositionY() {
         return positionY;
     }
+
+    public String toString() {
+        return "x: " + positionX + "\ny: " + positionY;
+    }
 }

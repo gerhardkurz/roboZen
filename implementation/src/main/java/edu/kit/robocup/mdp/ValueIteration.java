@@ -6,6 +6,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import edu.kit.robocup.Main;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IAction;
@@ -64,7 +65,7 @@ public class ValueIteration implements ISolver {
         List<State> samples = new ArrayList<>();
         StateFactory f = new StateFactory();
         for (int i = 0; i < numberSamples; i++) {
-            samples.add(f.getRandomState(t.getGames().get(0).getNumberofAllPlayers(), r.getTeamname()));
+            samples.add(f.getRandomState(t.getGames().get(0).getNumberofAllPlayers(), r.getPitchSide()));
         }
         DoubleFactory1D h = DoubleFactory1D.dense;
         DoubleMatrix1D theta = h.make(t.getGames().get(0).getStates().get(0).getDimension(), 0);
@@ -78,7 +79,7 @@ public class ValueIteration implements ISolver {
                     //saves K states, that could be the next states after beeing in state samples[i] and doing action act
                     List<State> resultingSamples = new ArrayList<>();
                     for (int k = 0; k < K; k++) {
-                        State s = t.getNewStateSample(samples.get(n), permutations.get(act), r.getTeamname());
+                        State s = t.getNewStateSample(samples.get(n), permutations.get(act), r.getPitchSide());
                         resultingSamples.add(s);
                     }
                     double reward = 0;
@@ -123,16 +124,16 @@ public class ValueIteration implements ISolver {
     public static void main(String[] args) {
         List<State> samples = new ArrayList<>();
         double[] t = new double[]{1,2,3,4};
-        State s = new State(t, "dummy");
+        State s = new State(t, PitchSide.DUMMY);
         samples.add(s);
         t = new double[]{0, 3, 2, 4};
-        s = new State(t, "dummy");
+        s = new State(t, PitchSide.DUMMY);
         samples.add(s);
         t = new double[]{1, 2, 2, 5};
-        s = new State(t, "dummy");
+        s = new State(t, PitchSide.DUMMY);
         samples.add(s);
         t = new double[]{1, 3, 3, 4};
-        s = new State(t, "dummy");
+        s = new State(t, PitchSide.DUMMY);
         samples.add(s);
         //ValueIteration v = new ValueIteration();
         //double[] solution = v.getRegression(samples, new double[]{1, 2, 3, 5});

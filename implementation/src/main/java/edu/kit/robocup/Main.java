@@ -1,19 +1,13 @@
 package edu.kit.robocup;
 
-import com.github.robocup_atan.atan.model.enums.PlayMode;
 import edu.kit.robocup.constant.PitchSide;
+import edu.kit.robocup.game.PlayMode;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
-import edu.kit.robocup.interf.mdp.IPolicy;
-import edu.kit.robocup.mdp.Reward;
-import edu.kit.robocup.mdp.ValueIteration;
 import edu.kit.robocup.mdp.policy.*;
-import edu.kit.robocup.mdp.transition.Game;
-import edu.kit.robocup.mdp.transition.Transitions;
-import edu.kit.robocup.recorder.GameReader;
-import edu.kit.robocup.recorder.GameRecorder;
+import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
@@ -47,21 +41,22 @@ public class Main {
 
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
-
-        Team team1 = new Team("t1", PitchSide.WEST, 2, new ChaseAndKickPolicy());
+        PerPlayModePolicy perPlayModePolicy = new PerPlayModePolicy(new ChaseAndKickPolicy());
+        perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST);
+        Team team1 = new Team(PitchSide.WEST, 2, perPlayModePolicy);
         team1.connectAll();
 
-        Team team2 = new Team("t2", PitchSide.EAST, 2, new ChaseAndKickPolicy());
+        Team team2 = new Team(PitchSide.EAST, 2, perPlayModePolicy);
         team2.connectAll();
 
-        trainer.movePlayer(new PlayerState("t1", 1, 0, 0));
-        trainer.movePlayer(new PlayerState("t1", 2, -5, -5));
-        trainer.movePlayer(new PlayerState("t2", 1, 5, 25));
-        trainer.movePlayer(new PlayerState("t2", 2, 5, -25));
+        trainer.movePlayer(new PlayerState(PitchSide.WEST, 1, -5, 25));
+        trainer.movePlayer(new PlayerState(PitchSide.WEST, 2, -5, -25));
+        trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, 0, 0));
+        trainer.movePlayer(new PlayerState(PitchSide.EAST, 2, 5, -25));
 
         Thread.sleep(100);
         trainer.moveBall(new Ball(0, 0));
-        trainer.changePlayMode(PlayMode.PLAY_ON);
+        trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
 
     }
 

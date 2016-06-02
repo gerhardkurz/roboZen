@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 import edu.kit.robocup.constant.Constants;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.interf.game.IPlayerState;
@@ -20,7 +21,7 @@ public class Reward {
 	private int gettingNearGoal;
 	private int gettingAwayFromGoal;
     private boolean isTeamEast;
-    private String teamname;
+    private PitchSide pitchSide;
 	
 	/**
 	 * suggestion: Reward(200,-200,50, -50, 70, 170, -170)
@@ -38,7 +39,7 @@ public class Reward {
 	 * @param gettingNearGoal if ball gets nearer to adversary goal +gettingNearGoal
 	 * @param gettingAwayFromGoal if ball gets farer away of the adversary goal +gettingAwayFromGoal
 	 */
-	public Reward(int goal, int advGoal, int gettingNearBall, int gettingAwayFromBall, int havingBall, int gettingNearGoal, int gettingAwayFromGoal, boolean isTeamEast, String teamname) {
+	public Reward(int goal, int advGoal, int gettingNearBall, int gettingAwayFromBall, int havingBall, int gettingNearGoal, int gettingAwayFromGoal, boolean isTeamEast, PitchSide pitchSide) {
 		this.goal = goal;
 		this.advGoal = advGoal;
 		this.gettingAwayFromBall = gettingAwayFromBall;
@@ -47,14 +48,14 @@ public class Reward {
 		this.gettingNearGoal = gettingNearGoal;
 		this.gettingAwayFromGoal = gettingAwayFromGoal;
 		this.isTeamEast = isTeamEast;
-        this.teamname = teamname;
+        this.pitchSide = pitchSide;
 	}
 
 	public int calculateReward(State prevState, IActionSet action, State nextState) {
 		int reward = 0;
-		List<IPlayerState> pprev = prevState.getPlayers(teamname);
+		List<IPlayerState> pprev = prevState.getPlayers(pitchSide);
 		Ball bprev = prevState.getBall();
-		List<IPlayerState> pnext = nextState.getPlayers(teamname);
+		List<IPlayerState> pnext = nextState.getPlayers(pitchSide);
 		Ball bnext = nextState.getBall();
 		for (int i = 0; i < pprev.size(); i++) {
 			double distBallprev = bprev.getDistance(pprev.get(i));
@@ -109,7 +110,7 @@ public class Reward {
 		return reward;
 	}
 
-    public String getTeamname() {
-        return teamname;
-    }
+	public PitchSide getPitchSide() {
+		return pitchSide;
+	}
 }
