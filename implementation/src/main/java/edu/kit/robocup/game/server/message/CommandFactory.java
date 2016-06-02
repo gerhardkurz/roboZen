@@ -355,7 +355,7 @@ public class CommandFactory {
         } else {
             buf.append("off");
         }
-        buf.append(')');
+        buf.append(")");
         fifo.add(fifo.size(), buf.toString());
     }
 

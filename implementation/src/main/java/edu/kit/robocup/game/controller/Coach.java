@@ -2,6 +2,7 @@ package edu.kit.robocup.game.controller;
 
 
 import com.github.robocup_atan.atan.model.XPMImage;
+import edu.kit.robocup.game.PlayMode;
 import edu.kit.robocup.game.server.client.StaffClientBase;
 import org.apache.log4j.Logger;
 
@@ -14,6 +15,10 @@ public class Coach extends StaffClientBase {
 
     public void look(edu.kit.robocup.game.state.State state) {
         team.handleState(state);
+    }
+
+    public void hear(PlayMode playMode) {
+
     }
 
 
@@ -75,6 +80,11 @@ public class Coach extends StaffClientBase {
 
     public void handleError(String error) {
         logger.error(error);
+    }
+
+
+    public void init() {
+        eye(true);
     }
 
 

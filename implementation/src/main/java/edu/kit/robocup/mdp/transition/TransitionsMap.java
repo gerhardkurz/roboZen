@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 
 public class TransitionsMap {
 
-    static Logger logger = Logger.getLogger(Main.class.getName());
+    static Logger logger = Logger.getLogger(TransitionsMap.class.getName());
 
     // m games of T sequences, statesequence has to have the same length
     private List<GameMap> games;

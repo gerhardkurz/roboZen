@@ -28,7 +28,7 @@ import java.util.List;
 
 public class Transitions {
 
-    static Logger logger = Logger.getLogger(Main.class.getName());
+    static Logger logger = Logger.getLogger(Transitions.class.getName());
 
     // m games of T sequences, statesequence has to have the same length
     private List<Game> games;
