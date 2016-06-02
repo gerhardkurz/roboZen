@@ -1,6 +1,7 @@
 package edu.kit.robocup.mdp.transition;
 
 
+import Jama.Matrix;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -22,6 +23,7 @@ import edu.kit.robocup.mdp.ActionSet;
 import edu.kit.robocup.recorder.GameReader;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.log4j.Logger;
+import org.openimaj.math.matrix.PseudoInverse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -298,9 +300,14 @@ public class Transitions {
         // M*x = b is solved by x = (M^T*M)^-1 * M^T * b
         Algebra a = new Algebra();
         DoubleMatrix2D hasToInvert = a.mult(MNew.viewDice(), MNew);
-        a.property().generateNonSingular(hasToInvert);
+
+        // convert to jama matrix as there a pseudoinverse can be calculated, converting back to colt
+        Matrix invertable = new Matrix(hasToInvert.toArray());
+        Matrix inverted = PseudoInverse.pseudoInverse(invertable);
+        DoubleMatrix2D invertedByJama = h.make(inverted.getArray());
+
         //logger.info("Rank of matrix of size " + hasToInvert.rows() + " x " + hasToInvert.columns() + " is : " + a.rank(hasToInvert));
-        DoubleMatrix2D nearlyDone = a.mult(a.inverse(hasToInvert), MNew.viewDice());
+        DoubleMatrix2D nearlyDone = a.mult(invertedByJama, MNew.viewDice());
 
         DoubleMatrix2D ab = a.mult(nearlyDone, b);
         double[] solution = ab.viewColumn(0).toArray();
@@ -398,6 +405,7 @@ public class Transitions {
         r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
         games.add(r.getGameFromFile());*/
 
+        DoubleFactory2D h = DoubleFactory2D.dense;
 
         int numberplayers = 2;
         /**Game g = new Game(getRandomStates(), getRandomActions());
@@ -418,8 +426,8 @@ public class Transitions {
         g = new Game(getRandomStates(), getRandomActions());
         games.add(g);*/
 
-        Transitions t = new Transitions(games);
-        t.startLearning();
+        //Transitions t = new Transitions(games);
+        //t.startLearning();
         //ValueIteration v = new ValueIteration(t.getGames(), new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"));
     }
 

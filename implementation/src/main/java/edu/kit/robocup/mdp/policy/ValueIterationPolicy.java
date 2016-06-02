@@ -11,6 +11,7 @@ import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.mdp.IActionSet;
 import edu.kit.robocup.interf.mdp.IPolicy;
+import edu.kit.robocup.interf.mdp.IReward;
 import edu.kit.robocup.interf.mdp.IState;
 import edu.kit.robocup.mdp.ActionSet;
 import edu.kit.robocup.mdp.Reward;
@@ -26,10 +27,10 @@ import java.util.Map;
 public class ValueIterationPolicy implements IPolicy {
 
     private DoubleMatrix1D theta;
-    private Reward r;
+    private IReward r;
     private Transitions t;
 
-    public ValueIterationPolicy(DoubleMatrix1D theta, Reward r, Transitions t) {
+    public ValueIterationPolicy(DoubleMatrix1D theta, IReward r, Transitions t) {
         this.theta = theta;
         this.r = r;
         this.t = t;
