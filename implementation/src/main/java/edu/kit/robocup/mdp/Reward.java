@@ -9,8 +9,9 @@ import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.mdp.IActionSet;
+import edu.kit.robocup.interf.mdp.IReward;
 
-public class Reward {
+public class Reward implements IReward {
 	
 	private int goal;
 	private int advGoal;
