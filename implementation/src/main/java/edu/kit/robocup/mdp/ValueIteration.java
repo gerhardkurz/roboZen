@@ -11,6 +11,7 @@ import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.mdp.IActionSet;
 import edu.kit.robocup.interf.mdp.IPolicy;
+import edu.kit.robocup.interf.mdp.IReward;
 import edu.kit.robocup.interf.mdp.ISolver;
 import edu.kit.robocup.mdp.policy.ValueIterationPolicy;
 import edu.kit.robocup.mdp.transition.Game;
@@ -24,9 +25,9 @@ public class ValueIteration implements ISolver {
 
     static Logger logger = Logger.getLogger(ValueIteration.class.getName());
     private Transitions t;
-    private Reward r;
+    private IReward r;
 
-    public ValueIteration(List<Game> games, Reward r) {
+    public ValueIteration(List<Game> games, IReward r) {
         this.t = new Transitions(games);
         this.r = r;
     }

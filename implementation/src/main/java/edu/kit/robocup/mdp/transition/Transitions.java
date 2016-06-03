@@ -99,6 +99,7 @@ public class Transitions {
             }
             newGames.add(new Game(s,a));
         }
+        
         this.games = newGames;
     }
 
@@ -225,6 +226,7 @@ public class Transitions {
         List<Information> info = new ArrayList<>();
         List<Integer> leftOut = new ArrayList<>();
         for (int m = 0; m < games.size(); m++) {
+            logger.info("Game of size " + games.get(m).getStates().size() );
             for (int t = 0; t < gamelength - 1; t++) {
                 Information cur = new Information(games.get(m).getStates().get(t), games.get(m).getActions().get(t));
                 boolean doubleInformation = false;
@@ -271,7 +273,11 @@ public class Transitions {
 
         // constructs b as vector / 1xn-Matrix of s_t+1 values
         DoubleMatrix2D b = h.make(0, 0, 0);
+        int counter = 0;
         for (int m = 0; m < games.size(); m++) {
+            logger.info("Game of size " + games.get(m).getStates().size() );
+            logger.info("Game of size " + games.get(m).getStates().get(0).toString() );
+            logger.info("Game of size " + games.get(m).getStates().get(10).toString() );
             for (int t = 1; t < gamelength; t++) {
                 boolean doubleInformation = false;
                 for (int i = 0; i < leftOut.size()/2; i++) {
@@ -282,6 +288,7 @@ public class Transitions {
                 if (! doubleInformation) {
                     double[] st = games.get(m).getStates().get(t).getArray();
                     double[][] stst = new double[1][st.length];
+                    logger.info("Game of size " + games.get(m).getStates().get(t).getArray().length );
                     stst[0] = st;
                     DoubleMatrix2D bb = h.make(stst);
                     bb = bb.viewDice();
@@ -290,9 +297,16 @@ public class Transitions {
                     } else {
                         b = h.appendRows(b, bb);
                     }
+                } else {
+                    counter++;
                 }
             }
         }
+        logger.info(counter);
+        logger.info("b " + b.columns() + " x " + b.rows());
+        logger.info("statedim " + games.get(0).getStates().get(0).getDimension());
+        logger.info("Mnew " + MNew.columns() + " x " + MNew.rows());
+
 
         logger.info("b is created");
 
@@ -305,13 +319,17 @@ public class Transitions {
         Matrix inverted = PseudoInverse.pseudoInverse(invertable);
         DoubleMatrix2D invertedByJama = h.make(inverted.getArray());
 
+        logger.info("before inverting: " + hasToInvert.rows() + " x " + hasToInvert.columns() + " after inverting " + invertedByJama.rows() + " x " + invertedByJama.columns());
+
         //logger.info("Rank of matrix of size " + hasToInvert.rows() + " x " + hasToInvert.columns() + " is : " + a.rank(hasToInvert));
         DoubleMatrix2D nearlyDone = a.mult(invertedByJama, MNew.viewDice());
-
+        logger.info("after nearlyDone: " + nearlyDone.rows() + " x " + nearlyDone.columns());
         DoubleMatrix2D ab = a.mult(nearlyDone, b);
+        logger.info("done");
         double[] solution = ab.viewColumn(0).toArray();
         DoubleFactory1D hh = DoubleFactory1D.sparse;
         DoubleMatrix1D d = hh.make(Arrays.copyOfRange(solution, 0, statedim * statedim));
+        logger.info("before A");
         A = d.like2D(statedim, statedim);
         for (int i = 0; i < statedim; i++) {
             for (int j = 0; j < statedim; j++) {
