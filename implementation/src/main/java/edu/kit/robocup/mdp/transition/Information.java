@@ -1,8 +1,10 @@
 package edu.kit.robocup.mdp.transition;
 
+import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.mdp.IActionSet;
 import edu.kit.robocup.mdp.ActionSet;
+import edu.kit.robocup.mdp.PlayerActionSet;
 
 import java.util.Arrays;
 
@@ -10,15 +12,15 @@ import java.util.Arrays;
  * Created by dani on 29.05.2016.
  */
 public class Information {
-    private IActionSet a;
+    private PlayerActionSet a;
     private State s;
 
-    public Information(State s, IActionSet a) {
+    public Information(State s, PlayerActionSet a) {
         this.a = a;
         this.s = s;
     }
 
-    public IActionSet getActionSet() {
+    public PlayerActionSet getActionSet() {
         return this.a;
     }
 

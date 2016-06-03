@@ -9,17 +9,12 @@ import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import edu.kit.robocup.Main;
 import edu.kit.robocup.constant.PitchSide;
-import edu.kit.robocup.game.Action;
-import edu.kit.robocup.game.ActionFactory;
-import edu.kit.robocup.game.Dash;
-import edu.kit.robocup.game.Kick;
+import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.game.IPlayerState;
-import edu.kit.robocup.interf.mdp.IActionSet;
-import edu.kit.robocup.mdp.ActionSet;
 import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.recorder.GameReader;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
@@ -383,7 +378,7 @@ public class Transitions {
      * @param numberOfPlayers number of players
      * @return actionset according to given actionindex
      */
-    private ActionSet getActions(int actionsIndex, int numberOfPlayers) {
+    private PlayerActionSet getActions(int actionsIndex, int numberOfPlayers) {
         int[] types = new int[numberOfPlayers];
         int rest = actionsIndex;
         for (int i = numberOfPlayers; i > 0; i--) {
@@ -392,11 +387,11 @@ public class Transitions {
         }
         int dim = 0;
         ActionFactory a = new ActionFactory();
-        List<IAction> l = new ArrayList<>();
+        List<PlayerAction> l = new ArrayList<>();
         for (int i = 0; i < numberOfPlayers; i++) {
-            l.add(a.getAction(types[i]));
+            l.add(new PlayerAction(i, null, a.getAction(types[i])));
         }
-        return new ActionSet(l);
+        return new PlayerActionSet(l);
     }
 
 
@@ -447,89 +442,5 @@ public class Transitions {
         //Transitions t = new Transitions(games);
         //t.startLearning();
         //ValueIteration v = new ValueIteration(t.getGames(), new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"));
-    }
-
-    private static List<State> getRandomStates() {
-        Ball ball = new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        Ball ball1 = new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-
-        List<IPlayerState> players = new ArrayList<IPlayerState>();
-        List<IPlayerState> players1 = new ArrayList<IPlayerState>();
-        PlayerState p = new PlayerState(PitchSide.WEST, 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState p1 = new PlayerState(PitchSide.WEST, 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState p2 = new PlayerState(PitchSide.WEST, 2, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState p3 = new PlayerState(PitchSide.WEST, 3, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        players.add(p);
-        players.add(p1);
-        players1.add(p2);
-        players1.add(p3);
-
-        Ball qball =  new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        Ball qball1 = new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-
-        List<IPlayerState> qplayers = new ArrayList<IPlayerState>();
-        List<IPlayerState> qplayers1 = new ArrayList<IPlayerState>();
-        PlayerState qp = new PlayerState(PitchSide.WEST, 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState qp1 = new PlayerState(PitchSide.WEST, 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState qp2 = new PlayerState(PitchSide.WEST, 2, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState qp3 = new PlayerState(PitchSide.WEST, 3, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        qplayers.add(qp);
-        qplayers.add(qp1);
-        qplayers1.add(qp2);
-        qplayers1.add(qp3);
-
-        List<State> states = new ArrayList<State>();
-        State s = new State(ball, players);
-        State s1 = new State(ball1, players1);
-        states.add(s);
-        states.add(s1);
-        State qs = new State(qball, qplayers);
-        State qs1 = new State(qball1, qplayers1);
-        states.add(qs);
-        states.add(qs1);
-
-        Ball qball11 = new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-
-        List<IPlayerState> qplayers11 = new ArrayList<IPlayerState>();
-        PlayerState qp11 = new PlayerState(PitchSide.WEST, 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState qp111 = new PlayerState(PitchSide.WEST, 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        qplayers11.add(qp11);
-        qplayers11.add(qp111);
-        State qs111 = new State(qball11, qplayers11);
-        states.add(qs111);
-        return states;
-    }
-
-    private static List<IActionSet> getRandomActions() {
-        List<IActionSet> actions = new ArrayList<IActionSet>();
-        IAction a0 = new Kick((int) (Math.random() * 30), (int) (Math.random() * 30));
-        IAction a1 = new Dash((int) (Math.random() * 30));
-        IAction a2 = new Dash((int) (Math.random() * 30));
-        IAction a3 = new Kick((int) (Math.random() * 30), (int) (Math.random() * 30));
-        IAction a4 = new Kick((int) (Math.random() * 30), (int) (Math.random() * 30));
-        IAction a5 = new Kick((int) (Math.random() * 30), (int) (Math.random() * 30));
-        IAction a6 = new Dash((int) (Math.random() * 30));
-        IAction a7 = new Dash((int) (Math.random() * 30));
-        List<IAction> helper = new ArrayList<IAction>();
-        List<IAction> helper1 = new ArrayList<IAction>();
-        List<IAction> helper2 = new ArrayList<IAction>();
-        List<IAction> helper3 = new ArrayList<IAction>();
-        helper.add(a0);
-        helper.add(a1);
-        helper1.add(a2);
-        helper1.add(a3);
-        helper2.add(a4);
-        helper2.add(a5);
-        helper3.add(a6);
-        helper3.add(a7);
-        ActionSet a = new ActionSet(helper);
-        ActionSet a11 = new ActionSet(helper1);
-        ActionSet a111 = new ActionSet(helper2);
-        ActionSet a1111 = new ActionSet(helper3);
-        actions.add(a);
-        actions.add(a11);
-        actions.add(a111);
-        actions.add(a1111);
-        return actions;
     }
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.interf.mdp.IActionSet;
 import edu.kit.robocup.mdp.PlayerActionSet;
 
 import static org.javacc.parser.LexGen.actions;

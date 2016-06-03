@@ -21,7 +21,6 @@ public class Reward implements IReward {
 	private int havingBall;
 	private int gettingNearGoal;
 	private int gettingAwayFromGoal;
-    private boolean isTeamEast;
     private PitchSide pitchSide;
 	
 	/**
@@ -40,7 +39,7 @@ public class Reward implements IReward {
 	 * @param gettingNearGoal if ball gets nearer to adversary goal +gettingNearGoal
 	 * @param gettingAwayFromGoal if ball gets farer away of the adversary goal +gettingAwayFromGoal
 	 */
-	public Reward(int goal, int advGoal, int gettingNearBall, int gettingAwayFromBall, int havingBall, int gettingNearGoal, int gettingAwayFromGoal, boolean isTeamEast, PitchSide pitchSide) {
+	public Reward(int goal, int advGoal, int gettingNearBall, int gettingAwayFromBall, int havingBall, int gettingNearGoal, int gettingAwayFromGoal, PitchSide pitchSide) {
 		this.goal = goal;
 		this.advGoal = advGoal;
 		this.gettingAwayFromBall = gettingAwayFromBall;
@@ -48,11 +47,10 @@ public class Reward implements IReward {
 		this.havingBall = havingBall;
 		this.gettingNearGoal = gettingNearGoal;
 		this.gettingAwayFromGoal = gettingAwayFromGoal;
-		this.isTeamEast = isTeamEast;
         this.pitchSide = pitchSide;
 	}
 
-	public int calculateReward(State prevState, IActionSet action, State nextState) {
+	public int calculateReward(State prevState, PlayerActionSet action, State nextState) {
 		int reward = 0;
 		List<IPlayerState> pprev = prevState.getPlayers(pitchSide);
 		Ball bprev = prevState.getBall();
@@ -72,7 +70,7 @@ public class Reward implements IReward {
 			
 		}
 
-		if (isTeamEast) {
+		if (pitchSide.equals(PitchSide.EAST)) {
 			if (Constants.GOAL_WEST.getDistance(bnext) == 0) {
 				reward += goal;
 			}

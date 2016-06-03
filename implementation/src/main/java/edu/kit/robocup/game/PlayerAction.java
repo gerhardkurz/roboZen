@@ -42,6 +42,14 @@ public class PlayerAction implements Serializable {
         this.teamName = teamName;
     }
 
+    public double[] getArray() {
+        return action.getArray();
+    }
+
+    public Action getActionType() {
+        return action.getActionType();
+    }
+
     @Override
     public String toString() {
         return "Team: " + teamName + " Player: " + playerNumber + " action: " + action.toString();

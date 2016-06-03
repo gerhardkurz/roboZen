@@ -5,16 +5,15 @@ import cern.colt.matrix.DoubleMatrix1D;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.Dash;
 import edu.kit.robocup.game.Kick;
+import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.game.Turn;
 import edu.kit.robocup.game.controller.IPlayerController;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IAction;
-import edu.kit.robocup.interf.mdp.IActionSet;
 import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.interf.mdp.IReward;
 import edu.kit.robocup.interf.mdp.IState;
-import edu.kit.robocup.mdp.ActionSet;
-import edu.kit.robocup.mdp.Reward;
+import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.mdp.transition.Transitions;
 
 import java.util.ArrayList;
@@ -51,13 +50,13 @@ public class ValueIterationPolicy implements IPolicy {
         reducedActions.add(new Turn(-10));
         reducedActions.add(new Turn(-50));
         reducedActions.add(new Dash(40));
-        List<IActionSet> permutations = new ArrayList<>();
+        List<PlayerActionSet> permutations = new ArrayList<>();
         for (int i = 0; i < reducedActions.size(); i++) {
             for (int j = 0; j < reducedActions.size(); j++) {
-                List<IAction> t = new ArrayList<>();
-                t.add(reducedActions.get(i));
-                t.add(reducedActions.get(j));
-                permutations.add(new ActionSet(t));
+                List<PlayerAction> t = new ArrayList<>();
+                t.add(new PlayerAction(0, r.getPitchSide().toString(),reducedActions.get(i)));
+                t.add(new PlayerAction(1, r.getPitchSide().toString(),reducedActions.get(j)));
+                permutations.add(new PlayerActionSet(t));
             }
         }
         int maxActionPermutation = 0;
