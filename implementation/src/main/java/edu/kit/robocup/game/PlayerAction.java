@@ -6,14 +6,40 @@ import java.io.Serializable;
 
 
 public class PlayerAction implements Serializable {
-    int playerNumber;
-    String teamName;
-    IAction action;
+
+
+    private int playerNumber;
+    private String teamName;
+    private IAction action;
 
     public PlayerAction(int playerNumber, String teamName, IAction action) {
         this.playerNumber = playerNumber;
         this.teamName = teamName;
         this.action = action;
+    }
+
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    public IAction getAction() {
+        return action;
+    }
+
+    public void setAction(IAction action) {
+        this.action = action;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
     @Override
