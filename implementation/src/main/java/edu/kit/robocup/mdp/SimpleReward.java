@@ -14,12 +14,10 @@ import java.util.List;
  */
 public class SimpleReward implements IReward {
 
-    private String teamname;
     private int goal;
     private PitchSide pitchSide;
 
-    public SimpleReward(int goal, PitchSide pitchSide, String teamname) {
-        this.teamname = teamname;
+    public SimpleReward(int goal, PitchSide pitchSide) {
         this.goal = goal;
         this.pitchSide = pitchSide;
     }
@@ -45,10 +43,6 @@ public class SimpleReward implements IReward {
     @Override
     public PitchSide getPitchSide() {
         return pitchSide;
-    }
-
-    public String getTeamname() {
-        return teamname;
     }
 
 }

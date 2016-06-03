@@ -17,8 +17,8 @@ public class AllActionCombinationsPolicy implements IPolicy {
     public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> players, PitchSide pitchSide) {
         Map<IPlayerController, IAction> action = new HashMap<>();
         for (IPlayerController playerController : players) {
-            if (yoloGen(0.25f)) {
-                if (yoloGen(0.25f)) {
+            if (yoloGen(0.33f)) {
+                if (yoloGen(0.5f)) {
                     int p = 0 + (int)(Math.random() * ((100 - 0) + 1));
                     int a = 0 + (int)(Math.random() * ((180 - 0) + 1));
                     action.put(playerController, new Kick(p, a));
@@ -27,14 +27,8 @@ public class AllActionCombinationsPolicy implements IPolicy {
                     action.put(playerController, new Turn(a));
                 }
             } else {
-                if (yoloGen(0.25f)) {
-                    int x = 0 + (int)(Math.random() * ((50 - 0) + 1));
-                    int y = 0 + (int)(Math.random() * ((30 - 0) + 1));
-                    action.put(playerController, new Move(x, y));
-                } else {
-                    int p = 0 + (int)(Math.random() * ((100 - 0) + 1));
-                    action.put(playerController, new Dash(p));
-                }
+                int p = 0 + (int)(Math.random() * ((100 - 0) + 1));
+                action.put(playerController, new Dash(p));
             }
         }
         return action;
