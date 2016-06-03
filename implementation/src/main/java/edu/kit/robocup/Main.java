@@ -10,6 +10,7 @@ import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
 import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.mdp.Reward;
+import edu.kit.robocup.mdp.SimpleReward;
 import edu.kit.robocup.mdp.ValueIteration;
 import edu.kit.robocup.mdp.policy.*;
 import edu.kit.robocup.mdp.transition.Game;
@@ -33,33 +34,34 @@ public class Main {
 //        getAngleBetween(-1, -1, 0, 1);
 //        System.exit(0);
         List<Game> games = new ArrayList<Game>();
-        GameReader r = new GameReader("allActionCombinationsReduced50");
-        //games.add(r.getGameFromFile());
-        //r = new GameReader("ChaseAndKickReduced50");
-        //games.add(r.getGameFromFile());
-        //r = new GameReader("ChaseAndKickReducedWithoutGoal1");
+        GameReader r = new GameReader("allCombiSimplePolicy");
         games.add(r.getGameFromFile());
-        //ValueIteration v = new ValueIteration(games, new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"));
+        r = new GameReader("chaseAndKickSimplePolicy");
+        games.add(r.getGameFromFile());
+        r = new GameReader("chaseAndKickSimplePolicy1");
+        games.add(r.getGameFromFile());
+        ValueIteration v = new ValueIteration(games, new SimpleReward(2000, false ,"t1"));
 
-        double[] theta90Iterations = new double[]{-0.000963, 0.269859, -0.002512, 0.040671, -0.070394, -0.008944, -0.019962, -0.03694, -0.002041, -0.010458, 0.115703, 0.027337, -0.023096, -0.02907, 0.018174, -0.178805, -0.063191, 0.043526, -0.041956, -0.023118, -0.039069, 0.142336, -0.02465, 0.008617};
-        Transitions t = new Transitions(games);
-        t.startLearning();
-        DoubleFactory1D h = DoubleFactory1D.dense;
-        IPolicy valueiterationPolicy = new ValueIterationPolicy(h.make(theta90Iterations), new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"), t);
-//        IPolicy valueiterationPolicy = v.solve();
+        //double[] theta90Iterations = new double[]{-0.000963, 0.269859, -0.002512, 0.040671, -0.070394, -0.008944, -0.019962, -0.03694, -0.002041, -0.010458, 0.115703, 0.027337, -0.023096, -0.02907, 0.018174, -0.178805, -0.063191, 0.043526, -0.041956, -0.023118, -0.039069, 0.142336, -0.02465, 0.008617};
+        //Transitions t = new Transitions(games);
+        //t.startLearning();
+        //DoubleFactory1D h = DoubleFactory1D.dense;
+        //IPolicy valueiterationPolicy = new ValueIterationPolicy(h.make(theta90Iterations), new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"), t);
+
+        IPolicy valueiterationPolicy = v.solve();
 
         initEnvironment();
 
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Team team1 = new Team("t1", PitchSide.WEST, 2, new ChaseAndKickPolicy());
+        Team team1 = new Team("t1", PitchSide.WEST, 2, valueiterationPolicy);
         team1.connectAll();
 
-        Team team2 = new Team("t2", PitchSide.EAST, 2, new ChaseAndKickPolicy());
+        Team team2 = new Team("t2", PitchSide.EAST, 2, new ChaseAndKickPolicyReducedActions());
         team2.connectAll();
 
-        trainer.movePlayer(new PlayerState("t1", 1, 0, 0));
+        trainer.movePlayer(new PlayerState("t1", 1, 5, 5));
         trainer.movePlayer(new PlayerState("t1", 2, -5, -5));
         trainer.movePlayer(new PlayerState("t2", 1, 5, 25));
         trainer.movePlayer(new PlayerState("t2", 2, 5, -25));
