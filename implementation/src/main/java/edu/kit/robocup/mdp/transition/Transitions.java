@@ -82,24 +82,24 @@ public class Transitions {
     private void normalize() {
         int minState = 1000000000;
         int minAct = 1000000000;
-        for (int i = 0; i < games.size(); i++) {
-            if (minState > games.get(i).getStates().size()) {
-                minState = games.get(i).getStates().size();
-                minAct = games.get(i).getActions().size();
+        for (Game game : games) {
+            if (minState > game.getStates().size()) {
+                minState = game.getStates().size();
+                minAct = game.getActions().size();
             }
         }
         logger.info("Games will be reduced so that they consists of " + minState + " states and " + minAct + " Actions");
         List<Game> newGames = new ArrayList<>();
-        for (int i = 0; i < games.size(); i++) {
+        for (Game game : games) {
             List<State> s = new ArrayList<>();
             for (int j = 0; j < minState; j++) {
-                s.add(games.get(i).getStates().get(j));
+                s.add(game.getStates().get(j));
             }
             List<PlayerActionSet> a = new ArrayList<>();
             for (int j = 0; j < minAct; j++) {
-                a.add(games.get(i).getActions().get(j));
+                a.add(game.getActions().get(j));
             }
-            newGames.add(new Game(s,a));
+            newGames.add(new Game(s, a));
         }
         
         this.games = newGames;
@@ -117,9 +117,9 @@ public class Transitions {
         for (int i = 0; i < s; i++) {
             double curmean = 0;
             double count = 0;
-            for (int m = 0; m < games.size(); m++) {
-                for (int t = 0; t < games.get(m).getGamelength(); t++) {
-                    curmean += games.get(m).getStates().get(t).getArray()[i];
+            for (Game game : games) {
+                for (int t = 0; t < game.getGamelength(); t++) {
+                    curmean += game.getStates().get(t).getArray()[i];
                     count++;
                 }
             }
@@ -128,9 +128,9 @@ public class Transitions {
         for (int i = 0; i < s; i++) {
             for (int j = 0; j < s; j++) {
                 double cov = 0;
-                for (int m = 0; m < games.size(); m++) {
-                    for (int t = 0; t < games.get(m).getGamelength(); t++) {
-                        cov += (games.get(m).getStates().get(t).getArray()[i] - mean[i]) * (games.get(m).getStates().get(t).getArray()[j] - mean[j]);
+                for (Game game : games) {
+                    for (int t = 0; t < game.getGamelength(); t++) {
+                        cov += (game.getStates().get(t).getArray()[i] - mean[i]) * (game.getStates().get(t).getArray()[j] - mean[j]);
                     }
                 }
                 cov = cov/(covarianceMatrix.columns() - 1);
@@ -183,15 +183,15 @@ public class Transitions {
         double combinations = Math.pow(Action.values().length, numberplayers);
         for (int i = 0; i < combinations; i++) {
             boolean found = false;
-            for (int m = 0; m < games.size(); m++) {
-                for (int k = 0; k < games.get(m).getActions().size(); k++) {
-                    int index = getActionIndex(games.get(m).getActions().get(k));
+            for (Game game : games) {
+                for (int k = 0; k < game.getActions().size(); k++) {
+                    int index = getActionIndex(null);//TODO game.getActions().get(k));
                     if (index == i) {
                         found = true;
                     }
                 }
             }
-            if (found == false) {
+            if (!found) {
                 return "Error, Matrix will be singular because Actioncombination " + i +": " + getActions(i, numberplayers) + " doesn't exist!";
             }
         }
@@ -230,10 +230,10 @@ public class Transitions {
         for (int m = 0; m < games.size(); m++) {
             logger.info("Game of size " + games.get(m).getStates().size() );
             for (int t = 0; t < gamelength - 1; t++) {
-                Information cur = new Information(games.get(m).getStates().get(t), games.get(m).getActions().get(t));
+                Information cur = new Information(games.get(m).getStates().get(t), null);//TODO games.get(m).getActions().get(t));
                 boolean doubleInformation = false;
-                for (int i = 0; i < info.size(); i++) {
-                    if (info.get(i).equals(cur)) {
+                for (Information anInfo : info) {
+                    if (anInfo.equals(cur)) {
                         doubleInformation = true;
                     }
                 }
@@ -396,8 +396,7 @@ public class Transitions {
         for (int i = 0; i < numberOfPlayers; i++) {
             l.add(a.getAction(types[i]));
         }
-        ActionSet result = new ActionSet(l);
-        return result;
+        return new ActionSet(l);
     }
 
 

@@ -1,7 +1,5 @@
 package edu.kit.robocup;
 
-import cern.colt.matrix.DoubleFactory1D;
-import cern.colt.matrix.DoubleMatrix1D;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.PlayMode;
 import edu.kit.robocup.game.state.Ball;
@@ -14,14 +12,9 @@ import edu.kit.robocup.mdp.SimpleReward;
 import edu.kit.robocup.mdp.ValueIteration;
 import edu.kit.robocup.mdp.policy.*;
 import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
-import edu.kit.robocup.mdp.transition.Game;
-import edu.kit.robocup.mdp.transition.Transitions;
-import edu.kit.robocup.recorder.GameReader;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -56,17 +49,24 @@ public class Main {
         trainer.connect();
 
         PerPlayModePolicy perPlayModePolicy = new PerPlayModePolicy(new ChaseAndKickPolicy());
-        perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST);
-        Team team1 = new Team(PitchSide.WEST, 2, perPlayModePolicy);
+        perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
+        Team team1 = new Team(PitchSide.WEST, 5, perPlayModePolicy);
         team1.connectAll();
 
-        Team team2 = new Team(PitchSide.EAST, 2, perPlayModePolicy);
+        Team team2 = new Team(PitchSide.EAST, 5, perPlayModePolicy);
         team2.connectAll();
 
         trainer.movePlayer(new PlayerState(PitchSide.WEST, 1, -5, 25));
         trainer.movePlayer(new PlayerState(PitchSide.WEST, 2, -5, -25));
+        trainer.movePlayer(new PlayerState(PitchSide.WEST, 3, -5, 25));
+        trainer.movePlayer(new PlayerState(PitchSide.WEST, 4, -5, -25));
+        trainer.movePlayer(new PlayerState(PitchSide.WEST, 5, -5, 25));
+
         trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, 0, 0));
         trainer.movePlayer(new PlayerState(PitchSide.EAST, 2, 5, -25));
+        trainer.movePlayer(new PlayerState(PitchSide.EAST, 3, 0, 0));
+        trainer.movePlayer(new PlayerState(PitchSide.EAST, 4, 5, -25));
+        trainer.movePlayer(new PlayerState(PitchSide.EAST, 5, 0, 0));
 
         Thread.sleep(100);
         trainer.moveBall(new Ball(0, 0));
