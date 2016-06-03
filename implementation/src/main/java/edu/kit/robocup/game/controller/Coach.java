@@ -7,7 +7,7 @@ import edu.kit.robocup.game.server.client.StaffClientBase;
 import org.apache.log4j.Logger;
 
 public class Coach extends StaffClientBase {
-    private PlayMode playMode = null;
+    private PlayMode playMode = PlayMode.UNKNOWN;
     private static Logger logger = Logger.getLogger(Coach.class);
 
     public Coach(Team team) {
