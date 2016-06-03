@@ -180,7 +180,7 @@ public class Transitions {
             boolean found = false;
             for (Game game : games) {
                 for (int k = 0; k < game.getActions().size(); k++) {
-                    int index = getActionIndex(null);//TODO game.getActions().get(k));
+                    int index = getActionIndex(game.getActions().get(k));
                     if (index == i) {
                         found = true;
                     }
@@ -225,7 +225,7 @@ public class Transitions {
         for (int m = 0; m < games.size(); m++) {
             logger.info("Game of size " + games.get(m).getStates().size() );
             for (int t = 0; t < gamelength - 1; t++) {
-                Information cur = new Information(games.get(m).getStates().get(t), null);//TODO games.get(m).getActions().get(t));
+                Information cur = new Information(games.get(m).getStates().get(t), games.get(m).getActions().get(t));
                 boolean doubleInformation = false;
                 for (Information anInfo : info) {
                     if (anInfo.equals(cur)) {
