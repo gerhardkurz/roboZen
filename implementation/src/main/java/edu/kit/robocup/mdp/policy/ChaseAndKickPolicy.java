@@ -24,7 +24,7 @@ public class ChaseAndKickPolicy implements IPolicy {
         for (IPlayerController playerController : players) {
             IPlayerState playerState = state.getPlayerState(playerController);
             double angle = playerState.getAngleTo(state.getBall());
-            if (Math.abs(angle) >= 1) {
+            if (Math.abs(angle) >= 5) {
                 action.put(playerController, new Turn((int)angle));
             } else {
                 if (playerState.getDistance(state.getBall()) > Constants.KICKABLE_MARGIN) {

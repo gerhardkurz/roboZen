@@ -17,12 +17,14 @@ public class State implements IState {
     private final List<IPlayerState> players;
 
     public State(Ball ball, List<IPlayerState> players) {
+        this.playMode = PlayMode.UNKNOWN;
         this.ball = ball;
         Collections.sort(players, (p1, p2) -> p1.getNumber() - p2.getNumber());
         this.players = players;
     }
 
     public State(double[] state, PitchSide pitchSide) {
+        this.playMode = PlayMode.UNKNOWN;
         players = new ArrayList<>();
         for (int i = 0; i < state.length/5; i++) {
             players.add(new PlayerState(pitchSide, i, state[i], state[i+1], state[i+2], state[i+3], state[i+4], 0));
@@ -57,7 +59,7 @@ public class State implements IState {
 
     @Override
     public String toString() {
-        return "State{" + ball.toString() + " " + players.toString() + "}";
+        return "State{PlayMode: " + playMode + " " + ball.toString() + " " + players.toString() + "}";
     }
 
     @Override
@@ -66,7 +68,11 @@ public class State implements IState {
     }
 
     public void setPlayMode(PlayMode playMode) {
-        this.playMode = playMode;
+        if (playMode == null)
+            this.playMode = PlayMode.UNKNOWN;
+        else {
+            this.playMode = playMode;
+        }
     }
 
     /**
@@ -87,5 +93,9 @@ public class State implements IState {
 		pos[5*(players.size()) +2] = ball.getVelocityX();
 		pos[5*(players.size())+3] = ball.getVelocityY();
 		return pos;
+    }
+
+    public void clearPlayerStates() {
+        players.clear();
     }
 }

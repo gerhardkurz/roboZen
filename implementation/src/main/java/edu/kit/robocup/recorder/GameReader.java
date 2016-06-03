@@ -1,15 +1,19 @@
 package edu.kit.robocup.recorder;
 
+import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.ActionSet;
 import edu.kit.robocup.interf.mdp.IActionSet;
+import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.mdp.transition.Game;
 import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.javacc.parser.LexGen.actions;
 
 public class GameReader {
     static Logger logger = Logger.getLogger(GameReader.class.getName());
@@ -30,8 +34,8 @@ public class GameReader {
 
     public Game getGameFromFile() {
         List<State> states = new ArrayList<>();
-        List<IActionSet> actionSets = new ArrayList<>();
-        List<IAction> actions = new ArrayList<>();
+        List<PlayerActionSet> playerActionSets = new ArrayList<>();
+        List<PlayerAction> playerActions = new ArrayList<>();
 
         try {
             FileInputStream fileInputStream = new FileInputStream(this.file);
@@ -42,16 +46,16 @@ public class GameReader {
                 while (true) {
                     Object readObject = input.readObject();
                     if (readObject.getClass().equals(State.class)) {
-                        if (!actions.isEmpty()) {
-                            ActionSet actionSet = new ActionSet(actions);
-                            actionSets.add(actionSet);
-                            actions = new ArrayList<>();
+                        if (!playerActions.isEmpty()) {
+                            PlayerActionSet actionSet = new PlayerActionSet(playerActions);
+                            playerActionSets.add(actionSet);
+                            playerActions = new ArrayList<>();
                         }
                         stateCount++;
                         states.add((State) readObject);
                     } else {
                         actionCount++;
-                        actions.add((IAction) readObject);
+                        playerActions.add((PlayerAction) readObject);
                     }
                 }
             } catch (EOFException eof) {
@@ -67,7 +71,7 @@ public class GameReader {
             e.printStackTrace();
         }
 
-        return new Game(states, actionSets);
+        return new Game(states, playerActionSets);
     }
 
 }
