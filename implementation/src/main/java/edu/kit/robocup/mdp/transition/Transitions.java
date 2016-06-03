@@ -20,6 +20,7 @@ import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IActionSet;
 import edu.kit.robocup.mdp.ActionSet;
+import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.recorder.GameReader;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.log4j.Logger;
@@ -94,7 +95,7 @@ public class Transitions {
             for (int j = 0; j < minState; j++) {
                 s.add(games.get(i).getStates().get(j));
             }
-            List<IActionSet> a = new ArrayList<>();
+            List<PlayerActionSet> a = new ArrayList<>();
             for (int j = 0; j < minAct; j++) {
                 a.add(games.get(i).getActions().get(j));
             }
@@ -150,7 +151,7 @@ public class Transitions {
      * @param pitchSide side of the team
      * @return new state
      */
-    public State getNewStateSample(State s, IActionSet a, PitchSide pitchSide) {
+    public State getNewStateSample(State s, PlayerActionSet a, PitchSide pitchSide) {
         int actionindex = getActionIndex(a);
         Algebra alg = new Algebra();
         DoubleFactory1D h = DoubleFactory1D.dense;
@@ -406,7 +407,7 @@ public class Transitions {
      * @param actions actions that are chosen
      * @return value in the n-dimensional numeral system
      */
-    private int getActionIndex(IActionSet actions) {
+    private int getActionIndex(PlayerActionSet actions) {
         int[] types = actions.getActionsType();
         int n = Action.values().length;
         int codednumber = 0;
