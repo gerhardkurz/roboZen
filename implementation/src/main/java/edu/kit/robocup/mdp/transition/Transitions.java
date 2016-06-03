@@ -8,6 +8,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import edu.kit.robocup.Main;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.Action;
 import edu.kit.robocup.game.ActionFactory;
 import edu.kit.robocup.game.Dash;
@@ -146,10 +147,10 @@ public class Transitions {
      * samples a resulting state when a specified action is taken in a specified state
      * @param s actual state
      * @param a actual chosen action
-     * @param teamname name of the team
+     * @param pitchSide side of the team
      * @return new state
      */
-    public State getNewStateSample(State s, IActionSet a, String teamname) {
+    public State getNewStateSample(State s, IActionSet a, PitchSide pitchSide) {
         int actionindex = getActionIndex(a);
         Algebra alg = new Algebra();
         DoubleFactory1D h = DoubleFactory1D.dense;
@@ -167,7 +168,7 @@ public class Transitions {
             // result = A*s+B*a+epsilon
             result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsilon.get(i));
         }
-        return new State(result.toArray(), teamname);
+        return new State(result.toArray(), pitchSide);
     }
 
     /**
@@ -454,10 +455,10 @@ public class Transitions {
 
         List<IPlayerState> players = new ArrayList<IPlayerState>();
         List<IPlayerState> players1 = new ArrayList<IPlayerState>();
-        PlayerState p = new PlayerState("munich", 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState p1 = new PlayerState("munich", 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState p2 = new PlayerState("munich", 2, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState p3 = new PlayerState("munich", 3, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState p = new PlayerState(PitchSide.WEST, 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState p1 = new PlayerState(PitchSide.WEST, 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState p2 = new PlayerState(PitchSide.WEST, 2, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState p3 = new PlayerState(PitchSide.WEST, 3, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
         players.add(p);
         players.add(p1);
         players1.add(p2);
@@ -468,10 +469,10 @@ public class Transitions {
 
         List<IPlayerState> qplayers = new ArrayList<IPlayerState>();
         List<IPlayerState> qplayers1 = new ArrayList<IPlayerState>();
-        PlayerState qp = new PlayerState("munich", 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState qp1 = new PlayerState("munich", 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState qp2 = new PlayerState("munich", 2, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState qp3 = new PlayerState("munich", 3, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp = new PlayerState(PitchSide.WEST, 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp1 = new PlayerState(PitchSide.WEST, 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp2 = new PlayerState(PitchSide.WEST, 2, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp3 = new PlayerState(PitchSide.WEST, 3, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
         qplayers.add(qp);
         qplayers.add(qp1);
         qplayers1.add(qp2);
@@ -490,8 +491,8 @@ public class Transitions {
         Ball qball11 = new Ball(Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
 
         List<IPlayerState> qplayers11 = new ArrayList<IPlayerState>();
-        PlayerState qp11 = new PlayerState("munich", 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
-        PlayerState qp111 = new PlayerState("munich", 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp11 = new PlayerState(PitchSide.WEST, 0, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
+        PlayerState qp111 = new PlayerState(PitchSide.WEST, 1, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30, Math.random() * 30);
         qplayers11.add(qp11);
         qplayers11.add(qp111);
         State qs111 = new State(qball11, qplayers11);

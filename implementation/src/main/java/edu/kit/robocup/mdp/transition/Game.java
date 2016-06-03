@@ -2,8 +2,12 @@ package edu.kit.robocup.mdp.transition;
 
 import java.util.List;
 
+import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.mdp.IActionSet;
+import edu.kit.robocup.mdp.PlayerActionSet;
+
+import static org.javacc.parser.LexGen.actions;
 
 public class Game {
 
@@ -11,7 +15,7 @@ public class Game {
 	private List<State> states;
 	
 	// actions a_0 to a_(T-1), a_i is action between s_i and s_(i+1)
-	private List<IActionSet> actions;
+	private List<PlayerActionSet> playerActionSets;
 	
 	// number of players of PitchSide that is doing actions
 	private int numberPlayers;
@@ -19,10 +23,10 @@ public class Game {
 	// number of timesteps of a game, T
 	private int gamelength;
 	
-	public Game(List<State> states, List<IActionSet> actions) {
+	public Game(List<State> states, List<PlayerActionSet> playerActionSets) {
 		this.states = states;
-		this.actions = actions;
-		this.numberPlayers = actions.get(0).getActions().size();
+		this.playerActionSets = playerActionSets;
+		this.numberPlayers = playerActionSets.get(0).getActions().size();
 		this.gamelength = states.size();
 	}
 	
@@ -38,8 +42,8 @@ public class Game {
 		return this.states;
 	}
 
-	public List<IActionSet> getActions() {
-		return this.actions;
+	public List<PlayerActionSet> getActions() {
+		return this.playerActionSets;
 	}
 
 	public int getGamelength() {

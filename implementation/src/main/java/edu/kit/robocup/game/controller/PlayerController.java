@@ -3,21 +3,35 @@ package edu.kit.robocup.game.controller;
 
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.server.client.StaffClientBase;
 import edu.kit.robocup.game.server.message.CommandFactory;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+
 public class PlayerController extends StaffClientBase implements IPlayerController {
     private static Logger logger = Logger.getLogger(PlayerController.class);
     private int number;
+    private static ArrayList<PlayerController> playerControllers = new ArrayList<>();
+
+    public static PlayerController getPlayerController(Team team, int number) {
+        for (PlayerController pc : playerControllers) {
+            if (pc.getNumber() == number && pc.getTeam() == team) {
+                return pc;
+            }
+        }
+        PlayerController pc = new PlayerController(team, number);
+        playerControllers.add(pc);
+        return pc;
+    }
 
     public PlayerController(Team team, int number) {
         super(team, 6000, "localhost");
         this.number = number;
     }
-
 
     /**
      * Connects to the server via AbstractUDPClient.
@@ -26,15 +40,15 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
      */
     public void connect(boolean isGoalie) {
         CommandFactory f = new CommandFactory();
-        f.addPlayerInitCommand(team.getTeamName(), isGoalie);
+        f.addPlayerInitCommand(team.getPitchSide().toString(), isGoalie);
         initMessage = f.next();
         super.start();
     }
 
     public void reconnect() {
         CommandFactory f = new CommandFactory();
-        f.addReconnectCommand(team.getTeamName(), number);
-        super.start(f.next(), team.getTeamName() + " " + number);
+        f.addReconnectCommand(team.getPitchSide().toString(), number);
+        super.start(f.next(), team.getPitchSide().toString() + " " + number);
     }
 
     /**
@@ -110,7 +124,12 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
 
     public void setNumber(int number) {
         this.number = number;
-        super.setName(team.getTeamName() + " " + getNumber());
+        super.setName(team.getPitchSide().toString() + " " + getNumber());
+    }
+
+    @Override
+    public PitchSide getPitchSide() {
+        return team.getPitchSide();
     }
 
     public int getNumber() {
@@ -124,7 +143,7 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
     @Override
     public String toStateString() {
         return super.toStateString() +
-                "PitchSide Name: " + team.getTeamName() +
+                "PitchSide Name: " + team.getPitchSide().toString() +
                 "\n" +
                 "Number: " + this.getNumber() +
                 "\n" +
@@ -143,7 +162,7 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
      */
     @Override
     protected String getDescription() {
-        StringBuilder nam = new StringBuilder(team.getTeamName());
+        StringBuilder nam = new StringBuilder(team.getPitchSide().toString());
         nam.append(" ");
         if (number >= 0) {
             nam.append(number);
@@ -151,5 +170,10 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
             nam.append("<undefined>");
         }
         return nam.toString();
+    }
+
+    @Override
+    public Team getTeam() {
+        return super.getTeam();
     }
 }

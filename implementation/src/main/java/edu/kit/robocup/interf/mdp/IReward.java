@@ -1,5 +1,6 @@
 package edu.kit.robocup.interf.mdp;
 
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.state.State;
 
 /**
@@ -8,5 +9,5 @@ import edu.kit.robocup.game.state.State;
 public interface IReward {
 
     public int calculateReward(State prevState, IActionSet action, State nextState);
-    public String getTeamname();
+    public PitchSide getPitchSide();
 }

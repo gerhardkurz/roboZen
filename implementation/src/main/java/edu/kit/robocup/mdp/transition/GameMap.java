@@ -1,5 +1,6 @@
 package edu.kit.robocup.mdp.transition;
 
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.controller.IPlayerController;
 import edu.kit.robocup.game.state.State;
@@ -21,34 +22,34 @@ public class GameMap {
 	// number of timesteps of a game, T
 	private int gamelength;
 
-	private String team;
+	private PitchSide pitchSide;
 
-	public GameMap(List<State> states, List<Map<IPlayerController, IAction>> actions, String team) {
+	public GameMap(List<State> states, List<Map<IPlayerController, IAction>> actions, PitchSide pitchSide) {
 		this.states = states;
 		this.actions = actions;
-		this.team = team;
+		this.pitchSide = pitchSide;
 		this.numberPlayers = actions.get(0).size();
 		this.gamelength = states.size();
 	}
 	
 	public int getNumberPlayers() {
-		return this.numberPlayers;
+		return numberPlayers;
 	}
 
-	public String getTeam() {
-		return this.team;
+	public PitchSide getPitchSide() {
+		return pitchSide;
 	}
 
 	public List<State> getStates() {
-		return this.states;
+		return states;
 	}
 
 	public List<Map<IPlayerController, IAction>> getActions() {
-		return this.actions;
+		return actions;
 	}
 
 	public int getGamelength() {
-		return this.gamelength;
+		return gamelength;
 	}
 
 }

@@ -1,6 +1,7 @@
 package edu.kit.robocup.game;
 
 import edu.kit.robocup.constant.Constants;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
@@ -10,18 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by dani on 27.05.2016.
- */
+
+
 public class StateFactory {
 
     public StateFactory() {};
 
-    public State getRandomState(int numberPlayers, String teamname) {
+    public State getRandomState(int numberPlayers, PitchSide pitchSide) {
         Ball ball = new Ball(getRandomXPosition(), getRandomYPosition(), getRandomDouble(-100,100), getRandomDouble(-100,100));
         List<IPlayerState> p = new ArrayList<>();
         for (int i = 0; i < numberPlayers; i++) {
-            p.add(new PlayerState(teamname, i, getRandomXPosition(), getRandomYPosition(), getRandomDouble(-100, 100), getRandomDouble(-100, 100), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
+            p.add(new PlayerState(pitchSide, i, getRandomXPosition(), getRandomYPosition(), getRandomDouble(-100, 100), getRandomDouble(-100, 100), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
         }
         return new State(ball, p);
     }
@@ -42,7 +42,7 @@ public class StateFactory {
 
     public static void main(String[] args) {
         StateFactory s = new StateFactory();
-        State state = s.getRandomState(3, "dummy");
+        State state = s.getRandomState(3, PitchSide.WEST);
         System.out.println(state.toString());
     }
 

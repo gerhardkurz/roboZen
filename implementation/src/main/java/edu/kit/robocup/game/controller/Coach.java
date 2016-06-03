@@ -7,6 +7,7 @@ import edu.kit.robocup.game.server.client.StaffClientBase;
 import org.apache.log4j.Logger;
 
 public class Coach extends StaffClientBase {
+    private PlayMode playMode = PlayMode.UNKNOWN;
     private static Logger logger = Logger.getLogger(Coach.class);
 
     public Coach(Team team) {
@@ -14,11 +15,12 @@ public class Coach extends StaffClientBase {
     }
 
     public void look(edu.kit.robocup.game.state.State state) {
+        state.setPlayMode(playMode);
         team.handleState(state);
     }
 
     public void hear(PlayMode playMode) {
-
+        this.playMode = playMode;
     }
 
 
@@ -27,8 +29,8 @@ public class Coach extends StaffClientBase {
      */
     public void connect() {
         edu.kit.robocup.game.server.message.CommandFactory f = new edu.kit.robocup.game.server.message.CommandFactory();
-        f.addCoachInitCommand(team.getTeamName());
-        super.start(f.next(), team.getTeamName() + " Coach");
+        f.addCoachInitCommand(team.getPitchSide().toString());
+        super.start(f.next(), team.getPitchSide().toString() + " Coach");
     }
 
     /**

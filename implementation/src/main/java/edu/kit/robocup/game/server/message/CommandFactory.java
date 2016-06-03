@@ -274,7 +274,7 @@ public class CommandFactory {
         StringBuffer buf = new StringBuffer();
         buf.append("(move ");
         buf.append("(player ");
-        buf.append(player.getTeamName());
+        buf.append(player.getPitchSide().toString());
         buf.append(' ');
         buf.append(player.getNumber());
         buf.append(')');

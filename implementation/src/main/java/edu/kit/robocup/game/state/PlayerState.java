@@ -1,12 +1,13 @@
 package edu.kit.robocup.game.state;
 
 
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.interf.game.IPlayer;
 import edu.kit.robocup.interf.game.IPlayerState;
 
 
 public class PlayerState implements IPlayerState {
-    private final String teamName;
+    private final PitchSide pitchSide;
     private final int number;
     private final double positionX;
     private final double positionY;
@@ -15,12 +16,12 @@ public class PlayerState implements IPlayerState {
     private final double neckAngle;
     private final double bodyAngle;
 
-    public PlayerState(String teamName, int number, double positionX, double positionY) {
-        this(teamName, number, positionX, positionY, 0, 0, 0, 0);
+    public PlayerState(PitchSide pitchSide, int number, double positionX, double positionY) {
+        this(pitchSide, number, positionX, positionY, 0, 0, 0, 0);
     }
 
-    public PlayerState(String teamName, int number, double positionX, double positionY, double velocityX, double velocityY, double bodyAngle, double neckAngle) {
-        this.teamName = teamName;
+    public PlayerState(PitchSide pitchSide, int number, double positionX, double positionY, double velocityX, double velocityY, double bodyAngle, double neckAngle) {
+        this.pitchSide = pitchSide;
         this.number = number;
         this.positionX = positionX;
         this.positionY = positionY;
@@ -30,8 +31,9 @@ public class PlayerState implements IPlayerState {
         this.neckAngle = neckAngle;
     }
 
-    public String getTeamName() {
-        return teamName;
+    @Override
+    public PitchSide getPitchSide() {
+        return pitchSide;
     }
 
     public int getNumber() {
@@ -69,7 +71,7 @@ public class PlayerState implements IPlayerState {
     }
 
     public String toString() {
-        return "PitchSide " + teamName + " Number: " + number + " Position: (" + positionX + ", " + positionY + ") Velocity: (" + velocityX + ", " + velocityY + ") Bodyangle: " + bodyAngle;
+        return "PitchSide " + pitchSide.toString() + " Number: " + number + " Position: (" + positionX + ", " + positionY + ") Velocity: (" + velocityX + ", " + velocityY + ") Bodyangle: " + bodyAngle;
     }
 
     @Override
@@ -78,6 +80,6 @@ public class PlayerState implements IPlayerState {
             return false;
         }
         IPlayer player = (IPlayer) obj;
-        return getTeamName().equals(player.getTeamName()) && getNumber() == player.getNumber();
+        return pitchSide == player.getPitchSide() && getNumber() == player.getNumber();
     }
 }
