@@ -10,15 +10,28 @@ import edu.kit.robocup.game.server.client.StaffClientBase;
 import edu.kit.robocup.game.server.message.CommandFactory;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+
 public class PlayerController extends StaffClientBase implements IPlayerController {
     private static Logger logger = Logger.getLogger(PlayerController.class);
     private int number;
+    private static ArrayList<PlayerController> playerControllers = new ArrayList<>();
+
+    public static PlayerController getPlayerController(Team team, int number) {
+        for (PlayerController pc : playerControllers) {
+            if (pc.getNumber() == number && pc.getTeam() == team) {
+                return pc;
+            }
+        }
+        PlayerController pc = new PlayerController(team, number);
+        playerControllers.add(pc);
+        return pc;
+    }
 
     public PlayerController(Team team, int number) {
         super(team, 6000, "localhost");
         this.number = number;
     }
-
 
     /**
      * Connects to the server via AbstractUDPClient.
@@ -157,5 +170,10 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
             nam.append("<undefined>");
         }
         return nam.toString();
+    }
+
+    @Override
+    public Team getTeam() {
+        return super.getTeam();
     }
 }

@@ -70,7 +70,7 @@ public class Main {
 
     }
 
-    private static void initEnvironment() {
+    public static void initEnvironment() {
         PropertyConfigurator.configure("src/main/resources/log4j.properties");
         Util.startServer();
         Util.startMonitor();
