@@ -9,12 +9,10 @@ public class PlayerAction implements Serializable {
 
 
     private int playerNumber;
-    private String teamName;
     private IAction action;
 
-    public PlayerAction(int playerNumber, String teamName, IAction action) {
+    public PlayerAction(int playerNumber, IAction action) {
         this.playerNumber = playerNumber;
-        this.teamName = teamName;
         this.action = action;
     }
 
@@ -34,14 +32,6 @@ public class PlayerAction implements Serializable {
         this.action = action;
     }
 
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
     public double[] getArray() {
         return action.getArray();
     }
@@ -52,6 +42,6 @@ public class PlayerAction implements Serializable {
 
     @Override
     public String toString() {
-        return "Team: " + teamName + " Player: " + playerNumber + " action: " + action.toString();
+        return " Player: " + playerNumber + " action: " + action.toString();
     }
 }

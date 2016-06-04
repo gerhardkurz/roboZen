@@ -1,5 +1,6 @@
 package edu.kit.robocup.mdp;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import edu.kit.robocup.game.PlayerAction;
 
 import static com.google.common.primitives.Doubles.concat;
 
-public class PlayerActionSet {
+public class PlayerActionSet implements Serializable {
 
     private List<PlayerAction> actions;
     private int dimension;

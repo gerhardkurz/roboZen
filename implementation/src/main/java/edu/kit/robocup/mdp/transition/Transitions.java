@@ -389,7 +389,7 @@ public class Transitions {
         ActionFactory a = new ActionFactory();
         List<PlayerAction> l = new ArrayList<>();
         for (int i = 0; i < numberOfPlayers; i++) {
-            l.add(new PlayerAction(i, null, a.getAction(types[i])));
+            l.add(new PlayerAction(i, a.getAction(types[i])));
         }
         return new PlayerActionSet(l);
     }

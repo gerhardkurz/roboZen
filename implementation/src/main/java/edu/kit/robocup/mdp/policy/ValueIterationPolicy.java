@@ -54,8 +54,8 @@ public class ValueIterationPolicy implements IPolicy {
         for (int i = 0; i < reducedActions.size(); i++) {
             for (int j = 0; j < reducedActions.size(); j++) {
                 List<PlayerAction> t = new ArrayList<>();
-                t.add(new PlayerAction(0, r.getPitchSide().toString(),reducedActions.get(i)));
-                t.add(new PlayerAction(1, r.getPitchSide().toString(),reducedActions.get(j)));
+                t.add(new PlayerAction(0,reducedActions.get(i)));
+                t.add(new PlayerAction(1,reducedActions.get(j)));
                 permutations.add(new PlayerActionSet(t));
             }
         }
