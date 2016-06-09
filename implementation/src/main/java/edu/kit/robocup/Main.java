@@ -38,7 +38,7 @@ public class Main {
         games.add(r.getGameFromFile());
         r = new GameReader("recordings/random300");
         games.add(r.getGameFromFile());
-        ValueIteration v = new ValueIteration(games, new SimpleReward(2000, PitchSide.EAST));
+        ValueIteration v = new ValueIteration(games, new Reward(2000,-2000,50, -50, 70, 170, -170, PitchSide.EAST));
 
         //double[] theta90Iterations = new double[]{-0.000963, 0.269859, -0.002512, 0.040671, -0.070394, -0.008944, -0.019962, -0.03694, -0.002041, -0.010458, 0.115703, 0.027337, -0.023096, -0.02907, 0.018174, -0.178805, -0.063191, 0.043526, -0.041956, -0.023118, -0.039069, 0.142336, -0.02465, 0.008617};
         //Transitions t = new Transitions(games);

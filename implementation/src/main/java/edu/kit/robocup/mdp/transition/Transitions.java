@@ -270,11 +270,7 @@ public class Transitions {
 
         // constructs b as vector / 1xn-Matrix of s_t+1 values
         DoubleMatrix2D b = h.make(0, 0, 0);
-        int counter = 0;
         for (int m = 0; m < games.size(); m++) {
-            logger.info("Game of size " + games.get(m).getStates().size() );
-            logger.info("Game of size " + games.get(m).getStates().get(0).toString() );
-            logger.info("Game of size " + games.get(m).getStates().get(10).toString() );
             for (int t = 1; t < gamelength; t++) {
                 boolean doubleInformation = false;
                 for (int i = 0; i < leftOut.size()/2; i++) {
@@ -285,7 +281,6 @@ public class Transitions {
                 if (! doubleInformation) {
                     double[] st = games.get(m).getStates().get(t).getArray();
                     double[][] stst = new double[1][st.length];
-                    logger.info("Game of size " + games.get(m).getStates().get(t).getArray().length );
                     stst[0] = st;
                     DoubleMatrix2D bb = h.make(stst);
                     bb = bb.viewDice();
@@ -294,15 +289,13 @@ public class Transitions {
                     } else {
                         b = h.appendRows(b, bb);
                     }
-                } else {
-                    counter++;
                 }
             }
         }
-        logger.info(counter);
-        logger.info("b " + b.columns() + " x " + b.rows());
-        logger.info("statedim " + games.get(0).getStates().get(0).getDimension());
-        logger.info("Mnew " + MNew.columns() + " x " + MNew.rows());
+
+        //ogger.info("b " + b.columns() + " x " + b.rows());
+        //logger.info("statedim " + games.get(0).getStates().get(0).getDimension());
+        //logger.info("Mnew " + MNew.columns() + " x " + MNew.rows());
 
 
         logger.info("b is created");
