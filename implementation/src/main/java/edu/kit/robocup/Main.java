@@ -23,6 +23,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import static edu.kit.robocup.recorder.GameReader.getGamesFromFiles;
+
 public class Main {
 
     static Logger logger = Logger.getLogger(Main.class.getName());
@@ -31,13 +33,26 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
 //        getAngleBetween(-1, -1, 0, 1);
 //        System.exit(0);
-        List<Game> games = new ArrayList<Game>();
+
+        List<String> names = new ArrayList<>();
+        names.add("recordings/chaseAndKick3001");
+        names.add("recordings/chaseAndKick300");
+        names.add("recordings/random300");
+
+        List<Game> games = GameReader.getGamesFromFiles(names);
+
+
+
+        /*
+        List<Game> games = new ArrayList<>();
         GameReader r = new GameReader("recordings/chaseAndKick3001");
         games.add(r.getGameFromFile());
         r = new GameReader("recordings/chaseAndKick300");
         games.add(r.getGameFromFile());
         r = new GameReader("recordings/random300");
         games.add(r.getGameFromFile());
+        */
+
         ValueIteration v = new ValueIteration(games, new SimpleReward(2000, PitchSide.EAST));
 
         //double[] theta90Iterations = new double[]{-0.000963, 0.269859, -0.002512, 0.040671, -0.070394, -0.008944, -0.019962, -0.03694, -0.002041, -0.010458, 0.115703, 0.027337, -0.023096, -0.02907, 0.018174, -0.178805, -0.063191, 0.043526, -0.041956, -0.023118, -0.039069, 0.142336, -0.02465, 0.008617};
