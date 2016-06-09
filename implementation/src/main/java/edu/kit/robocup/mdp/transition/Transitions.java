@@ -2,6 +2,7 @@ package edu.kit.robocup.mdp.transition;
 
 
 import Jama.Matrix;
+import cern.colt.function.DoubleDoubleFunction;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -150,10 +151,17 @@ public class Transitions {
         //logger.info("A is size " + A.columns() + " , " + A.rows() + " and statedimension is " + s.getArray().length);
         DoubleMatrix1D state = h.make(s.getArray());
         DoubleMatrix1D calculationAs = h.make(s.getArray().length);
-        A.zMult(state, calculationAs);
+
+        // A * state
+        for (int i = 0; i < calculationAs.size(); i++) {
+            calculationAs.set(i, A.viewColumn(i).zDotProduct(state));
+        }
         DoubleMatrix1D action = h.make(a.getArray());
         DoubleMatrix1D calculationBa = h.make(s.getArray().length);
-        B[actionindex].zMult(action, calculationBa);
+        // B[i] * state
+        for (int i = 0; i < B[actionindex].columns(); i++) {
+            calculationBa.set(i, B[actionindex].viewColumn(i).zDotProduct(state));
+        }
         DoubleMatrix1D calculationEpsilon = h.make(dist.sample());
         DoubleMatrix1D result = h.make(s.getDimension());
         //logger.info("calculationAs " + calculationAs.size() + "calculationBa" + calculationBa.size() + "calculationEps" + calculationEpsilon.size());
@@ -161,7 +169,7 @@ public class Transitions {
             // result = A*s+B*a+epsilon
             result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsilon.get(i));
         }
-        return new State(result.toArray(), pitchSide);
+        return new State(result.toArray(), pitchSide);//, s.getPlayers(pitchSide).size());
     }
 
     /**
@@ -313,6 +321,17 @@ public class Transitions {
         logger.info("after nearlyDone: " + nearlyDone.rows() + " x " + nearlyDone.columns());
         DoubleMatrix2D ab = a.mult(nearlyDone, b);
         logger.info("done");
+
+        //testing
+        DoubleMatrix1D residuum = a.mult(MNew,ab.viewColumn(0));
+        residuum = residuum.assign(b.viewColumn(0), new DoubleDoubleFunction() {
+            @Override
+            public double apply(double v, double v1) {
+                return v-v1;
+            }
+        });
+        logger.info("residuum: " + residuum.toString());
+
         double[] solution = ab.viewColumn(0).toArray();
         DoubleFactory1D hh = DoubleFactory1D.sparse;
         DoubleMatrix1D d = hh.make(Arrays.copyOfRange(solution, 0, statedim * statedim));
@@ -343,7 +362,7 @@ public class Transitions {
     public void setLearning(String filename) throws FileNotFoundException {
         this.normalize();
         this.calculateCovarianceMatrix();
-        
+
         BufferedReader br;
         String zeile;
         try {
@@ -354,12 +373,13 @@ public class Transitions {
             while(! (zeile.contains("A:"))) {
                 zeile = br.readLine();
             }
+            logger.info(zeile);
             String[] split = zeile.split(" ");
-            A = h.make(Integer.parseInt(split[1]), Integer.parseInt(split[3]));
-            for (int i = 0; i < Integer.parseInt(split[1]); i++) {
+            A = h.make(Integer.parseInt(split[split.length - 4]), Integer.parseInt(split[split.length - 2]));
+            for (int i = 0; i < Integer.parseInt(split[split.length - 4]); i++) {
                 zeile = br.readLine();
                 String[] sp = StringUtils.split(zeile);
-                for (int j = 0; j < Integer.parseInt(split[3]); j++) {
+                for (int j = 0; j < Integer.parseInt(split[split.length - 2]); j++) {
                     A.set(i, j, Double.parseDouble(sp[j]));
                 }
             }
@@ -367,11 +387,11 @@ public class Transitions {
             for (int i = 0; i < B.length; i++) {
                 zeile = br.readLine();
                 String[] sp = zeile.split(" ");
-                B[i] = h.make(Integer.parseInt(sp[0]), Integer.parseInt(sp[2]));
-                for (int j = 0; j < Integer.parseInt(sp[0]); j++) {
+                B[i] = h.make(Integer.parseInt(sp[sp.length - 4]), Integer.parseInt(sp[sp.length - 2]));
+                for (int j = 0; j < Integer.parseInt(sp[sp.length - 4]); j++) {
                     zeile = br.readLine();
                     String[] s = StringUtils.split(zeile);
-                    for (int k = 0; k < Integer.parseInt(sp[2]); k++) {
+                    for (int k = 0; k < Integer.parseInt(sp[sp.length - 2]); k++) {
                         B[i].set(j, k, Double.parseDouble(s[k]));
                     }
                 }
@@ -450,7 +470,9 @@ public class Transitions {
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
         List<Game> games = new ArrayList<Game>();
         GameReader r = new GameReader("recordings/random300");
-        games.add(r.getGameFromFile());
+        Game test = r.getGameFromFile();
+        Game part = new Game(test.getStates().subList(0,100), test.getActions().subList(0,99));
+        games.add(part);
         /*r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
         games.add(r.getGameFromFile());*/
 
@@ -458,7 +480,21 @@ public class Transitions {
 
         int numberplayers = 2;
         Transitions t = new Transitions(games);
-        t.setLearning("C:/Users/dani/log1.out");
+        //t.startLearning();
+        t.setLearning("C:/Users/dani/Documents/Praktikum/SS16_Robocup/lograndom300.txt");
+        StateFactory f = new StateFactory();
+        State s = f.getRandomState(t.getGames().get(0).getNumberofAllPlayers(), PitchSide.EAST);
+        logger.info(s);
+        PlayerActionSet a = t.getGames().get(0).getActions().get(0);
+        logger.info(a);
+        logger.info(t.getNewStateSample(s, a, PitchSide.EAST));
+
+        a = t.getGames().get(0).getActions().get(1);
+        logger.info(a);
+        logger.info(t.getNewStateSample(s, a, PitchSide.EAST));
+
+        logger.info(t.getNewStateSample(games.get(0).getStates().get(0), games.get(0).getActions().get(0), PitchSide.EAST));
+        logger.info(games.get(0).getStates().get(1).toString());
         /**Game g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
