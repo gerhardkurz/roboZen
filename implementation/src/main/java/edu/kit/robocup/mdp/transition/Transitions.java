@@ -7,20 +7,17 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
-import edu.kit.robocup.Main;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;
-import edu.kit.robocup.game.state.Ball;
-import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.interf.game.IAction;
-import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.recorder.GameReader;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.log4j.Logger;
 import org.openimaj.math.matrix.PseudoInverse;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -343,6 +340,52 @@ public class Transitions {
         }
     }
 
+    public void setLearning(String filename) throws FileNotFoundException {
+        this.normalize();
+        this.calculateCovarianceMatrix();
+        
+        BufferedReader br;
+        String zeile;
+        try {
+            DoubleFactory2D h = DoubleFactory2D.dense;
+            FileReader fr = new FileReader(filename);
+            br = new BufferedReader(fr);
+            zeile = br.readLine();
+            while(! (zeile.contains("A:"))) {
+                zeile = br.readLine();
+            }
+            String[] split = zeile.split(" ");
+            A = h.make(Integer.parseInt(split[1]), Integer.parseInt(split[3]));
+            for (int i = 0; i < Integer.parseInt(split[1]); i++) {
+                zeile = br.readLine();
+                String[] sp = StringUtils.split(zeile);
+                for (int j = 0; j < Integer.parseInt(split[3]); j++) {
+                    A.set(i, j, Double.parseDouble(sp[j]));
+                }
+            }
+            br.readLine();
+            for (int i = 0; i < B.length; i++) {
+                zeile = br.readLine();
+                String[] sp = zeile.split(" ");
+                B[i] = h.make(Integer.parseInt(sp[0]), Integer.parseInt(sp[2]));
+                for (int j = 0; j < Integer.parseInt(sp[0]); j++) {
+                    zeile = br.readLine();
+                    String[] s = StringUtils.split(zeile);
+                    for (int k = 0; k < Integer.parseInt(sp[2]); k++) {
+                        B[i].set(j, k, Double.parseDouble(s[k]));
+                    }
+                }
+            }
+
+            logger.info(A.toString());
+            for (int i = 0; i < B.length; i++) {
+                logger.info(B[i].toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * recalculate actions from actionindex
      *
@@ -404,16 +447,18 @@ public class Transitions {
         return codednumber;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException {
         List<Game> games = new ArrayList<Game>();
-        /*GameReader r = new GameReader("allPlayersActionReduced");
+        GameReader r = new GameReader("recordings/random300");
         games.add(r.getGameFromFile());
-        r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
+        /*r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
         games.add(r.getGameFromFile());*/
 
         DoubleFactory2D h = DoubleFactory2D.dense;
 
         int numberplayers = 2;
+        Transitions t = new Transitions(games);
+        t.setLearning("C:/Users/dani/log1.out");
         /**Game g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
