@@ -4,14 +4,16 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.common.primitives.Doubles;
 import edu.kit.robocup.game.PlayerAction;
 
-import static com.google.common.primitives.Doubles.concat;
+
 
 public class PlayerActionSet implements Serializable {
 
     private List<PlayerAction> actions;
     private int dimension;
+    private double[] array;
 
     public PlayerActionSet(List<PlayerAction> actions) {
         actions.sort(new Comparator<PlayerAction>() {
@@ -32,6 +34,7 @@ public class PlayerActionSet implements Serializable {
             dim += action.getAction().getActionDimension();
         }
         this.dimension = dim;
+        initArray();
     }
 
     public List<PlayerAction> getActions() {
@@ -39,12 +42,15 @@ public class PlayerActionSet implements Serializable {
     }
 
     public double[] getArray() {
-        double[] a = new double[0];
-        for (int i = 0; i < actions.size(); i++) {
-            double[] act = actions.get(i).getArray();
-            a = concat(a, act);
+        return array;
+    }
+
+    private void initArray() {
+        array = new double[0];
+        for (PlayerAction action : actions) {
+            double[] act = action.getArray();
+            array = Doubles.concat(array, act);
         }
-        return a;
     }
 
     public int[] getActionsType() {

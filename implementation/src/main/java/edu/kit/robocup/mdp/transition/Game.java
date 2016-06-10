@@ -19,18 +19,14 @@ public class Game {
 	// number of players of PitchSide that is doing actions
 	private int numberPlayers;
 	
-	// number of timesteps of a game, T
-	private int gamelength;
-	
 	public Game(List<State> states, List<PlayerActionSet> playerActionSets) {
 		this.states = states;
 		this.playerActionSets = playerActionSets;
 		this.numberPlayers = playerActionSets.get(0).getActions().size();
-		this.gamelength = states.size();
 	}
 	
 	public int getNumberPlayers() {
-		return this.numberPlayers;
+		return numberPlayers;
 	}
 
 	public int getNumberofAllPlayers() {
@@ -38,15 +34,15 @@ public class Game {
 	}
 
 	public List<State> getStates() {
-		return this.states;
+		return states;
 	}
 
 	public List<PlayerActionSet> getActions() {
-		return this.playerActionSets;
+		return playerActionSets;
 	}
 
 	public int getGamelength() {
-		return this.gamelength;
+		return states.size();
 	}
 
 }
