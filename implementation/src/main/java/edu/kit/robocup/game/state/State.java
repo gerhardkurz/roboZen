@@ -8,6 +8,7 @@ import edu.kit.robocup.interf.mdp.IState;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,16 +20,78 @@ public class State implements IState {
     public State(Ball ball, List<IPlayerState> players) {
         this.playMode = PlayMode.UNKNOWN;
         this.ball = ball;
-        Collections.sort(players, (p1, p2) -> p1.getNumber() - p2.getNumber());
+        // sort first east side, than west side, each side sorted by player number
+        Collections.sort(players, new Comparator<IPlayerState>() {
+            @Override
+            public int compare(IPlayerState o1, IPlayerState o2) {
+                if (o1.getPitchSide() == PitchSide.EAST) {
+                    if (o2.getPitchSide() == PitchSide.EAST) {
+                        if (o1.getNumber() > o2.getNumber()) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    } else {
+                        return -1;
+                    }
+                } else {
+                    if (o2.getPitchSide() == PitchSide.EAST) {
+                        return 1;
+                    } else {
+                        if (o1.getNumber() > o2.getNumber()) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+        });
         this.players = players;
     }
 
-    public State(double[] state, PitchSide pitchSide) {
+    public State(double[] state, PitchSide pitchSide, int numberOfPlayersOfPitchside) {
         this.playMode = PlayMode.UNKNOWN;
         players = new ArrayList<>();
+        int counter = 0;
         for (int i = 0; i < state.length/5; i++) {
-            players.add(new PlayerState(pitchSide, i, state[i], state[i+1], state[i+2], state[i+3], state[i+4], 0));
+            counter++;
+            if (counter <= numberOfPlayersOfPitchside) {
+                players.add(new PlayerState(pitchSide, i, state[i], state[i + 1], state[i + 2], state[i + 3], state[i + 4], 0));
+            } else {
+                if (pitchSide == PitchSide.EAST) {
+                    players.add(new PlayerState(PitchSide.WEST, i, state[i], state[i + 1], state[i + 2], state[i + 3], state[i + 4], 0));
+                } else {
+                    players.add(new PlayerState(PitchSide.EAST, i, state[i], state[i + 1], state[i + 2], state[i + 3], state[i + 4], 0));
+                }
+            }
         }
+        Collections.sort(players, new Comparator<IPlayerState>() {
+            @Override
+            public int compare(IPlayerState o1, IPlayerState o2) {
+                if (o1.getPitchSide() == PitchSide.EAST) {
+                    if (o2.getPitchSide() == PitchSide.EAST) {
+                        if (o1.getNumber() > o2.getNumber()) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    } else {
+                        return -1;
+                    }
+                } else {
+                    if (o2.getPitchSide() == PitchSide.EAST) {
+                        return 1;
+                    } else {
+                        if (o1.getNumber() > o2.getNumber()) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+        });
         int cut = (state.length/5)*5;
         ball = new Ball(state[cut], state[cut+1], state[cut+2], state[cut+3]);
     }

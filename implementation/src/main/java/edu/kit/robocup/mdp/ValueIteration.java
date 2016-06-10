@@ -124,16 +124,16 @@ public class ValueIteration implements ISolver {
     public static void main(String[] args) {
         List<State> samples = new ArrayList<>();
         double[] t = new double[]{1,2,3,4};
-        State s = new State(t, PitchSide.DUMMY);
+        State s = new State(t, PitchSide.EAST, 2);
         samples.add(s);
         t = new double[]{0, 3, 2, 4};
-        s = new State(t, PitchSide.DUMMY);
+        s = new State(t, PitchSide.EAST, 2);
         samples.add(s);
         t = new double[]{1, 2, 2, 5};
-        s = new State(t, PitchSide.DUMMY);
+        s = new State(t, PitchSide.EAST, 2);
         samples.add(s);
         t = new double[]{1, 3, 3, 4};
-        s = new State(t, PitchSide.DUMMY);
+        s = new State(t, PitchSide.EAST, 2);
         samples.add(s);
         //ValueIteration v = new ValueIteration();
         //double[] solution = v.getRegression(samples, new double[]{1, 2, 3, 5});

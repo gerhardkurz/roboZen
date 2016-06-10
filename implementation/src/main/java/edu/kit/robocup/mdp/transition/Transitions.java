@@ -169,7 +169,7 @@ public class Transitions {
             // result = A*s+B*a+epsilon
             result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsilon.get(i));
         }
-        return new State(result.toArray(), pitchSide);//, s.getPlayers(pitchSide).size());
+        return new State(result.toArray(), pitchSide, s.getPlayers(pitchSide).size());
     }
 
     /**
