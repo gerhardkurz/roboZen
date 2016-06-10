@@ -11,23 +11,12 @@ import edu.kit.robocup.game.PlayerAction;
 
 public class PlayerActionSet implements Serializable {
 
-    private List<PlayerAction> actions;
-    private int dimension;
+    private final List<PlayerAction> actions;
+    private final int dimension;
     private double[] array;
 
     public PlayerActionSet(List<PlayerAction> actions) {
-        actions.sort(new Comparator<PlayerAction>() {
-            @Override
-            public int compare(PlayerAction o1, PlayerAction o2) {
-                if (o1.getPlayerNumber() < o2.getPlayerNumber()) {
-                    return -1;
-                } else if (o1.getPlayerNumber() == o2.getPlayerNumber()) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        });
+        actions.sort((o1, o2) -> o1.getPlayerNumber() - o2.getPlayerNumber());
         this.actions = actions;
         int dim = 0;
         for (PlayerAction action: actions) {
