@@ -40,32 +40,24 @@ public class GameReader {
             ObjectInputStream input = new ObjectInputStream(fileInputStream);
             int stateCount = 0;
             int actionCount = 0;
-            try {
-                while (true) {
-                    Object readObject = input.readObject();
-                    if (readObject.getClass().equals(State.class)) {
-                        if (!playerActions.isEmpty()) {
-                            PlayerActionSet actionSet = new PlayerActionSet(playerActions);
-                            playerActionSets.add(actionSet);
-                            playerActions = new ArrayList<>();
-                        }
-                        stateCount++;
-                        states.add((State) readObject);
-                    } else {
-                        actionCount++;
-                        playerActions.add((PlayerAction) readObject);
+            while (fileInputStream.available() > 0) {
+                Object readObject = input.readObject();
+                if (readObject.getClass().equals(State.class)) {
+                    if (!playerActions.isEmpty()) {
+                        PlayerActionSet actionSet = new PlayerActionSet(playerActions);
+                        playerActionSets.add(actionSet);
+                        playerActions = new ArrayList<>();
                     }
+                    stateCount++;
+                    states.add((State) readObject);
+                } else {
+                    actionCount++;
+                    playerActions.add((PlayerAction) readObject);
                 }
-            } catch (EOFException eof) {
-                input.close();
-                logger.info("File (" + file + ") was read (" + stateCount + " states, " + actionCount + " actions) and closed successfully.");
             }
+            logger.info("File (" + file + ") was read (" + stateCount + " states, " + actionCount + " actions) and closed successfully.");
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
 
