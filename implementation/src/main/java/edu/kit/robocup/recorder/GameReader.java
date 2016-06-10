@@ -14,7 +14,7 @@ import java.util.List;
 import static org.javacc.parser.LexGen.actions;
 
 public class GameReader {
-    static Logger logger = Logger.getLogger(GameReader.class.getName());
+    private static Logger logger = Logger.getLogger(GameReader.class.getName());
 
     public static List<Game> getGamesFromFiles(List<String> fileNames) {
         List<Game> games = new ArrayList<>();
