@@ -146,9 +146,7 @@ public class Transitions {
      */
     public State getNewStateSample(State s, PlayerActionSet a, PitchSide pitchSide) {
         int actionindex = getActionIndex(a);
-        Algebra alg = new Algebra();
         DoubleFactory1D h = DoubleFactory1D.dense;
-        //logger.info("A is size " + A.columns() + " , " + A.rows() + " and statedimension is " + s.getArray().length);
         DoubleMatrix1D state = h.make(s.getArray());
         DoubleMatrix1D calculationAs = h.make(s.getArray().length);
 
@@ -163,8 +161,8 @@ public class Transitions {
             calculationBa.set(i, B[actionindex].viewColumn(i).zDotProduct(state));
         }
         DoubleMatrix1D calculationEpsilon = h.make(dist.sample());
+        //logger.info("Epsilon: " + calculationEpsilon.toString());
         DoubleMatrix1D result = h.make(s.getDimension());
-        //logger.info("calculationAs " + calculationAs.size() + "calculationBa" + calculationBa.size() + "calculationEps" + calculationEpsilon.size());
         for (int i = 0; i < s.getDimension(); i++) {
             // result = A*s+B*a+epsilon
             result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsilon.get(i));
@@ -437,15 +435,15 @@ public class Transitions {
     private PlayerActionSet getActions(int actionsIndex, int numberOfPlayers) {
         int[] types = new int[numberOfPlayers];
         int rest = actionsIndex;
-        for (int i = numberOfPlayers; i > 0; i--) {
-            types[i - 1] = rest % (Action.values().length);
+        for (int i = 0; i < numberOfPlayers; i++) {
+            types[i] = rest % (Action.values().length);
             rest = rest / (Action.values().length);
         }
         int dim = 0;
         ActionFactory a = new ActionFactory();
         List<PlayerAction> l = new ArrayList<>();
         for (int i = 0; i < numberOfPlayers; i++) {
-            l.add(new PlayerAction(i, a.getAction(types[i])));
+            l.add(new PlayerAction(i+1, a.getAction(types[i])));
         }
         return new PlayerActionSet(l);
     }
@@ -471,7 +469,7 @@ public class Transitions {
         List<Game> games = new ArrayList<Game>();
         GameReader r = new GameReader("recordings/random300");
         Game test = r.getGameFromFile();
-        Game part = new Game(test.getStates().subList(0,100), test.getActions().subList(0,99));
+        Game part = new Game(test.getStates().subList(0,120), test.getActions().subList(0,119));
         games.add(part);
         /*r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
         games.add(r.getGameFromFile());*/
@@ -485,9 +483,14 @@ public class Transitions {
         StateFactory f = new StateFactory();
         State s = f.getRandomState(t.getGames().get(0).getNumberofAllPlayers(), PitchSide.EAST);
         logger.info(s);
-        PlayerActionSet a = t.getGames().get(0).getActions().get(0);
+        PlayerActionSet a = t.getGames().get(0).getActions().get(5);
         logger.info(a);
         logger.info(t.getNewStateSample(s, a, PitchSide.EAST));
+
+
+        logger.info(a);
+        logger.info(t.getActionIndex(a));
+        logger.info(t.getActions(t.getActionIndex(a), 2));
 
         a = t.getGames().get(0).getActions().get(1);
         logger.info(a);
@@ -495,6 +498,7 @@ public class Transitions {
 
         logger.info(t.getNewStateSample(games.get(0).getStates().get(0), games.get(0).getActions().get(0), PitchSide.EAST));
         logger.info(games.get(0).getStates().get(1).toString());
+
         /**Game g = new Game(getRandomStates(), getRandomActions());
         games.add(g);
         g = new Game(getRandomStates(), getRandomActions());
