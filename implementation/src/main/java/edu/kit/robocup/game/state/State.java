@@ -6,53 +6,31 @@ import edu.kit.robocup.interf.game.IPlayer;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IState;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class State implements IState {
     private PlayMode playMode;
     private final Ball ball;
-    private final List<IPlayerState> players;
+    private final Set<IPlayerState> players = new TreeSet<>((p1, p2) -> {
+        if (p1.getPitchSide() != p2.getPitchSide()) {
+            return p1.getPitchSide() == PitchSide.EAST ? -1 : 1;
+        } else {
+            return p1.getNumber() - p2.getNumber();
+        }
+    });
+    private final double[] pos;
 
     public State(Ball ball, List<IPlayerState> players) {
         this.playMode = PlayMode.UNKNOWN;
         this.ball = ball;
-        // sort first east side, than west side, each side sorted by player number
-        Collections.sort(players, new Comparator<IPlayerState>() {
-            @Override
-            public int compare(IPlayerState o1, IPlayerState o2) {
-                if (o1.getPitchSide() == PitchSide.EAST) {
-                    if (o2.getPitchSide() == PitchSide.EAST) {
-                        if (o1.getNumber() > o2.getNumber()) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    } else {
-                        return -1;
-                    }
-                } else {
-                    if (o2.getPitchSide() == PitchSide.EAST) {
-                        return 1;
-                    } else {
-                        if (o1.getNumber() > o2.getNumber()) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    }
-                }
-            }
-        });
-        this.players = players;
+        this.players.addAll(players);
+        pos = new double[5*(players.size()) + 4];
+        initArray();
     }
 
     public State(double[] state, PitchSide pitchSide, int numberOfPlayersOfPitchside) {
         this.playMode = PlayMode.UNKNOWN;
-        players = new ArrayList<>();
         int counter = 0;
         for (int i = 0; i < state.length/5; i++) {
             counter++;
@@ -66,34 +44,10 @@ public class State implements IState {
                 }
             }
         }
-        Collections.sort(players, new Comparator<IPlayerState>() {
-            @Override
-            public int compare(IPlayerState o1, IPlayerState o2) {
-                if (o1.getPitchSide() == PitchSide.EAST) {
-                    if (o2.getPitchSide() == PitchSide.EAST) {
-                        if (o1.getNumber() > o2.getNumber()) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    } else {
-                        return -1;
-                    }
-                } else {
-                    if (o2.getPitchSide() == PitchSide.EAST) {
-                        return 1;
-                    } else {
-                        if (o1.getNumber() > o2.getNumber()) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    }
-                }
-            }
-        });
         int cut = (state.length/5)*5;
         ball = new Ball(state[cut], state[cut+1], state[cut+2], state[cut+3]);
+        pos = new double[5*(players.size()) + 4];
+        initArray();
     }
 
     public Ball getBall() {
@@ -143,22 +97,22 @@ public class State implements IState {
      * entries are ballposition and ballvelocity
      */
     public double[] getArray() {
-		double[] pos = new double[5*(players.size()) + 4];
-		for (int i = 0; i < players.size(); i++) {
-			pos[5*i] = players.get(i).getPositionX();
-			pos[5*i+1] = players.get(i).getPositionY();
-            pos[5*i+2] = players.get(i).getVelocityX();
-            pos[5*i+3] = players.get(i).getVelocityY();
-            pos[5*i+4] = players.get(i).getBodyAngle();
-        }
-		pos[5*(players.size())] = ball.getPositionX();
-		pos[5*(players.size())+1] = ball.getPositionY();
-		pos[5*(players.size()) +2] = ball.getVelocityX();
-		pos[5*(players.size())+3] = ball.getVelocityY();
-		return pos;
+        return pos;
     }
 
-    public void clearPlayerStates() {
-        players.clear();
+    private void initArray() {
+        int i = 0;
+		for (IPlayerState player: players) {
+			pos[5 * i] = player.getPositionX();
+			pos[5 * i + 1] = player.getPositionY();
+            pos[5 * i + 2] = player.getVelocityX();
+            pos[5 * i + 3] = player.getVelocityY();
+            pos[5 * i + 4] = player.getBodyAngle();
+            i++;
+        }
+		pos[5 * players.size()] = ball.getPositionX();
+		pos[5 * players.size() + 1] = ball.getPositionY();
+		pos[5 * players.size() + 2] = ball.getVelocityX();
+		pos[5 * players.size() + 3] = ball.getVelocityY();
     }
 }

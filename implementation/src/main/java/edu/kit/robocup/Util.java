@@ -1,6 +1,8 @@
 package edu.kit.robocup;
 
 
+import org.apache.log4j.PropertyConfigurator;
+
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 
@@ -13,7 +15,11 @@ public class Util {
     public static final String rcssDir = "..\\rcss\\";
 
 
-
+    public static void initEnvironment() {
+        PropertyConfigurator.configure("src/main/resources/log4j.properties");
+        Util.startServer();
+        Util.startMonitor();
+    }
 
     public static void startServer() {
         System.out.println("starting rcssserver!");

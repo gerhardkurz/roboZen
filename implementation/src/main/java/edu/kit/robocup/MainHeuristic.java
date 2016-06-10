@@ -1,9 +1,6 @@
-package edu.kit.robocup.recorder;
+package edu.kit.robocup;
 
 
-import java.io.*;
-
-import edu.kit.robocup.Util;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.PlayMode;
 import edu.kit.robocup.game.controller.Team;
@@ -11,26 +8,18 @@ import edu.kit.robocup.game.controller.Trainer;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.mdp.policy.ChaseAndKickPolicy;
+import edu.kit.robocup.mdp.policy.DoNothing;
 import edu.kit.robocup.mdp.policy.PerPlayModePolicy;
-import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
-import org.apache.log4j.Logger;
 
-
-
-public class Sandbox {
-
-    public static void main(String[] args) throws IOException, InterruptedException {
-
+public class MainHeuristic {
+    public static void main(String[] args) throws InterruptedException {
         Util.initEnvironment();
 
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
         PerPlayModePolicy perPlayModePolicy = new PerPlayModePolicy(new ChaseAndKickPolicy());
-        perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
-
-        //GameRecorder recordingPolicy = new GameRecorder("test", perPlayModePolicy);
-
+        perPlayModePolicy.replacePolicyForPlayMode(new DoNothing(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
         Team team1 = new Team(PitchSide.WEST, 5, perPlayModePolicy);
         team1.connectAll();
 
@@ -50,7 +39,8 @@ public class Sandbox {
         trainer.movePlayer(new PlayerState(PitchSide.EAST, 5, 0, 0));
 
         Thread.sleep(100);
-        trainer.moveBall(new Ball(0, 0));
+        trainer.moveBall(new Ball(10, 10));
         trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
+
     }
 }

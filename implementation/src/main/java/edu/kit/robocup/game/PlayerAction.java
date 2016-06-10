@@ -6,8 +6,6 @@ import java.io.Serializable;
 
 
 public class PlayerAction implements Serializable {
-
-
     private int playerNumber;
     private IAction action;
 

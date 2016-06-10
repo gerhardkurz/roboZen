@@ -1,14 +1,12 @@
 package edu.kit.robocup.mdp.transition;
 
-import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.mdp.PlayerActionSet;
 
 import java.util.Arrays;
 
-/**
- * Created by dani on 29.05.2016.
- */
+
+
 public class Information {
     private PlayerActionSet a;
     private State s;
