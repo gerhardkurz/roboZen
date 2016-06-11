@@ -38,27 +38,9 @@ public class ValueIteration implements ISolver {
      */
     @Override
     public IPolicy solve() {
-        List<IAction> reducedActions = new ArrayList<>();
-        reducedActions.add(new Kick(30,0));
-        reducedActions.add(new Kick(30,25));
-        reducedActions.add(new Kick(30,-25));
-        reducedActions.add(new Turn(1));
-        reducedActions.add(new Turn(10));
-        reducedActions.add(new Turn(50));
-        reducedActions.add(new Turn(-1));
-        reducedActions.add(new Turn(-10));
-        reducedActions.add(new Turn(-50));
-        reducedActions.add(new Dash(40));
-        List<PlayerActionSet> permutations = new ArrayList<>();
-        for (int i = 0; i < reducedActions.size(); i++) {
-            for (int j = 0; j < reducedActions.size(); j++) {
-                List<PlayerAction> t = new ArrayList<>();
-                t.add(new PlayerAction(0, reducedActions.get(i)));
-                t.add(new PlayerAction(1, reducedActions.get(j)));
-                permutations.add(new PlayerActionSet(t));
-            }
-        }
-        int numberSamples = 1000;
+        PlayerActionSetFactory a = new PlayerActionSetFactory();
+        List<PlayerActionSet> permutations = a.getSet();
+        int numberSamples = 5000;
         double gamma = 0.7;
         int K = 10;
         t.startLearning();

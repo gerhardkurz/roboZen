@@ -14,6 +14,7 @@ import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.interf.mdp.IReward;
 import edu.kit.robocup.interf.mdp.IState;
 import edu.kit.robocup.mdp.PlayerActionSet;
+import edu.kit.robocup.mdp.PlayerActionSetFactory;
 import edu.kit.robocup.mdp.ValueIteration;
 import edu.kit.robocup.mdp.transition.Transitions;
 import org.apache.log4j.Logger;
@@ -44,26 +45,8 @@ public class ValueIterationPolicy implements IPolicy {
         Map<IPlayerController, IAction> action = new HashMap<>();
         if (((State) state).getArray().length == t.getA().rows()) {
             // out of all actions that exist you should choose the action, which maximizes the immediate reward + theta*nextState
-            List<IAction> reducedActions = new ArrayList<>();
-            reducedActions.add(new Kick(30, 0));
-            reducedActions.add(new Kick(30, 25));
-            reducedActions.add(new Kick(30, -25));
-            reducedActions.add(new Turn(1));
-            reducedActions.add(new Turn(10));
-            reducedActions.add(new Turn(50));
-            reducedActions.add(new Turn(-1));
-            reducedActions.add(new Turn(-10));
-            reducedActions.add(new Turn(-50));
-            reducedActions.add(new Dash(40));
-            List<PlayerActionSet> permutations = new ArrayList<>();
-            for (int i = 0; i < reducedActions.size(); i++) {
-                for (int j = 0; j < reducedActions.size(); j++) {
-                    List<PlayerAction> t = new ArrayList<>();
-                    t.add(new PlayerAction(0, reducedActions.get(i)));
-                    t.add(new PlayerAction(1, reducedActions.get(j)));
-                    permutations.add(new PlayerActionSet(t));
-                }
-            }
+            PlayerActionSetFactory a = new PlayerActionSetFactory();
+            List<PlayerActionSet> permutations = a.getSet();
             int maxActionPermutation = 0;
             int maxValue = 0;
             int K = 10;
@@ -81,8 +64,9 @@ public class ValueIterationPolicy implements IPolicy {
                     maxActionPermutation = i;
                 }
             }
-            action.put(playerControllers.get(0), reducedActions.get(maxActionPermutation / 10));
-            action.put(playerControllers.get(1), reducedActions.get(maxActionPermutation % 10));
+            for (int i = 0; i < playerControllers.size(); i++) {
+                action.put(playerControllers.get(0), permutations.get(maxActionPermutation).getActions().get(i).getAction());
+            }
         } else {
             action.put(playerControllers.get(0), new Turn(0));
             action.put(playerControllers.get(1), new Turn(0));

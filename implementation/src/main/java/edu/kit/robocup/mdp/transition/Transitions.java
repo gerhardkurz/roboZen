@@ -37,6 +37,8 @@ public class Transitions {
      */
     private DoubleMatrix2D[] B;
 
+    private enum Action{KICK,DASH,TURN};
+
     MultivariateNormalDistribution dist;
 
     public Transitions(List<Game> games) {
