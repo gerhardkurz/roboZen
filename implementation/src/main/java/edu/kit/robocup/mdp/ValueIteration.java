@@ -39,7 +39,12 @@ public class ValueIteration implements ISolver {
     @Override
     public IPolicy solve() {
         PlayerActionSetFactory a = new PlayerActionSetFactory();
-        List<PlayerActionSet> permutations = a.getSet();
+        List<PlayerActionSet> permutations = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                permutations.addAll(a.getActionAction(i, j));
+            }
+        }
         int numberSamples = 5000;
         double gamma = 0.7;
         int K = 10;

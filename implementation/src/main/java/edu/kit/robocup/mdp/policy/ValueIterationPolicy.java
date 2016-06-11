@@ -46,7 +46,12 @@ public class ValueIterationPolicy implements IPolicy {
         if (((State) state).getArray().length == t.getA().rows()) {
             // out of all actions that exist you should choose the action, which maximizes the immediate reward + theta*nextState
             PlayerActionSetFactory a = new PlayerActionSetFactory();
-            List<PlayerActionSet> permutations = a.getSet();
+            List<PlayerActionSet> permutations = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    permutations.addAll(a.getActionAction(i, j));
+                }
+            }
             int maxActionPermutation = 0;
             int maxValue = 0;
             int K = 10;
