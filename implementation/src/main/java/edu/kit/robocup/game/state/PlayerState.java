@@ -11,22 +11,29 @@ public class PlayerState implements IPlayerState {
     private final int number;
     private final double positionX;
     private final double positionY;
-    private final double velocityX;
-    private final double velocityY;
+    private final double velocityLength;
     private final double neckAngle;
     private final double bodyAngle;
 
     public PlayerState(PitchSide pitchSide, int number, double positionX, double positionY) {
-        this(pitchSide, number, positionX, positionY, 0, 0, 0, 0);
+        this(pitchSide, number, positionX, positionY, 0, 0, 0);
     }
 
+    public PlayerState(PitchSide pitchSide, int number, double positionX, double positionY, double velocityLength, double bodyAngle, double neckAngle) {
+        this.pitchSide = pitchSide;
+        this.number = number;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.velocityLength = velocityLength;
+        this.bodyAngle = bodyAngle;
+        this.neckAngle = neckAngle;
+    }
     public PlayerState(PitchSide pitchSide, int number, double positionX, double positionY, double velocityX, double velocityY, double bodyAngle, double neckAngle) {
         this.pitchSide = pitchSide;
         this.number = number;
         this.positionX = positionX;
         this.positionY = positionY;
-        this.velocityX = velocityX;
-        this.velocityY = velocityY;
+        this.velocityLength = Math.sqrt(velocityX*velocityX+velocityY*velocityY);
         this.bodyAngle = bodyAngle;
         this.neckAngle = neckAngle;
     }
@@ -51,13 +58,8 @@ public class PlayerState implements IPlayerState {
     }
 
     @Override
-    public double getVelocityX() {
-        return velocityX;
-    }
-
-    @Override
-    public double getVelocityY() {
-        return velocityY;
+    public double getVelocityLength() {
+        return velocityLength;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class PlayerState implements IPlayerState {
     }
 
     public String toString() {
-        return "PitchSide " + pitchSide.toString() + " Number: " + number + " Position: (" + positionX + ", " + positionY + ") Velocity: (" + velocityX + ", " + velocityY + ") Bodyangle: " + bodyAngle;
+        return "PitchSide " + pitchSide.toString() + " Number: " + number + " Position: (" + positionX + ", " + positionY + ") Velocitylength: " + velocityLength + " Bodyangle: " + bodyAngle;
     }
 
     @Override

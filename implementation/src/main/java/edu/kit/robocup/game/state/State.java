@@ -32,21 +32,21 @@ public class State implements IState {
     public State(double[] state, PitchSide pitchSide, int numberOfPlayersOfPitchside) {
         this.playMode = PlayMode.UNKNOWN;
         int counter = 0;
-        for (int i = 0; i < state.length/5; i++) {
+        for (int i = 0; i < state.length/4; i++) {
             counter++;
             if (counter <= numberOfPlayersOfPitchside) {
-                players.add(new PlayerState(pitchSide, i, state[i], state[i + 1], state[i + 2], state[i + 3], state[i + 4], 0));
+                players.add(new PlayerState(pitchSide, i, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
             } else {
                 if (pitchSide == PitchSide.EAST) {
-                    players.add(new PlayerState(PitchSide.WEST, i, state[i], state[i + 1], state[i + 2], state[i + 3], state[i + 4], 0));
+                    players.add(new PlayerState(PitchSide.WEST, i, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
                 } else {
-                    players.add(new PlayerState(PitchSide.EAST, i, state[i], state[i + 1], state[i + 2], state[i + 3], state[i + 4], 0));
+                    players.add(new PlayerState(PitchSide.EAST, i, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
                 }
             }
         }
-        int cut = (state.length/5)*5;
-        ball = new Ball(state[cut], state[cut+1], state[cut+2], state[cut+3]);
-        pos = new double[5*(players.size()) + 4];
+        int cut = (state.length/4)*4;
+        ball = new Ball(state[cut], state[cut+1], state[cut+2]);
+        pos = new double[4*(players.size()) + 3];
         initArray();
     }
 
@@ -71,7 +71,7 @@ public class State implements IState {
      * @return Dimension of state. Players get x and y coordinates, x, y velocity and body angle, ball gets x, y coordinate and x, y velocity
      */
     public int getDimension() {
-    	return 5*(players.size()) + 4;
+    	return 4*(players.size()) + 3;
     }
 
     @Override
@@ -103,16 +103,14 @@ public class State implements IState {
     private void initArray() {
         int i = 0;
 		for (IPlayerState player: players) {
-			pos[5 * i] = player.getPositionX();
-			pos[5 * i + 1] = player.getPositionY();
-            pos[5 * i + 2] = player.getVelocityX();
-            pos[5 * i + 3] = player.getVelocityY();
-            pos[5 * i + 4] = player.getBodyAngle();
+			pos[4 * i] = player.getPositionX();
+			pos[4 * i + 1] = player.getPositionY();
+            pos[4 * i + 2] = player.getVelocityLength();
+            pos[4 * i + 3] = player.getBodyAngle();
             i++;
         }
-		pos[5 * players.size()] = ball.getPositionX();
-		pos[5 * players.size() + 1] = ball.getPositionY();
-		pos[5 * players.size() + 2] = ball.getVelocityX();
-		pos[5 * players.size() + 3] = ball.getVelocityY();
+		pos[4 * players.size()] = ball.getPositionX();
+		pos[4 * players.size() + 1] = ball.getPositionY();
+		pos[4 * players.size() + 2] = ball.getVelocityLength();
     }
 }

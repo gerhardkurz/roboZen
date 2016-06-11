@@ -5,33 +5,32 @@ import edu.kit.robocup.game.SimpleGameObject;
 
 
 public class Ball extends SimpleGameObject implements IMoveAbleObject {
-    private final double velocityX;
-    private final double velocityY;
+    private final double velocityLength;
 
 
     public Ball(double positionX, double positionY) {
-        this(positionX, positionY, 0, 0);
+        this(positionX, positionY, 0);
+    }
+
+    public Ball(double positionX, double positionY, double velocityLength) {
+        super(positionX, positionY);
+        this.velocityLength = velocityLength;
     }
 
     public Ball(double positionX, double positionY, double velocityX, double velocityY) {
         super(positionX, positionY);
-        this.velocityX = velocityX;
-        this.velocityY = velocityY;
+        this.velocityLength = Math.sqrt(velocityX*velocityX+velocityY*velocityY);
     }
 
     @Override
     public String toString() {
-        return "Ball{x:" + getPositionX() + " y: " + getPositionY() + " velX: " + getVelocityX() + " velY: " + getVelocityY() + "}";
+        return "Ball{x:" + getPositionX() + " y: " + getPositionY() + " velocitylength: " + velocityLength + "}";
     }
 
     @Override
-    public double getVelocityX() {
-        return velocityX;
+    public double getVelocityLength() {
+        return velocityLength;
     }
 
-    @Override
-    public double getVelocityY() {
-        return velocityY;
-    }
 }
 
