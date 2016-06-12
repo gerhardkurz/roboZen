@@ -5,8 +5,10 @@ import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.interf.game.IPlayer;
 import edu.kit.robocup.interf.game.IPlayerState;
 
+import java.io.Serializable;
 
-public class PlayerState implements IPlayerState {
+
+public class PlayerState implements IPlayerState, Serializable {
     private final PitchSide pitchSide;
     private final int number;
     private final double positionX;

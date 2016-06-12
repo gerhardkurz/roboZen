@@ -3,8 +3,10 @@ package edu.kit.robocup.game.state;
 import edu.kit.robocup.interf.game.IMoveAbleObject;
 import edu.kit.robocup.game.SimpleGameObject;
 
+import java.io.Serializable;
 
-public class Ball extends SimpleGameObject implements IMoveAbleObject {
+
+public class Ball extends SimpleGameObject implements IMoveAbleObject, Serializable {
     private final double velocityLength;
 
 

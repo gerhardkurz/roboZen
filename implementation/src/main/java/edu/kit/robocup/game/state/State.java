@@ -6,13 +6,14 @@ import edu.kit.robocup.interf.game.IPlayer;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IState;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class State implements IState {
+public class State implements IState, Serializable {
     private PlayMode playMode;
     private final Ball ball;
-    private final Set<IPlayerState> players = new TreeSet<>((p1, p2) -> {
+    private final Set<IPlayerState> players = new TreeSet<>((Comparator<? super IPlayerState> & Serializable) (p1, p2) -> {
         if (p1.getPitchSide() != p2.getPitchSide()) {
             return p1.getPitchSide() == PitchSide.EAST ? -1 : 1;
         } else {
