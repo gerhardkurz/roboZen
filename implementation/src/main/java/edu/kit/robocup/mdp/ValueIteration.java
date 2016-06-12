@@ -49,9 +49,9 @@ public class ValueIteration implements ISolver {
                 permutations.addAll(a.getActionAction(i, j));
             }
         }*/
-        int numberSamples = 5000;
+        int numberSamples = 10000;
         double gamma = 0.7;
-        int K = 10;
+        int K = 20;
         if (t.getA() == null) {
             t.startLearning();
         }
@@ -62,7 +62,7 @@ public class ValueIteration implements ISolver {
         }
         DoubleFactory1D h = DoubleFactory1D.dense;
         DoubleMatrix1D theta = h.make(t.getGames().get(0).getStates().get(0).getDimension(), 0);
-        for (int horizon = 0; horizon < 500; horizon++) {
+        for (int horizon = 0; horizon < 800; horizon++) {
             logger.info("horizon: " + horizon);
             double[]  y = new double[numberSamples];
             for (int n = 0; n < numberSamples; n++) {
