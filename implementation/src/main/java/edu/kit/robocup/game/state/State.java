@@ -26,7 +26,7 @@ public class State implements IState, Serializable {
         this.playMode = PlayMode.UNKNOWN;
         this.ball = ball;
         this.players.addAll(players);
-        pos = new double[5*(players.size()) + 4];
+        pos = new double[4*(players.size()) + 3];
         initArray();
     }
 
