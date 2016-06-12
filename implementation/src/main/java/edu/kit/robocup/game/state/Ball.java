@@ -7,31 +7,30 @@ import java.io.Serializable;
 
 
 public class Ball extends SimpleGameObject implements IMoveAbleObject, Serializable {
-    private final double velocityLength;
-
+    private final double velocityX;
+    private final double velocityY;
 
     public Ball(double positionX, double positionY) {
-        this(positionX, positionY, 0);
-    }
-
-    public Ball(double positionX, double positionY, double velocityLength) {
-        super(positionX, positionY);
-        this.velocityLength = velocityLength;
+        this(positionX, positionY, 0, 0);
     }
 
     public Ball(double positionX, double positionY, double velocityX, double velocityY) {
         super(positionX, positionY);
-        this.velocityLength = Math.sqrt(velocityX*velocityX+velocityY*velocityY);
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
     }
 
     @Override
     public String toString() {
-        return "Ball{x:" + getPositionX() + " y: " + getPositionY() + " velocitylength: " + velocityLength + "}";
+        return "Ball{x:" + getPositionX() + " y: " + getPositionY() + " velocity: " + velocityX + ", " + velocityY + "}";
     }
 
-    @Override
-    public double getVelocityLength() {
-        return velocityLength;
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
     }
 
 }

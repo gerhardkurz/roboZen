@@ -29,4 +29,5 @@ public class Constants {
     public static final double minneckmoment = -180;
     public static final double minpower = -100;
     public static final double kick_power_rate = 0.027;
+    public static final double ball_speed_max = 3;
 }

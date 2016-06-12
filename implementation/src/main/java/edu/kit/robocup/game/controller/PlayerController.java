@@ -136,6 +136,11 @@ public class PlayerController extends StaffClientBase implements IPlayerControll
         return number;
     }
 
+    @Override
+    public double getVelocityLength() {
+        return getVelocityLength();
+    }
+
 
     /**
      * {@inheritDoc}

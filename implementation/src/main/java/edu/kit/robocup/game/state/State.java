@@ -26,7 +26,7 @@ public class State implements IState, Serializable {
         this.playMode = PlayMode.UNKNOWN;
         this.ball = ball;
         this.players.addAll(players);
-        pos = new double[4*(players.size()) + 3];
+        pos = new double[4*(players.size()+1)];
         initArray();
     }
 
@@ -46,8 +46,8 @@ public class State implements IState, Serializable {
             }
         }
         int cut = (state.length/4)*4;
-        ball = new Ball(state[cut], state[cut+1], state[cut+2]);
-        pos = new double[4*(players.size()) + 3];
+        ball = new Ball(state[cut], state[cut+1], state[cut+2], state[cut+3]);
+        pos = new double[4*(players.size()+1)];
         initArray();
     }
 
@@ -72,7 +72,7 @@ public class State implements IState, Serializable {
      * @return Dimension of state. Players get x and y coordinates, x, y velocity and body angle, ball gets x, y coordinate and x, y velocity
      */
     public int getDimension() {
-    	return 4*(players.size()) + 3;
+    	return 4*(players.size()+1);
     }
 
     @Override
@@ -112,6 +112,7 @@ public class State implements IState, Serializable {
         }
 		pos[4 * players.size()] = ball.getPositionX();
 		pos[4 * players.size() + 1] = ball.getPositionY();
-		pos[4 * players.size() + 2] = ball.getVelocityLength();
+		pos[4 * players.size() + 2] = ball.getVelocityX();
+        pos[4 * players.size() + 3] = ball.getVelocityY();
     }
 }

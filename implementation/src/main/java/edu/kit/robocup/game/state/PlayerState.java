@@ -59,7 +59,6 @@ public class PlayerState implements IPlayerState, Serializable {
         return positionY;
     }
 
-    @Override
     public double getVelocityLength() {
         return velocityLength;
     }

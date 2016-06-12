@@ -203,6 +203,7 @@ public class Transition implements ITransition {
      * calculates best Matrices A and B[i], so that s_t+1 = A*s_t + B[i]*ai_t
      */
     private void learn() {
+        logger.info("Calculating Transitions for " + games.size() + " games.");
         int statedim = games.get(0).getStates().get(0).getDimension();
 
         int numberplayers = games.get(0).getNumberPlayers();
@@ -228,7 +229,6 @@ public class Transition implements ITransition {
         List<Information> info = new ArrayList<>();
         List<Integer> leftOut = new ArrayList<>();
         for (int m = 0; m < games.size(); m++) {
-            logger.info("Game of size " + games.get(m).getStates().size() );
             for (int t = 0; t < gamelength - 1; t++) {
                 Information cur = new Information(games.get(m).getStates().get(t), games.get(m).getActions().get(t));
                 boolean doubleInformation = false;
@@ -303,7 +303,7 @@ public class Transition implements ITransition {
         //logger.info("Mnew " + MNew.columns() + " x " + MNew.rows());
 
 
-        logger.info("b is created");
+        logger.info("b has " + b.rows() + " rows.");
 
         // M*x = b is solved by x = (M^T*M)^-1 * M^T * b
         Algebra a = new Algebra();
