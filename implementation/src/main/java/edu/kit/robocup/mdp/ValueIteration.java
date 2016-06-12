@@ -30,6 +30,11 @@ public class ValueIteration implements ISolver {
         this.r = r;
     }
 
+    public ValueIteration(Transition t, IReward r) {
+        this.t = t;
+        this.r = r;
+    }
+
     /**
      * calculates IPolicy given the transition modell and a reward function
      * @return best Policy
@@ -47,7 +52,9 @@ public class ValueIteration implements ISolver {
         int numberSamples = 5000;
         double gamma = 0.7;
         int K = 10;
-        t.startLearning();
+        if (t.getA() == null) {
+            t.startLearning();
+        }
         List<State> samples = new ArrayList<>();
         StateFactory f = new StateFactory();
         for (int i = 0; i < numberSamples; i++) {

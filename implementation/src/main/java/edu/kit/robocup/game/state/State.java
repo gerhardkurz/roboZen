@@ -33,7 +33,7 @@ public class State implements IState, Serializable {
     public State(double[] state, PitchSide pitchSide, int numberOfPlayersOfPitchside) {
         this.playMode = PlayMode.UNKNOWN;
         int counter = 0;
-        for (int i = 0; i < state.length/4; i++) {
+        for (int i = 0; i < state.length/4 - 1; i++) {
             counter++;
             if (counter <= numberOfPlayersOfPitchside) {
                 players.add(new PlayerState(pitchSide, i, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
@@ -45,8 +45,8 @@ public class State implements IState, Serializable {
                 }
             }
         }
-        int cut = (state.length/4)*4;
-        ball = new Ball(state[cut], state[cut+1], state[cut+2], state[cut+3]);
+
+        ball = new Ball(state[state.length-4], state[state.length-3], state[state.length-2], state[state.length-1]);
         pos = new double[4*(players.size()+1)];
         initArray();
     }

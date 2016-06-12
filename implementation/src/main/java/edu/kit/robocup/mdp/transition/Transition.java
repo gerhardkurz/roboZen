@@ -44,6 +44,7 @@ public class Transition implements ITransition {
     public Transition(List<Game> games) {
         this.games = games;
         int numberOfCombinations = (int) Math.pow(Action.values().length, games.get(0).getNumberPlayers());
+        A = null;
         B = new DoubleMatrix2D[numberOfCombinations];
     }
 

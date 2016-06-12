@@ -21,13 +21,19 @@ public class StateFactory {
         Ball ball = new Ball(getRandomXPosition(), getRandomYPosition(), getRandomVelocity(), getRandomVelocity());
         List<IPlayerState> p = new ArrayList<>();
         for (int i = 0; i < numberPlayers; i++) {
-            p.add(new PlayerState(pitchSide, i, getRandomXPosition(), getRandomYPosition(), getRandomVelocity(), getRandomVelocity(), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
+            p.add(new PlayerState(pitchSide, i, getRandomXPosition(), getRandomYPosition(), getRandomVelocityLength(), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
         }
         return new State(ball, p);
     }
 
     private double getRandomVelocity() {
         return getRandomDouble(-Constants.kick_power_rate * Constants.maxpower, Constants.kick_power_rate * Constants.maxpower);
+    }
+
+    private double getRandomVelocityLength() {
+        double x = getRandomVelocity();
+        double y = getRandomVelocity();
+        return Math.sqrt(x*x+y*y);
     }
 
     private double getRandomXPosition() {
