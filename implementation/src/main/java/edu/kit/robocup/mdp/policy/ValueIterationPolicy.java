@@ -3,9 +3,6 @@ package edu.kit.robocup.mdp.policy;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
 import edu.kit.robocup.constant.PitchSide;
-import edu.kit.robocup.game.Dash;
-import edu.kit.robocup.game.Kick;
-import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.game.Turn;
 import edu.kit.robocup.game.controller.IPlayerController;
 import edu.kit.robocup.game.state.State;
@@ -15,8 +12,7 @@ import edu.kit.robocup.interf.mdp.IReward;
 import edu.kit.robocup.interf.mdp.IState;
 import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.mdp.PlayerActionSetFactory;
-import edu.kit.robocup.mdp.ValueIteration;
-import edu.kit.robocup.mdp.transition.Transitions;
+import edu.kit.robocup.mdp.transition.Transition;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -32,9 +28,9 @@ public class ValueIterationPolicy implements IPolicy {
 
     private DoubleMatrix1D theta;
     private IReward r;
-    private Transitions t;
+    private Transition t;
 
-    public ValueIterationPolicy(DoubleMatrix1D theta, IReward r, Transitions t) {
+    public ValueIterationPolicy(DoubleMatrix1D theta, IReward r, Transition t) {
         this.theta = theta;
         this.r = r;
         this.t = t;

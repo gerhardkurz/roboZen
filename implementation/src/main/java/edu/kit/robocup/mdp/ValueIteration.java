@@ -5,17 +5,15 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
-import edu.kit.robocup.Main;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.state.State;
-import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.interf.mdp.IReward;
 import edu.kit.robocup.interf.mdp.ISolver;
 import edu.kit.robocup.mdp.policy.ValueIterationPolicy;
 import edu.kit.robocup.mdp.transition.Game;
-import edu.kit.robocup.mdp.transition.Transitions;
+import edu.kit.robocup.mdp.transition.Transition;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -24,11 +22,11 @@ import java.util.List;
 public class ValueIteration implements ISolver {
 
     static Logger logger = Logger.getLogger(ValueIteration.class.getName());
-    private Transitions t;
+    private Transition t;
     private IReward r;
 
     public ValueIteration(List<Game> games, IReward r) {
-        this.t = new Transitions(games);
+        this.t = new Transition(games);
         this.r = r;
     }
 

@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainTransitions {
+public class MainTransition {
     public static void main(String[] args) throws IOException, InterruptedException {
-        List<Game> games = GameReader.getGamesFromFiles("recordings/chaseAndKick300", "recordings/chaseAndKick3001", "recordings/random300");
+        List<Game> games = GameReader.getGamesFromFiles("recordings/chaseAndKick", "recordings/chaseAndKick1", "recordings/chaseAndKick1", "recordings/random");
         ValueIteration v = new ValueIteration(games, new Reward(2000,-2000,50, -50, 70, 170, -170, PitchSide.EAST));
         IPolicy valueiterationPolicy = v.solve();
     }

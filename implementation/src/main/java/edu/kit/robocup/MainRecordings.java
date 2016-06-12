@@ -15,8 +15,10 @@ import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
 import edu.kit.robocup.recorder.GameRecorder;
 import edu.kit.robocup.util.Util;
 import org.apache.log4j.Logger;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,12 +29,31 @@ public class MainRecordings {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        PerPlayModePolicy policy1 = new PerPlayModePolicy(new GameRecorder("recordings/random300", new AllActionCombinationsPolicy()));
-        policy1.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
+        PerPlayModePolicy policyRecordRandom = new PerPlayModePolicy(new GameRecorder("recordings/random", new AllActionCombinationsPolicy()));
+        policyRecordRandom.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
+        PerPlayModePolicy policyChaseAndKick = new PerPlayModePolicy(new ChaseAndKickPolicy());
+        policyChaseAndKick.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
+        PerPlayModePolicy policyRecordChaseAndKick1 = new PerPlayModePolicy(new GameRecorder("recordings/chaseAndKick", new ChaseAndKickPolicy()));
+        policyRecordChaseAndKick1.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
+        PerPlayModePolicy policyRecordChaseAndKick2 = new PerPlayModePolicy(new GameRecorder("recordings/chaseAndKick1", new ChaseAndKickPolicy()));
+        policyRecordChaseAndKick2.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
+        PerPlayModePolicy policyRecordChaseAndKick3 = new PerPlayModePolicy(new GameRecorder("recordings/chaseAndKick2", new ChaseAndKickPolicy()));
+        policyRecordChaseAndKick3.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
 
 
+        IPolicy[] policiesTeamWest = {policyChaseAndKick, policyChaseAndKick, policyChaseAndKick, policyChaseAndKick};
+        IPolicy[] policiesTeamEast = {policyRecordRandom, policyRecordChaseAndKick1, policyRecordChaseAndKick2, policyRecordChaseAndKick3};
 
-        IPolicy[] policies = {policy1};
+        List<List<SimpleGameObject>> posTeamWest = new ArrayList<>();
+        List<SimpleGameObject> gameObjects = new ArrayList<>();
+        gameObjects.add(new SimpleGameObject(0, 10));
+        gameObjects.add(new SimpleGameObject(9, 10));
+
+
+        Util.TeamDescription teamDescription = new Util.TeamDescription(perPlayModePolicy, 5, new ArrayList<>());
+        Util.executeGame(teamDescription, teamDescription, new Ball(0, 0));
+        Util.executeGame(teamDescription, teamDescription, new Ball(0, 0));
+
         Util.initEnvironment();
 
         Trainer trainer = new Trainer("Trainer");

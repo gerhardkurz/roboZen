@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Transitions implements ITransitions {
+public class Transition implements ITransition {
 
-    static Logger logger = Logger.getLogger(Transitions.class.getName());
+    static Logger logger = Logger.getLogger(Transition.class.getName());
 
     // m games of T sequences, statesequence has to have the same length
     private List<Game> games;
@@ -41,7 +41,7 @@ public class Transitions implements ITransitions {
 
     MultivariateNormalDistribution dist;
 
-    public Transitions(List<Game> games) {
+    public Transition(List<Game> games) {
         this.games = games;
         int numberOfCombinations = (int) Math.pow(Action.values().length, games.get(0).getNumberPlayers());
         B = new DoubleMatrix2D[numberOfCombinations];
@@ -477,7 +477,7 @@ public class Transitions implements ITransitions {
         DoubleFactory2D h = DoubleFactory2D.dense;
 
         int numberplayers = 2;
-        Transitions t = new Transitions(games);
+        Transition t = new Transition(games);
         //t.startLearning();
         t.setLearning("C:/Users/dani/Documents/Praktikum/SS16_Robocup/lograndom300.txt");
         StateFactory f = new StateFactory();
@@ -517,7 +517,7 @@ public class Transitions implements ITransitions {
         g = new Game(getRandomStates(), getRandomActions());
         games.add(g);*/
 
-        //Transitions t = new Transitions(games);
+        //Transition t = new Transition(games);
         //t.startLearning();
         //ValueIteration v = new ValueIteration(t.getGames(), new Reward(200,-200,50, -50, 70, 170, -170, false ,"t1"));
     }
