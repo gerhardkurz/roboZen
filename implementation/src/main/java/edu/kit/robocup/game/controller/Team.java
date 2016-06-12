@@ -29,7 +29,7 @@ public class Team {
         coach = new Coach(this);
     }
 
-    public void handleState(State state) {
+    void handleState(State state) {
         Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers, pitchSide);
         actions.entrySet().forEach(e -> e.getKey().execute(e.getValue()));
     }

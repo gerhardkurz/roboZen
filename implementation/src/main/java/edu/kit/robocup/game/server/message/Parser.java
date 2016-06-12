@@ -12,7 +12,6 @@ public class Parser {
 
     public static void parse(Object handler, String msg) {
         if (Thread.currentThread().getName().endsWith("Coach")) {
-            logger.info(msg);
             if (msg.startsWith("(init ")) {
                 handleInit(handler);
             } else if (msg.startsWith("(see_global ")) {
