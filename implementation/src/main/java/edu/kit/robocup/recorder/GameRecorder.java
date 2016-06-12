@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 
 public class GameRecorder implements IPolicy {
     public static final String fileEnding = ".gl";
-    private static Logger logger = Logger.getLogger(GameRecorder.class.getName());
+    private static final Logger logger = Logger.getLogger(GameRecorder.class.getName());
     private IPolicy policy;
     private ObjectOutputStream oos;
     private boolean gameStarted = false;
