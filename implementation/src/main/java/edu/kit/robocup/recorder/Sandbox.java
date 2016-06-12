@@ -3,7 +3,7 @@ package edu.kit.robocup.recorder;
 
 import java.io.*;
 
-import edu.kit.robocup.Util;
+import edu.kit.robocup.util.Util;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.PlayMode;
 import edu.kit.robocup.game.controller.Team;
@@ -13,8 +13,6 @@ import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.mdp.policy.ChaseAndKickPolicy;
 import edu.kit.robocup.mdp.policy.PerPlayModePolicy;
 import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
-import org.apache.log4j.Logger;
-
 
 
 public class Sandbox {

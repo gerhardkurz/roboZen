@@ -470,9 +470,9 @@ public class Transitions {
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
         List<Game> games = new ArrayList<>();
         GameReader r = new GameReader("recordings/random300");
-        Game test = r.getGameFromFile();
-        Game part = new Game(test.getStates().subList(0,120), test.getActions().subList(0,119));
-        games.add(part);
+//        Game test = r.getGameFromFile();
+//        Game part = new Game(test.getStates().subList(0,120), test.getActions().subList(0,119));
+//        games.add(part);
         /*r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
         games.add(r.getGameFromFile());*/
 

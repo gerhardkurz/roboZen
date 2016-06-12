@@ -16,11 +16,10 @@ import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
 import edu.kit.robocup.mdp.transition.Game;
 import edu.kit.robocup.mdp.transition.Transitions;
 import edu.kit.robocup.recorder.GameReader;
-import edu.kit.robocup.recorder.GameRecorder;
+import edu.kit.robocup.util.Util;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 

@@ -1,7 +1,7 @@
 package edu.kit.robocup.recorder;
 
 import com.github.robocup_atan.atan.model.enums.PlayMode;
-import edu.kit.robocup.Util;
+import edu.kit.robocup.util.Util;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
