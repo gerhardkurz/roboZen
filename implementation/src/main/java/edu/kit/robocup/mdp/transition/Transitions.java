@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Transitions {
+public class Transitions implements ITransitions {
 
     static Logger logger = Logger.getLogger(Transitions.class.getName());
 
@@ -468,10 +468,8 @@ public class Transitions {
     }
 
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
-        List<Game> games = new ArrayList<>();
-        GameReader r = new GameReader("recordings/random300");
-        Game test = r.getGameFromFile();
-        Game part = new Game(test.getStates().subList(0,120), test.getActions().subList(0,119));
+        List<Game> games = GameReader.getGamesFromFiles("recordings/random300");
+        Game part = new Game(games.get(0).getStates().subList(0,120), games.get(0).getActions().subList(0,119));
         games.add(part);
         /*r = new GameReader("allActionCombinationsReducedPlayerStartingOnBall");
         games.add(r.getGameFromFile());*/
