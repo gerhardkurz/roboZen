@@ -6,6 +6,7 @@ import edu.kit.robocup.mdp.Reward;
 import edu.kit.robocup.mdp.ValueIteration;
 import edu.kit.robocup.mdp.transition.Game;
 import edu.kit.robocup.recorder.GameReader;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +14,9 @@ import java.util.List;
 
 
 public class MainTransition {
+
+    static Logger logger = Logger.getLogger(MainTransition.class.getName());
+
     public static void main(String[] args) throws IOException, InterruptedException {
         List<Game> games = GameReader.getGamesFromFiles("recordings/chaseAndKick", "recordings/chaseAndKick1", "recordings/chaseAndKick1", "recordings/random");
         ValueIteration v = new ValueIteration(games, new Reward(2000,-2000,50, -50, 70, 170, -170, PitchSide.EAST));

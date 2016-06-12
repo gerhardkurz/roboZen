@@ -29,6 +29,7 @@ public class MainRecordings {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        Thread.sleep(1000);
         PerPlayModePolicy policyRecordRandom = new PerPlayModePolicy(new GameRecorder("recordings/random", new AllActionCombinationsPolicy()));
         policyRecordRandom.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
         PerPlayModePolicy policyChaseAndKick = new PerPlayModePolicy(new ChaseAndKickPolicy());
@@ -91,5 +92,7 @@ public class MainRecordings {
             Util.TeamDescription teamDescriptionEast = new Util.TeamDescription(policiesTeamEast[i], 2, posTeamEast.get(i));
             Util.executeGame(teamDescriptionWest, teamDescriptionEast, ball.get(i));
         }
+        Util.killTask("rcssmonitor.exe");
+        Util.killTask("rcssserver.exe");
     }
 }
