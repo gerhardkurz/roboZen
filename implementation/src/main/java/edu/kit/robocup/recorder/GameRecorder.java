@@ -8,8 +8,10 @@ import edu.kit.robocup.game.controller.IPlayerController;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.interf.mdp.IState;
@@ -61,11 +63,8 @@ public class GameRecorder implements IPolicy {
         }
         if (gameStarted) {
             record(state);
-            for (Map.Entry<IPlayerController, IAction> e : actions.entrySet()) {
-                PlayerAction player = new PlayerAction(e.getKey().getNumber(), e.getValue());
-                record(player);
-            }
-            //actions.entrySet().stream().map(Map.Entry::getValue).forEach(this::record);
+            ArrayList<PlayerAction> playerActions = actions.entrySet().stream().map(e -> new PlayerAction(e.getKey().getNumber(), e.getValue())).collect(Collectors.toCollection(ArrayList::new));
+            record(new PlayerActionSet(playerActions));
         }
         return actions;
     }

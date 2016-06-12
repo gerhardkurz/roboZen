@@ -1,5 +1,6 @@
 package edu.kit.robocup.mdp.transition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.kit.robocup.game.PlayerAction;
@@ -11,14 +12,21 @@ import static org.javacc.parser.LexGen.actions;
 public class Game {
 
 	// states s_0 to s_T
-	private List<State> states;
+	private List<State> states = new ArrayList<>();
 	
 	// actions a_0 to a_(T-1), a_i is action between s_i and s_(i+1)
-	private List<PlayerActionSet> playerActionSets;
+	private List<PlayerActionSet> playerActionSets = new ArrayList<>();
 	
 	// number of players of PitchSide that is doing actions
 	private int numberPlayers;
-	
+
+	public Game(State state1, PlayerActionSet playerActionSet, State state2) {
+		states.add(state1);
+		states.add(state2);
+		playerActionSets.add(playerActionSet);
+		this.numberPlayers = playerActionSet.getActions().size();
+	}
+
 	public Game(List<State> states, List<PlayerActionSet> playerActionSets) {
 		this.states = states;
 		this.playerActionSets = playerActionSets;

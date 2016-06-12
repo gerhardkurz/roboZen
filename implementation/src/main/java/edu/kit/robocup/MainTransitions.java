@@ -14,13 +14,7 @@ import java.util.List;
 
 public class MainTransitions {
     public static void main(String[] args) throws IOException, InterruptedException {
-        List<Game> games = new ArrayList<Game>();
-        GameReader r = new GameReader("recordings/chaseAndKick300");
-        games.add(r.getGameFromFile());
-        r = new GameReader("recordings/chaseAndKick3001");
-        games.add(r.getGameFromFile());
-        r = new GameReader("recordings/random300");
-        games.add(r.getGameFromFile());
+        List<Game> games = GameReader.getGamesFromFiles("recordings/chaseAndKick300", "recordings/chaseAndKick3001", "recordings/random300");
         ValueIteration v = new ValueIteration(games, new Reward(2000,-2000,50, -50, 70, 170, -170, PitchSide.EAST));
         IPolicy valueiterationPolicy = v.solve();
     }

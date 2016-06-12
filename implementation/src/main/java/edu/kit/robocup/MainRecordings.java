@@ -6,6 +6,7 @@ import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
+import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.mdp.policy.AllActionCombinationsPolicy;
 import edu.kit.robocup.mdp.policy.ChaseAndKickPolicy;
 import edu.kit.robocup.mdp.policy.PerPlayModePolicy;
@@ -21,6 +22,10 @@ public class MainRecordings {
     static Logger logger = Logger.getLogger(MainRecordings.class.getName());
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        PerPlayModePolicy policy1 = new PerPlayModePolicy(new GameRecorder("recordings/random300", new AllActionCombinationsPolicy()));
+        policy1.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
+
+        IPolicy[] policies = {policy1};
         Util.initEnvironment();
 
         Trainer trainer = new Trainer("Trainer");
