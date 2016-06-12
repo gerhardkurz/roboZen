@@ -46,124 +46,50 @@ public class MainRecordings {
 
         List<List<SimpleGameObject>> posTeamWest = new ArrayList<>();
         List<SimpleGameObject> gameObjects = new ArrayList<>();
-        gameObjects.add(new SimpleGameObject(0, 10));
-        gameObjects.add(new SimpleGameObject(9, 10));
+        gameObjects.add(new SimpleGameObject(-30, 60));
+        gameObjects.add(new SimpleGameObject(-30, -30));
+        posTeamWest.add(gameObjects);
+        gameObjects = new ArrayList<>();
+        gameObjects.add(new SimpleGameObject(-5, 5));
+        gameObjects.add(new SimpleGameObject(-5, -5));
+        posTeamWest.add(gameObjects);
+        gameObjects = new ArrayList<>();
+        gameObjects.add(new SimpleGameObject(-5, 5));
+        gameObjects.add(new SimpleGameObject(-5, -5));
+        posTeamWest.add(gameObjects);
+        gameObjects = new ArrayList<>();
+        gameObjects.add(new SimpleGameObject(-50, 50));
+        gameObjects.add(new SimpleGameObject(-50, -50));
+        posTeamWest.add(gameObjects);
 
+        List<List<SimpleGameObject>> posTeamEast = new ArrayList<>();
+        gameObjects = new ArrayList<>();
+        gameObjects.add(new SimpleGameObject(10, 10));
+        gameObjects.add(new SimpleGameObject(10, 10));
+        posTeamEast.add(gameObjects);
+        gameObjects = new ArrayList<>();
+        gameObjects.add(new SimpleGameObject(5, 5));
+        gameObjects.add(new SimpleGameObject(5, -5));
+        posTeamEast.add(gameObjects);
+        gameObjects = new ArrayList<>();
+        gameObjects.add(new SimpleGameObject(50, 50));
+        gameObjects.add(new SimpleGameObject(50, -50));
+        posTeamEast.add(gameObjects);
+        gameObjects = new ArrayList<>();
+        gameObjects.add(new SimpleGameObject(5, 5));
+        gameObjects.add(new SimpleGameObject(5, -5));
+        posTeamEast.add(gameObjects);
 
-        Util.TeamDescription teamDescription = new Util.TeamDescription(perPlayModePolicy, 5, new ArrayList<>());
-        Util.executeGame(teamDescription, teamDescription, new Ball(0, 0));
-        Util.executeGame(teamDescription, teamDescription, new Ball(0, 0));
+        List<Ball> ball = new ArrayList<>();
+        ball.add(new Ball(10, 10));
+        ball.add(new Ball(0,0));
+        ball.add(new Ball(0,0));
+        ball.add(new Ball(0,0));
 
-        Util.initEnvironment();
-
-        Trainer trainer = new Trainer("Trainer");
-        trainer.connect();
-
-        PerPlayModePolicy perPlayModePolicy = new PerPlayModePolicy(new GameRecorder("recordings/random300", new AllActionCombinationsPolicy()));
-        perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
-        Team team1 = new Team(PitchSide.WEST, 2, new ChaseAndKickPolicy());
-        team1.connectAll();
-
-        Team team2 = new Team(PitchSide.EAST, 2, perPlayModePolicy);
-        team2.connectAll();
-
-        trainer.movePlayer(new PlayerState(PitchSide.WEST, 1, -30, 60));
-        trainer.movePlayer(new PlayerState(PitchSide.WEST, 2, -30, -30));
-
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, 10, 10));
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 2, 10, 10));
-
-        Thread.sleep(100);
-        trainer.moveBall(new Ball(10, 10));
-        trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
-        while (trainer.getInitMessage().toString() == "") { // TODO Spielstand != 0:0
-            Thread.sleep(1);
+        for (int i = 0; i < policiesTeamEast.length; i++) {
+            Util.TeamDescription teamDescriptionWest = new Util.TeamDescription(policiesTeamWest[i], 2, posTeamWest.get(i));
+            Util.TeamDescription teamDescriptionEast = new Util.TeamDescription(policiesTeamEast[i], 2, posTeamEast.get(i));
+            Util.executeGame(teamDescriptionWest, teamDescriptionEast, ball.get(i));
         }
-        Util.killTask("rcssserver.exe");
-        Util.killTask("rcssmonitor.exe");
-
-        Util.initEnvironment();
-
-        trainer = new Trainer("Trainer");
-        trainer.connect();
-
-        perPlayModePolicy = new PerPlayModePolicy(new GameRecorder("recordings/chaseAndKick300", new ChaseAndKickPolicy()));
-        perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
-        team1 = new Team(PitchSide.WEST, 2, perPlayModePolicy);
-        team1.connectAll();
-
-        team2 = new Team(PitchSide.EAST, 2, perPlayModePolicy);
-        team2.connectAll();
-
-        trainer.movePlayer(new PlayerState(PitchSide.WEST, 1, -5, 5));
-        trainer.movePlayer(new PlayerState(PitchSide.WEST, 2, -5, -5));
-
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, 5, 5));
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 2, 5, -5));
-
-        Thread.sleep(100);
-        trainer.moveBall(new Ball(0, 0));
-        trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
-        while (trainer.getInitMessage().toString() == "") { // TODO Spielstand != 0:0
-            Thread.sleep(1);
-        }
-        Util.killTask("rcssserver.exe");
-        Util.killTask("rcssmonitor.exe");
-
-        Util.initEnvironment();
-
-        trainer = new Trainer("Trainer");
-        trainer.connect();
-
-        perPlayModePolicy = new PerPlayModePolicy(new GameRecorder("recordings/chaseAndKick3001", new ChaseAndKickPolicy()));
-        perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
-        team1 = new Team(PitchSide.WEST, 2, perPlayModePolicy);
-        team1.connectAll();
-
-        team2 = new Team(PitchSide.EAST, 2, perPlayModePolicy);
-        team2.connectAll();
-
-        trainer.movePlayer(new PlayerState(PitchSide.WEST, 1, -5, 5));
-        trainer.movePlayer(new PlayerState(PitchSide.WEST, 2, -5, -5));
-
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, 50, 50));
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 2, 50, -50));
-
-        Thread.sleep(100);
-        trainer.moveBall(new Ball(0, 0));
-        trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
-        while (trainer.getInitMessage().toString() == "") { // TODO Spielstand != 0:0
-            Thread.sleep(1);
-        }
-        Util.killTask("rcssserver.exe");
-        Util.killTask("rcssmonitor.exe");
-
-        Util.initEnvironment();
-
-        trainer = new Trainer("Trainer");
-        trainer.connect();
-
-        perPlayModePolicy = new PerPlayModePolicy(new GameRecorder("recordings/chaseAndKick3002", new ChaseAndKickPolicy()));
-        perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
-        team1 = new Team(PitchSide.WEST, 2, perPlayModePolicy);
-        team1.connectAll();
-
-        team2 = new Team(PitchSide.EAST, 2, perPlayModePolicy);
-        team2.connectAll();
-
-        trainer.movePlayer(new PlayerState(PitchSide.WEST, 1, -50, 50));
-        trainer.movePlayer(new PlayerState(PitchSide.WEST, 2, -50, -50));
-
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, 5, 5));
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 2, 5, -5));
-
-        Thread.sleep(100);
-        trainer.moveBall(new Ball(0, 0));
-        trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
-        while (trainer.getInitMessage().toString() == "") { // TODO Spielstand != 0:0
-            Thread.sleep(1);
-        }
-        Util.killTask("rcssserver.exe");
-        Util.killTask("rcssmonitor.exe");
     }
 }
