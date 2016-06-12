@@ -89,4 +89,28 @@ public class PlayerActionSetFactory {
 
         return discretizedActions;
     }
+
+    public List<PlayerActionSet> getReducedActions() {
+        List<IAction> reducedActions = new ArrayList<>();
+        reducedActions.add(new Kick(30, 0));
+        reducedActions.add(new Kick(30, 25));
+        reducedActions.add(new Kick(30, -25));
+        reducedActions.add(new Turn(1));
+        reducedActions.add(new Turn(10));
+        reducedActions.add(new Turn(50));
+        reducedActions.add(new Turn(-1));
+        reducedActions.add(new Turn(-10));
+        reducedActions.add(new Turn(-50));
+        reducedActions.add(new Dash(40));
+        List<PlayerActionSet> permutations = new ArrayList<>();
+        for (int i = 0; i < reducedActions.size(); i++) {
+            for (int j = 0; j < reducedActions.size(); j++) {
+                List<PlayerAction> t = new ArrayList<>();
+                t.add(new PlayerAction(1, reducedActions.get(i)));
+                t.add(new PlayerAction(2, reducedActions.get(j)));
+                permutations.add(new PlayerActionSet(t));
+            }
+        }
+        return permutations;
+    }
 }
