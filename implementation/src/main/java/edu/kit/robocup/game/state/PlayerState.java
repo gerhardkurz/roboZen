@@ -64,12 +64,12 @@ public class PlayerState implements IPlayerState, Serializable {
     }
 
     @Override
-    public double getVelocityX() {
+    public double getVelocityY() {
         return Math.sin(Math.toRadians(bodyAngle)) * velocityLength;
     }
 
     @Override
-    public double getVelocityY() {
+    public double getVelocityX() {
         return Math.cos(Math.toRadians(bodyAngle)) * velocityLength;
     }
 
