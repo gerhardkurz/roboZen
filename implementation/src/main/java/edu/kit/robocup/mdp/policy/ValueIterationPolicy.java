@@ -68,17 +68,17 @@ public class ValueIterationPolicy implements IPolicy {
                 }
                 //logger.info("For Actioncombination " +  permutations.get(i) + " the reward would be " + value);
                 if (maxValue < value) {
-                    if (state.getPlayers(pitchSide).get(0).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN || state.getPlayers(pitchSide).get(1).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN) {
+                    //if (state.getPlayers(pitchSide).get(0).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN || state.getPlayers(pitchSide).get(1).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN) {
                         maxValue = value;
                         maxActionPermutation = i;
-                    } else {
+                    /*} else {
                         if (permutations.get(i).getActions().get(0).getActionType() == KICK || permutations.get(i).getActions().get(1).getActionType() == KICK) {
                             // do nothing
                         } else {
                             maxValue = value;
                             maxActionPermutation = i;
                         }
-                    }
+                    }*/
                 }
             }
             for (int i = 0; i < playerControllers.size(); i++) {
