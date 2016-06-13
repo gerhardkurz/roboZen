@@ -13,6 +13,7 @@ import edu.kit.robocup.interf.mdp.IReward;
 import edu.kit.robocup.interf.mdp.IState;
 import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.mdp.PlayerActionSetFactory;
+import edu.kit.robocup.mdp.transition.ITransition;
 import edu.kit.robocup.mdp.transition.Transition;
 import org.apache.log4j.Logger;
 
@@ -30,9 +31,9 @@ public class ValueIterationPolicy implements IPolicy {
 
     private DoubleMatrix1D theta;
     private IReward r;
-    private Transition t;
+    private ITransition t;
 
-    public ValueIterationPolicy(DoubleMatrix1D theta, IReward r, Transition t) {
+    public ValueIterationPolicy(DoubleMatrix1D theta, IReward r, ITransition t) {
         this.theta = theta;
         this.r = r;
         this.t = t;
@@ -41,7 +42,7 @@ public class ValueIterationPolicy implements IPolicy {
     @Override
     public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers, PitchSide pitchSide) {
         Map<IPlayerController, IAction> action = new HashMap<>();
-        if (((State) state).getArray().length == t.getA().rows()) {
+        if (((State) state).getArray().length == t.getStateDimension()) {
             // out of all actions that exist you should choose the action, which maximizes the immediate reward + theta*nextState
             PlayerActionSetFactory a = new PlayerActionSetFactory();
             List<PlayerActionSet> permutations = new ArrayList<>();
@@ -66,7 +67,7 @@ public class ValueIterationPolicy implements IPolicy {
                     value += theta.zDotProduct(next);
                     //logger.info("After theta: " + value);
                 }
-                //logger.info("For Actioncombination " +  permutations.get(i) + " the reward would be " + value);
+                logger.info("For Actioncombination " +  permutations.get(i) + " the reward would be " + value);
                 if (maxValue < value) {
                     //if (state.getPlayers(pitchSide).get(0).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN || state.getPlayers(pitchSide).get(1).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN) {
                         maxValue = value;

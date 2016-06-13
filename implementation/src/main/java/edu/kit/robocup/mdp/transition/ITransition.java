@@ -9,4 +9,7 @@ import edu.kit.robocup.mdp.PlayerActionSet;
  */
 public interface ITransition {
     public State getNewStateSample(State s, PlayerActionSet a, PitchSide pitchSide);
+    public int getNumberAllPlayers();
+    public int getStateDimension();
+    public int getNumberPlayersPitchside();
 }
