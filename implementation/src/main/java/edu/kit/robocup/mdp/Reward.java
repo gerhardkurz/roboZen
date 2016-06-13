@@ -59,9 +59,17 @@ public class Reward implements IReward {
 			double distBallprev = bprev.getDistance(pprev.get(i));
 			double distBallnext = bnext.getDistance(pnext.get(i));
 			if (distBallnext > distBallprev) {
-				reward += gettingAwayFromBall * 1/distBallnext;
+				if (distBallnext < 1) {
+					reward += gettingAwayFromBall;
+				} else {
+					reward += gettingAwayFromBall * 1 / distBallnext;
+				}
 			} else {
-				reward += gettingNearBall * 1/distBallnext;
+				if (distBallnext < 1)  {
+					reward += gettingNearBall;
+				} else {
+					reward += gettingNearBall * 1 / distBallnext;
+				}
 			}
 			if (distBallnext <= Constants.KICKABLE_MARGIN) {
 				reward += havingBall;
@@ -82,9 +90,17 @@ public class Reward implements IReward {
 			double distBallAdvGoalnext = Constants.GOAL_WEST.getDistance(bnext);
 			
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
-				reward += gettingNearGoal * 1/distBallAdvGoalnext;
+				if (distBallAdvGoalnext < 1) {
+					reward += gettingNearGoal;
+				} else {
+					reward += gettingNearGoal * 1 / distBallAdvGoalnext;
+				}
 			} else {
-				reward += gettingAwayFromGoal * 1/distBallAdvGoalnext;
+				if (distBallAdvGoalnext < 1) {
+					reward += gettingAwayFromBall;
+				} else {
+					reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext;
+				}
 			}
 		} else {
 			if (Constants.GOAL_EAST.getDistance(bnext) == 0) {
@@ -99,9 +115,18 @@ public class Reward implements IReward {
 			double distBallAdvGoalnext = Constants.GOAL_EAST.getDistance(bnext);
 
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
-				reward += gettingNearGoal * 1/distBallAdvGoalnext;
+				if (distBallAdvGoalnext < 1)  {
+					reward += gettingNearGoal;
+				} else {
+					reward += gettingNearGoal * 1 / distBallAdvGoalnext;
+				}
 			} else {
-				reward += gettingAwayFromGoal * 1/distBallAdvGoalnext;
+				if (distBallAdvGoalnext < 1) {
+					reward += gettingAwayFromGoal;
+				} else {
+					reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext;
+
+				}
 			}
 		}
 		

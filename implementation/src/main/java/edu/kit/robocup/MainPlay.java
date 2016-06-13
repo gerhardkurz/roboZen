@@ -32,11 +32,12 @@ public class MainPlay {
 
         //double[] theta90Iterations = new double[]{-0.000963, 0.269859, -0.002512, 0.040671, -0.070394, -0.008944, -0.019962, -0.03694, -0.002041, -0.010458, 0.115703, 0.027337, -0.023096, -0.02907, 0.018174, -0.178805, -0.063191, 0.043526, -0.041956, -0.023118, -0.039069, 0.142336, -0.02465, 0.008617};
         double[] theta500Iterations = new double[]{-9.96505E+271, -3.862491E+271, -3.998974E+270, -2.245478E+269, -5.661369E+272, 1.104631E+272, -4.650037E+271, -1.973853E+271, 1.034372E+271, -2.088521E+272, -2.028838E+270, 3.259283E+272, 1.002286E+272, 2.796303E+271, 8.805387E+272, 1.324348E+272, 3.609485E+272, 3.206651E+271, -6.124972E+271, 1.084968E+272, 5.641088E+270, 1.412211E+271, 1.895076E+271, -8.958095E+270};
+        double[] theta70Iterations10000Samples = new double[]{3.586892E+119, -3.745296E+120 ,-1.432131E+121, 9.05253E+119, 4.878049E+119, -1.207145E+120, 8.894006E+121, -8.673137E+118, -2.939898E+119, 1.483416E+119, 2.585866E+121, 4.420041E+119, -6.22495E+119, 4.042307E+118, 9.935912E+121, 3.105797E+119, 5.717366E+119, 1.58088E+120, 2.860505E+120, -4.850314E+120};
 
         Transition t = new Transition(games);
-        t.setLearning("logall3.txt");
+        t.setLearning("Transitions/save.txt");
         DoubleFactory1D h = DoubleFactory1D.dense;
-        IPolicy valueiterationPolicy = new ValueIterationPolicy(h.make(theta500Iterations), new Reward(2000,-2000,50, -50, 70, 170, -170, PitchSide.EAST), t);
+        IPolicy valueiterationPolicy = new ValueIterationPolicy(h.make(theta70Iterations10000Samples), new Reward(2000,-2000,50, -50, 70, 170, -170, PitchSide.EAST), t);
 
 
         Util.initEnvironment();
@@ -55,11 +56,11 @@ public class MainPlay {
         trainer.movePlayer(new PlayerState(PitchSide.WEST, 1, -5, 5));
         trainer.movePlayer(new PlayerState(PitchSide.WEST, 2, -5, -5));
 
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, 10, 10));
-        trainer.movePlayer(new PlayerState(PitchSide.EAST, 2, 10, 10));
+        trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, 5, -5));
+        trainer.movePlayer(new PlayerState(PitchSide.EAST, 2, 5, 5));
 
         Thread.sleep(100);
-        trainer.moveBall(new Ball(10, 10));
+        trainer.moveBall(new Ball(-10, -10));
         trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
     }
 }

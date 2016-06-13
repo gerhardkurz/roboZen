@@ -50,7 +50,7 @@ public class ValueIteration implements ISolver {
             }
         }*/
         int numberSamples = 10000;
-        double gamma = 0.7;
+        double gamma = 0.4;
         int K = 20;
         if (t.getA() == null) {
             t.startLearning();
@@ -77,8 +77,17 @@ public class ValueIteration implements ISolver {
                     }
                     double reward = 0;
                     for (int i = 0; i < K; i++) {
+                        //logger.info("Prev: " + samples.get(n));
+                        //logger.info("Next: " + resultingSamples.get(i));
                         reward += r.calculateReward(samples.get(n), permutations.get(act), resultingSamples.get(i));
+                        //logger.info(reward);
+                        /*if (horizon > 0) {
+                            logger.info(reward);
+                        }*/
                         reward += gamma * theta.zDotProduct(h.make(resultingSamples.get(i).getArray()));
+                        /*if (horizon > 0) {
+                            logger.info("Thetaproduct: " + theta.zDotProduct(h.make(resultingSamples.get(i).getArray())));
+                        }*/
                     }
                     q[act] = 1/(K*1.0) * reward;
                     if (max < q[act]) {
