@@ -58,15 +58,15 @@ public class ValueIterationPolicy implements IPolicy {
                 int value = 0;
                 for (int k = 0; k < K; k++) {
                     State s = t.getNewStateSample((State) state, permutations.get(i), r.getPitchSide());
-                    logger.info(s.toString());
+                    //logger.info(s.toString());
                     DoubleFactory1D h = DoubleFactory1D.dense;
                     DoubleMatrix1D next = h.make(s.getArray());
                     value += r.calculateReward((State) state, permutations.get(i), s);
-                    logger.info("Before theta: " + value);
+                    //logger.info("Before theta: " + value);
                     value += theta.zDotProduct(next);
-                    logger.info("After theta: " + value);
+                    //logger.info("After theta: " + value);
                 }
-                logger.info("For Actioncombination " +  permutations.get(i) + " the reward would be " + value);
+                //logger.info("For Actioncombination " +  permutations.get(i) + " the reward would be " + value);
                 if (maxValue < value) {
                     if (state.getPlayers(pitchSide).get(0).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN || state.getPlayers(pitchSide).get(1).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN) {
                         maxValue = value;
@@ -82,7 +82,7 @@ public class ValueIterationPolicy implements IPolicy {
                 }
             }
             for (int i = 0; i < playerControllers.size(); i++) {
-                logger.info("Player " + playerControllers.get(i).getNumber() + " will do action " + permutations.get(maxActionPermutation).getActions().get(i).toString());
+                //logger.info("Player " + playerControllers.get(i).getNumber() + " will do action " + permutations.get(maxActionPermutation).getActions().get(i).toString());
                 action.put(playerControllers.get(0), permutations.get(maxActionPermutation).getActions().get(i).getAction());
             }
         } else {

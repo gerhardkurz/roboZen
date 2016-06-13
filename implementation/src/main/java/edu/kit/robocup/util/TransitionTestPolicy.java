@@ -29,8 +29,11 @@ public class TransitionTestPolicy implements IPolicy {
     }
 
     public void evaluatePrediction(IState actual, IState predicted) {
-        logger.info(actual.getPlayers(PitchSide.WEST).get(0));
-        logger.info(predicted.getPlayers(PitchSide.WEST).get(0));
+        logger.info("act: " + actual.getPlayers(PitchSide.EAST).get(0));
+        logger.info("pred: "+ predicted.getPlayers(PitchSide.EAST).get(0));
+
+        logger.info("act: " +actual.getPlayers(PitchSide.WEST).get(0));
+        logger.info("pred: " +predicted.getPlayers(PitchSide.WEST).get(0));
     }
 
     @Override

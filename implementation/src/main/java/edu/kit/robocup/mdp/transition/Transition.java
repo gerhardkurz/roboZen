@@ -166,10 +166,13 @@ public class Transition implements ITransition {
         DoubleMatrix1D calculationEpsilon = h.make(dist.sample());
         //logger.info("Epsilon: " + calculationEpsilon.toString());
         DoubleMatrix1D result = h.make(s.getDimension());
+        //double normEpsilon = 0;
         for (int i = 0; i < s.getDimension(); i++) {
             // result = A*s+B*a+epsilon
-            result.set(i, calculationAs.get(i) + calculationBa.get(i) + calculationEpsilon.get(i));
+            result.set(i, calculationAs.get(i) + calculationBa.get(i)+ 0.005 * calculationEpsilon.get(i));
+            //normEpsilon += 0.005 * Math.abs(calculationEpsilon.get(i));
         }
+        //logger.info("Norm epsilon: " + normEpsilon);
         return new State(result.toArray(), pitchSide, s.getPlayers(pitchSide).size());
     }
 

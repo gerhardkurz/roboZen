@@ -36,12 +36,12 @@ public class State implements IState, Serializable {
         for (int i = 0; i < state.length/4 - 1; i++) {
             counter++;
             if (counter <= numberOfPlayersOfPitchside) {
-                players.add(new PlayerState(pitchSide, i, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
+                players.add(new PlayerState(pitchSide, i+1, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
             } else {
                 if (pitchSide == PitchSide.EAST) {
-                    players.add(new PlayerState(PitchSide.WEST, i, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
+                    players.add(new PlayerState(PitchSide.WEST, i+1-numberOfPlayersOfPitchside, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
                 } else {
-                    players.add(new PlayerState(PitchSide.EAST, i, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
+                    players.add(new PlayerState(PitchSide.EAST, i+1-numberOfPlayersOfPitchside, state[i], state[i + 1], state[i + 2], state[i + 3], 0));
                 }
             }
         }
