@@ -36,14 +36,13 @@ public class ValueIteration implements ISolver {
     }
 
     /**
-     * calculates IPolicy given the transition modell and a reward function
+     * calculates IPolicy given the transition model and a reward function
      * @return best Policy
      */
     @Override
     public IPolicy solve() {
         PlayerActionSetFactory a = new PlayerActionSetFactory();
-        List<PlayerActionSet> permutations = new ArrayList<>();
-        permutations = a.getReducedActions();
+        List<PlayerActionSet> permutations = a.getReducedActions();
         /*for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 permutations.addAll(a.getActionAction(i, j));
@@ -64,12 +63,12 @@ public class ValueIteration implements ISolver {
         DoubleMatrix1D theta = h.make(t.getGames().get(0).getStates().get(0).getDimension(), 0);
         for (int horizon = 0; horizon < 800; horizon++) {
             logger.info("horizon: " + horizon);
-            double[]  y = new double[numberSamples];
+            double[] y = new double[numberSamples];
             for (int n = 0; n < numberSamples; n++) {
                 double[] q = new double[permutations.size()];
                 double max = 0;
                 for (int act = 0; act < permutations.size(); act++) {
-                    //saves K states, that could be the next states after beeing in state samples[i] and doing action act
+                    //saves K states, that could be the next states after being in state samples[i] and doing action act
                     List<State> resultingSamples = new ArrayList<>();
                     for (int k = 0; k < K; k++) {
                         State s = t.getNewStateSample(samples.get(n), permutations.get(act), r.getPitchSide());
