@@ -26,7 +26,7 @@ public class Goal extends SimpleGameObject {
     @Override
     public double getDistance(IGameObject other) {
         if (Math.abs(other.getPositionY()) <= upperPost.getPositionY()) {
-            return other.getPositionX() - upperPost.getPositionX() / 2.0;
+            return other.getPositionX() - upperPost.getPositionX();
         } else {
             if (other.getPositionY() > 0) {
                 return upperPost.getDistance(other);
