@@ -14,12 +14,15 @@ import edu.kit.robocup.mdp.policy.PerPlayModePolicy;
 import edu.kit.robocup.mdp.policy.ValueIterationPolicy;
 import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
 import edu.kit.robocup.mdp.transition.Game;
+import edu.kit.robocup.mdp.transition.ITransition;
 import edu.kit.robocup.mdp.transition.Transition;
+import edu.kit.robocup.mdp.transition.TransitionDet;
 import edu.kit.robocup.recorder.GameReader;
 import edu.kit.robocup.util.TransitionTestPolicy;
 import edu.kit.robocup.util.Util;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static edu.kit.robocup.game.PlayMode.KICK_OFF_EAST;
@@ -29,13 +32,13 @@ import static edu.kit.robocup.game.PlayMode.KICK_OFF_EAST;
  */
 public class MainTestTransitions {
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
-        List<Game> games = GameReader.getGamesFromFiles("recordings/chaseAndKick", "recordings/chaseAndKick1", "recordings/chaseAndKick2", "recordings/random");
+        //List<Game> games = GameReader.getGamesFromFiles("recordings/chaseAndKick", "recordings/chaseAndKick1", "recordings/chaseAndKick2", "recordings/random");
 
-        Transition t = new Transition(games);
-        t.setLearning("Transitions/save.txt");
-        DoubleFactory1D h = DoubleFactory1D.dense;
+        //ITransition t = new Transition(games);
+        //((Transition)t).setLearning("Transitions/save.txt");
+        ITransition t1 = new TransitionDet();
 
-        TransitionTestPolicy test = new TransitionTestPolicy(new ChaseAndKickPolicy(), t);
+        TransitionTestPolicy test = new TransitionTestPolicy(new ChaseAndKickPolicy(), t1);
 
         Util.initEnvironment();
 

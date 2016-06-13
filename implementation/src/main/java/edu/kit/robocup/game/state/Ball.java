@@ -25,10 +25,12 @@ public class Ball extends SimpleGameObject implements IMoveAbleObject, Serializa
         return "Ball{x:" + getPositionX() + " y: " + getPositionY() + " velocity: " + velocityX + ", " + velocityY + "}";
     }
 
+    @Override
     public double getVelocityX() {
         return velocityX;
     }
 
+    @Override
     public double getVelocityY() {
         return velocityY;
     }

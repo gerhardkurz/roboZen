@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.corba.se.impl.orbutil.closure.Constant;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.Kick;
@@ -90,6 +91,7 @@ public class Reward implements IReward {
 		if (pitchSide.equals(PitchSide.EAST)) {
 			if (bnext.getPositionX() <= Constants.GOAL_WEST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_WEST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_WEST.getLowerPost().getPositionY()) {
 				reward += goal;
+				logger.info("goal");
 			}
 			if (bnext.getPositionX() >= Constants.GOAL_EAST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_EAST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_EAST.getLowerPost().getPositionY()) {
 				reward += advGoal;
@@ -98,7 +100,6 @@ public class Reward implements IReward {
 			double distBallAdvGoalprev = Constants.GOAL_WEST.getDistance(bprev) ;
 
 			double distBallAdvGoalnext = Constants.GOAL_WEST.getDistance(bnext);
-			
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
 				if (distBallAdvGoalnext < 1) {
 					reward += gettingNearGoal;
@@ -120,6 +121,7 @@ public class Reward implements IReward {
 			}
 			if (bnext.getPositionX() >= Constants.GOAL_EAST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_EAST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_EAST.getLowerPost().getPositionY()) {
 				reward += goal;
+				logger.info("goal");
 			}
 
 			double distBallAdvGoalprev = Constants.GOAL_EAST.getDistance(bprev) ;
@@ -156,7 +158,7 @@ public class Reward implements IReward {
 		p.add(new PlayerState(PitchSide.EAST, 2, 0, 0));
 		p.add(new PlayerState(PitchSide.WEST, 1, 0, 0));
 		p.add(new PlayerState(PitchSide.WEST, 2, 0, 0));
-		State s = new State(new Ball(-60, 0), p);
+		State s = new State(new Ball(-20, 0), p);
 		Reward r = new Reward(2000,-2000,50, -50, 70, 170, -170, PitchSide.EAST);
 		List<PlayerAction> l = new ArrayList<>();
 		l.add(new PlayerAction(1, new Kick(0, 0)));
@@ -168,7 +170,7 @@ public class Reward implements IReward {
 		p.add(new PlayerState(PitchSide.EAST, 2, -20, 0));
 		p.add(new PlayerState(PitchSide.WEST, 1, 0, 0));
 		p.add(new PlayerState(PitchSide.WEST, 2, 0, 0));
-		State s1 = new State(new Ball(-200, 0), p);
+		State s1 = new State(new Ball(-30, 0), p);
 		logger.info(r.calculateReward(s, a, s1));
 	}
 }

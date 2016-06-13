@@ -30,4 +30,7 @@ public class Constants {
     public static final double minpower = -100;
     public static final double kick_power_rate = 0.027;
     public static final double ball_speed_max = 3;
+    public static final double player_decay = 0.4;
+    public static final double dash_power_rate = 0.006;
+    public static final double ball_decay = 0.94;
 }
