@@ -1,17 +1,25 @@
 package edu.kit.robocup.mdp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.constant.PitchSide;
+import edu.kit.robocup.game.Kick;
+import edu.kit.robocup.game.PlayerAction;
+import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.Ball;
+import edu.kit.robocup.interf.game.IPlayer;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.mdp.IReward;
+import org.apache.log4j.Logger;
 
 public class Reward implements IReward {
+
+	static Logger logger = Logger.getLogger(Reward.class.getName());
 	
 	private int goal;
 	private int advGoal;
@@ -65,10 +73,12 @@ public class Reward implements IReward {
 					reward += gettingAwayFromBall * 1 / distBallnext;
 				}
 			} else {
-				if (distBallnext < 1)  {
-					reward += gettingNearBall;
-				} else {
-					reward += gettingNearBall * 1 / distBallnext;
+				if (distBallnext != distBallprev) {
+					if (distBallnext < 1) {
+						reward += gettingNearBall;
+					} else {
+						reward += gettingNearBall * 1 / distBallnext;
+					}
 				}
 			}
 			if (distBallnext <= Constants.KICKABLE_MARGIN) {
@@ -96,10 +106,12 @@ public class Reward implements IReward {
 					reward += gettingNearGoal * 1 / distBallAdvGoalnext;
 				}
 			} else {
-				if (distBallAdvGoalnext < 1) {
-					reward += gettingAwayFromBall;
-				} else {
-					reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext;
+				if (distBallAdvGoalnext != distBallAdvGoalprev) {
+					if (distBallAdvGoalnext < 1) {
+						reward += gettingAwayFromBall;
+					} else {
+						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext;
+					}
 				}
 			}
 		} else {
@@ -121,11 +133,12 @@ public class Reward implements IReward {
 					reward += gettingNearGoal * 1 / distBallAdvGoalnext;
 				}
 			} else {
-				if (distBallAdvGoalnext < 1) {
-					reward += gettingAwayFromGoal;
-				} else {
-					reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext;
-
+				if (distBallAdvGoalnext != distBallAdvGoalprev) {
+					if (distBallAdvGoalnext < 1) {
+						reward += gettingAwayFromGoal;
+					} else {
+						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext;
+					}
 				}
 			}
 		}
@@ -135,5 +148,20 @@ public class Reward implements IReward {
 
 	public PitchSide getPitchSide() {
 		return pitchSide;
+	}
+
+	public static void main(String[] args){
+		List<IPlayerState> p = new ArrayList<>();
+		p.add(new PlayerState(PitchSide.EAST, 1, 0, 0));
+		p.add(new PlayerState(PitchSide.EAST, 2, 0, 0));
+		p.add(new PlayerState(PitchSide.WEST, 1, 0, 0));
+		p.add(new PlayerState(PitchSide.WEST, 2, 0, 0));
+		State s = new State(new Ball(-200, 0), p);
+		Reward r = new Reward(2000,-2000,50, -50, 70, 170, -170, PitchSide.EAST);
+		List<PlayerAction> l = new ArrayList<>();
+		l.add(new PlayerAction(1, new Kick(0, 0)));
+		l.add(new PlayerAction(2, new Kick(0, 0)));
+		PlayerActionSet a = new PlayerActionSet(l);
+		logger.info(r.calculateReward(s, a, s));
 	}
 }
