@@ -83,9 +83,9 @@ public class MainRecordings {
 
         List<Ball> ball = new ArrayList<>();
         ball.add(new Ball(10, 10));
-        ball.add(new Ball(0,0));
-        ball.add(new Ball(0,0));
-        ball.add(new Ball(0,0));
+        ball.add(new Ball(20,-10));
+        ball.add(new Ball(-20,-10));
+        ball.add(new Ball(-20,10));
 
         for (int i = 0; i < policiesTeamEast.length; i++) {
             Util.TeamDescription teamDescriptionWest = new Util.TeamDescription(policiesTeamWest[i], 2, posTeamWest.get(i));
