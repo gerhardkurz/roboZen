@@ -9,6 +9,6 @@ import edu.kit.robocup.mdp.PlayerActionSet;
  */
 public interface IReward {
 
-    public int calculateReward(State prevState, PlayerActionSet action, State nextState);
+    public double calculateReward(State prevState, PlayerActionSet action, State nextState);
     public PitchSide getPitchSide();
 }

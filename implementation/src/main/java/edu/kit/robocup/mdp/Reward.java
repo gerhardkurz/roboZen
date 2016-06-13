@@ -57,8 +57,8 @@ public class Reward implements IReward {
         this.pitchSide = pitchSide;
 	}
 
-	public int calculateReward(State prevState, PlayerActionSet action, State nextState) {
-		int reward = 0;
+	public double calculateReward(State prevState, PlayerActionSet action, State nextState) {
+		double reward = 0;
 		List<IPlayerState> pprev = prevState.getPlayers(pitchSide);
 		Ball bprev = prevState.getBall();
 		List<IPlayerState> pnext = nextState.getPlayers(pitchSide);
@@ -156,12 +156,19 @@ public class Reward implements IReward {
 		p.add(new PlayerState(PitchSide.EAST, 2, 0, 0));
 		p.add(new PlayerState(PitchSide.WEST, 1, 0, 0));
 		p.add(new PlayerState(PitchSide.WEST, 2, 0, 0));
-		State s = new State(new Ball(-200, 0), p);
+		State s = new State(new Ball(-60, 0), p);
 		Reward r = new Reward(2000,-2000,50, -50, 70, 170, -170, PitchSide.EAST);
 		List<PlayerAction> l = new ArrayList<>();
 		l.add(new PlayerAction(1, new Kick(0, 0)));
 		l.add(new PlayerAction(2, new Kick(0, 0)));
 		PlayerActionSet a = new PlayerActionSet(l);
-		logger.info(r.calculateReward(s, a, s));
+
+		p = new ArrayList<>();
+		p.add(new PlayerState(PitchSide.EAST, 1, -10, 0));
+		p.add(new PlayerState(PitchSide.EAST, 2, -20, 0));
+		p.add(new PlayerState(PitchSide.WEST, 1, 0, 0));
+		p.add(new PlayerState(PitchSide.WEST, 2, 0, 0));
+		State s1 = new State(new Ball(-200, 0), p);
+		logger.info(r.calculateReward(s, a, s1));
 	}
 }

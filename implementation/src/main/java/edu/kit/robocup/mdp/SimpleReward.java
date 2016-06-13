@@ -22,7 +22,7 @@ public class SimpleReward implements IReward {
         this.pitchSide = pitchSide;
     }
 
-    public int calculateReward(State prevState, PlayerActionSet action, State nextState) {
+    public double calculateReward(State prevState, PlayerActionSet action, State nextState) {
         int reward = 0;
         Ball bprev = prevState.getBall();
         Ball bnext = nextState.getBall();
