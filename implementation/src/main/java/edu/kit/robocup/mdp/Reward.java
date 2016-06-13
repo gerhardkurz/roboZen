@@ -91,7 +91,7 @@ public class Reward implements IReward {
 		if (pitchSide.equals(PitchSide.EAST)) {
 			if (bnext.getPositionX() <= Constants.GOAL_WEST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_WEST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_WEST.getLowerPost().getPositionY()) {
 				reward += goal;
-				logger.info("goal");
+				//logger.info("goal");
 			}
 			if (bnext.getPositionX() >= Constants.GOAL_EAST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_EAST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_EAST.getLowerPost().getPositionY()) {
 				reward += advGoal;
@@ -121,7 +121,7 @@ public class Reward implements IReward {
 			}
 			if (bnext.getPositionX() >= Constants.GOAL_EAST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_EAST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_EAST.getLowerPost().getPositionY()) {
 				reward += goal;
-				logger.info("goal");
+				//logger.info("goal");
 			}
 
 			double distBallAdvGoalprev = Constants.GOAL_EAST.getDistance(bprev) ;
@@ -154,7 +154,9 @@ public class Reward implements IReward {
 
 	public static void main(String[] args){
 		List<IPlayerState> p = new ArrayList<>();
-		p.add(new PlayerState(PitchSide.EAST, 1, 0, 0));
+		p.add(new PlayerState(PitchSide.EAST, 1, 0, 0, 2, 1, 22.5, 0));
+		logger.info(p.get(0).getVelocityX());
+		logger.info(p.get(0).getVelocityY());
 		p.add(new PlayerState(PitchSide.EAST, 2, 0, 0));
 		p.add(new PlayerState(PitchSide.WEST, 1, 0, 0));
 		p.add(new PlayerState(PitchSide.WEST, 2, 0, 0));
