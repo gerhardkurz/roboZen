@@ -23,16 +23,15 @@ public class SimpleReward implements IReward {
     }
 
     public double calculateReward(State prevState, PlayerActionSet action, State nextState) {
-        int reward = 0;
-        Ball bprev = prevState.getBall();
+        double reward = 0;
         Ball bnext = nextState.getBall();
 
         if (pitchSide.equals(PitchSide.EAST)) {
-            if (Constants.GOAL_WEST.getDistance(bnext) == 0) {
+            if (bnext.getPositionX() <= Constants.GOAL_WEST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_WEST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_WEST.getLowerPost().getPositionY()) {
                 reward += goal;
             }
         } else {
-            if (Constants.GOAL_EAST.getDistance(bnext) == 0) {
+            if (bnext.getPositionX() >= Constants.GOAL_EAST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_EAST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_EAST.getLowerPost().getPositionY()) {
                 reward += goal;
             }
         }
