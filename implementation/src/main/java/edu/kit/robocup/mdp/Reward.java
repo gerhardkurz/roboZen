@@ -78,10 +78,10 @@ public class Reward implements IReward {
 		}
 
 		if (pitchSide.equals(PitchSide.EAST)) {
-			if (Constants.GOAL_WEST.getDistance(bnext) == 0) {
+			if (bnext.getPositionX() <= Constants.GOAL_WEST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_WEST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_WEST.getLowerPost().getPositionY()) {
 				reward += goal;
 			}
-			if (Constants.GOAL_EAST.getDistance(bnext) == 0) {
+			if (bnext.getPositionX() >= Constants.GOAL_EAST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_EAST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_EAST.getLowerPost().getPositionY()) {
 				reward += advGoal;
 			}
 
@@ -103,11 +103,11 @@ public class Reward implements IReward {
 				}
 			}
 		} else {
-			if (Constants.GOAL_EAST.getDistance(bnext) == 0) {
-				reward += goal;
-			}
-			if (Constants.GOAL_WEST.getDistance(bnext) == 0) {
+			if (bnext.getPositionX() <= Constants.GOAL_WEST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_WEST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_WEST.getLowerPost().getPositionY()) {
 				reward += advGoal;
+			}
+			if (bnext.getPositionX() >= Constants.GOAL_EAST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_EAST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_EAST.getLowerPost().getPositionY()) {
+				reward += goal;
 			}
 
 			double distBallAdvGoalprev = Constants.GOAL_EAST.getDistance(bprev) ;
