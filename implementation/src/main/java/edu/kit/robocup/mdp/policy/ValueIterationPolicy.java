@@ -53,7 +53,7 @@ public class ValueIterationPolicy implements IPolicy {
                 }
             }*/
             int maxActionPermutation = 0;
-            int maxValue = 0;
+            int maxValue = Integer.MIN_VALUE;
             int K = 10;
             for (int i = 0; i < permutations.size(); i++) {
                 int value = 0;
@@ -74,7 +74,6 @@ public class ValueIterationPolicy implements IPolicy {
                         maxActionPermutation = i;
                     /*} else {
                         if (permutations.get(i).getActions().get(0).getActionType() == KICK || permutations.get(i).getActions().get(1).getActionType() == KICK) {
-                            // do nothing
                         } else {
                             maxValue = value;
                             maxActionPermutation = i;
