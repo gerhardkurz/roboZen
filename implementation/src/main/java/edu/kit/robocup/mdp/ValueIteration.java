@@ -56,7 +56,7 @@ public class ValueIteration implements ISolver {
             }
         }*/
         int numberSamples = 10000;
-        double gamma = 0.7;
+        double gamma = 0.9;
         int K = 10;
         /*if (t.getA() == null) {
             t.startLearning();
@@ -99,7 +99,14 @@ public class ValueIteration implements ISolver {
                 }
                 y[n] = max;
             }
-            theta = h.make(getRegression(samples, y));
+            DoubleMatrix1D calc = h.make(getRegression(samples, y));
+            if (theta.equals(calc)) {
+                theta = calc;
+                logger.info("CONVERGED");
+                logger.info("Theta is: " + theta.toString());
+                return new ValueIterationPolicy(theta, r, t);
+            }
+            theta = calc;
             logger.info("Theta is: " + theta.toString());
         }
         logger.info("Theta is: " + theta.toString());
@@ -125,14 +132,14 @@ public class ValueIteration implements ISolver {
         DoubleMatrix1D solution = h.make(samples.get(0).getDimension());
         nearlyDone.zMult(b, solution);
 
-        DoubleMatrix1D residuum = a.mult(M,solution);
+        /*DoubleMatrix1D residuum = a.mult(M,solution);
         residuum =  residuum.assign(b, new DoubleDoubleFunction() {
             @Override
             public double apply(double v, double v1) {
                 return v-v1;
             }
         });
-        logger.info("residuum: " + residuum.toString());
+        logger.info("residuum: " + residuum.toString());*/
         //logger.info(solution.toString());
         return solution.toArray();
     }
