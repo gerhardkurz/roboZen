@@ -84,7 +84,7 @@ public class ValueIterationPolicy implements IPolicy {
             logger.info(state);
             for (int i = 0; i < playerControllers.size(); i++) {
                 logger.info("Player " + playerControllers.get(i).getNumber() + " will do action " + permutations.get(maxActionPermutation).getActions().get(i).toString());
-                action.put(playerControllers.get(0), permutations.get(maxActionPermutation).getActions().get(i).getAction());
+                action.put(playerControllers.get(i), permutations.get(maxActionPermutation).getActions().get(i).getAction());
             }
         } else {
             action.put(playerControllers.get(0), new Turn(0));
