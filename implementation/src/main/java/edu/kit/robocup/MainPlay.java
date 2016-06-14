@@ -9,6 +9,7 @@ import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.mdp.Reward;
+import edu.kit.robocup.mdp.SimpleReward;
 import edu.kit.robocup.mdp.policy.ChaseAndKickPolicy;
 import edu.kit.robocup.mdp.policy.PerPlayModePolicy;
 import edu.kit.robocup.mdp.policy.ValueIterationPolicy;
@@ -36,6 +37,7 @@ public class MainPlay {
         double[] theta500Iterations = new double[]{-9.96505E+271, -3.862491E+271, -3.998974E+270, -2.245478E+269, -5.661369E+272, 1.104631E+272, -4.650037E+271, -1.973853E+271, 1.034372E+271, -2.088521E+272, -2.028838E+270, 3.259283E+272, 1.002286E+272, 2.796303E+271, 8.805387E+272, 1.324348E+272, 3.609485E+272, 3.206651E+271, -6.124972E+271, 1.084968E+272, 5.641088E+270, 1.412211E+271, 1.895076E+271, -8.958095E+270};
         double[] theta70Iterations10000Samples = new double[]{3.586892E+119, -3.745296E+120 ,-1.432131E+121, 9.05253E+119, 4.878049E+119, -1.207145E+120, 8.894006E+121, -8.673137E+118, -2.939898E+119, 1.483416E+119, 2.585866E+121, 4.420041E+119, -6.22495E+119, 4.042307E+118, 9.935912E+121, 3.105797E+119, 5.717366E+119, 1.58088E+120, 2.860505E+120, -4.850314E+120};
         double[] theta212iterations10000Samples = new double[]{-0.055668, 0.132674, 3.022018, -0.007703, -0.005145, 0.055861, -0.067511, -0.011228, -0.003991, -0.077248, 4.336487, -0.007263 ,0.066117 ,-0.054201 ,0.727672 ,-0.016712 ,-0.47223 ,0.020872 ,-9.294904 ,-0.796241};
+        double[] theta38Iterations10000SamplesConvergedSimpleReward = new double[]{-0.017041 ,-0.013039, 1.445658 ,0.020225, 0.00768, 0.031494, -0.016159, 0.004823, 0.029029, 0.036609, -0.713965, -0.007466, 0.024826, -0.024973, 2.565945, 0.022212, -0.218072, 0.006131, -3.174722, -1.126635};
 
         ITransition t = new TransitionDet(games.get(0).getNumberPlayers(), games.get(0).getNumberofAllPlayers(), games.get(0).getStates().get(0).getDimension());
         //t.setLearning("Transitions/save.txt");
