@@ -67,7 +67,7 @@ public class ValueIterationPolicy implements IPolicy {
                     value += theta.zDotProduct(next);
                     //logger.info("After theta: " + value);
                 }
-                logger.info("For Actioncombination " +  permutations.get(i) + " the reward would be " + value);
+                //logger.info("For Actioncombination " +  permutations.get(i) + " the reward would be " + value);
                 if (maxValue < value) {
                     //if (state.getPlayers(pitchSide).get(0).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN || state.getPlayers(pitchSide).get(1).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN) {
                         maxValue = value;
@@ -82,8 +82,9 @@ public class ValueIterationPolicy implements IPolicy {
                     }*/
                 }
             }
+            logger.info(state);
             for (int i = 0; i < playerControllers.size(); i++) {
-                //logger.info("Player " + playerControllers.get(i).getNumber() + " will do action " + permutations.get(maxActionPermutation).getActions().get(i).toString());
+                logger.info("Player " + playerControllers.get(i).getNumber() + " will do action " + permutations.get(maxActionPermutation).getActions().get(i).toString());
                 action.put(playerControllers.get(0), permutations.get(maxActionPermutation).getActions().get(i).getAction());
             }
         } else {

@@ -68,7 +68,7 @@ public class ValueIteration implements ISolver {
         }
         DoubleFactory1D h = DoubleFactory1D.dense;
         DoubleMatrix1D theta = h.make(t.getStateDimension(), 0);
-        for (int horizon = 0; horizon < 800; horizon++) {
+        for (int horizon = 0; horizon < 1000; horizon++) {
             logger.info("horizon: " + horizon);
             double[]  y = new double[numberSamples];
             for (int n = 0; n < numberSamples; n++) {
