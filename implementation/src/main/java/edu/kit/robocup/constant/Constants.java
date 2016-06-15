@@ -33,4 +33,6 @@ public class Constants {
     public static final double player_decay = 0.4;
     public static final double dash_power_rate = 0.006;
     public static final double ball_decay = 0.94;
+    public static final double player_size = 0.3; // equals radius
+    public static final double ball_size = 0.085; // equals radius
 }

@@ -62,7 +62,12 @@ public class TransitionDet implements ITransition {
                     double dist_ball = player.getDistance(b) - Constants.ball_size - Constants.player_size;
                     if (dist_ball <= Constants.KICKABLE_MARGIN) {
                         double ep = actual.getArray()[0] * Constants.kick_power_rate;
-                        double dir_diff = Math.abs(player.getAngleTo(b));
+                        double dir_diff = player.getAngleTo(b);
+                        if (dir_diff > 180) {
+                            dir_diff = Math.abs(dir_diff -360);
+                        } else if (dir_diff < -180) {
+                            dir_diff = Math.abs(dir_diff +360);
+                        }
                         ep = ep * (1 - 0.25* dir_diff/180.0 - 0.25* dist_ball/Constants.KICKABLE_MARGIN);
                         ballax += ep;
                         ballay += ep;
