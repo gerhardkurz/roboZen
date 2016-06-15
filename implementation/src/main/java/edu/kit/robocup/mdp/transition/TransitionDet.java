@@ -75,6 +75,11 @@ public class TransitionDet implements ITransition {
                 }
                 case TURN: {
                     deltaAngle = actual.getArray()[0];
+                    if (deltaAngle + player.getBodyAngle() >= 180) {
+                        deltaAngle = deltaAngle - 360;
+                    } else if (deltaAngle + player.getBodyAngle() <= -180) {
+                        deltaAngle = deltaAngle +360;
+                    }
                     break;
                 }
                 case MOVE: {
