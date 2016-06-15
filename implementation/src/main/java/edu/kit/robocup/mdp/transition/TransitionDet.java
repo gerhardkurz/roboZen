@@ -11,6 +11,7 @@ import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.mdp.Reward;
+import org.apache.commons.math3.analysis.function.Constant;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -58,10 +59,10 @@ public class TransitionDet implements ITransition {
             boolean move = false;
             switch (actual.getActionType()) {
                 case KICK: {
-                    double dist_ball = player.getDistance(b);
+                    double dist_ball = player.getDistance(b) - Constants.ball_size - Constants.player_size;
                     if (dist_ball <= Constants.KICKABLE_MARGIN) {
                         double ep = actual.getArray()[0] * Constants.kick_power_rate;
-                        double dir_diff = player.getAngleTo(b);
+                        double dir_diff = Math.abs(player.getAngleTo(b));
                         ep = ep * (1 - 0.25* dir_diff/180.0 - 0.25* dist_ball/Constants.KICKABLE_MARGIN);
                         ballax += ep;
                         ballay += ep;
