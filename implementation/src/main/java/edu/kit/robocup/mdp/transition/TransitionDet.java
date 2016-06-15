@@ -69,8 +69,14 @@ public class TransitionDet implements ITransition {
                             dir_diff = Math.abs(dir_diff +360);
                         }
                         ep = ep * (1 - 0.25* dir_diff/180.0 - 0.25* dist_ball/Constants.KICKABLE_MARGIN);
-                        ballax += ep;
-                        ballay += ep;
+                        double theta = player.getBodyAngle() + actual.getArray()[1];
+                        if (theta > 180) {
+                            theta = theta - 360;
+                        } else if (theta < -180) {
+                            theta = theta +360;
+                        }
+                        ballax += ep * Math.cos(Math.toRadians(theta));
+                        ballay += ep * Math.sin(Math.toRadians(theta));
                     }
                     break;
                 }
