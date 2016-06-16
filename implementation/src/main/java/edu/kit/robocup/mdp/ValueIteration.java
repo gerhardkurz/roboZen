@@ -73,7 +73,7 @@ public class ValueIteration implements ISolver {
             double[]  y = new double[numberSamples];
             for (int n = 0; n < numberSamples; n++) {
                 double[] q = new double[permutations.size()];
-                double max = 0;
+                double max = Double.MIN_VALUE;
                 for (int act = 0; act < permutations.size(); act++) {
                     //saves K states, that could be the next states after beeing in state samples[i] and doing action act
                     List<State> resultingSamples = new ArrayList<>();
