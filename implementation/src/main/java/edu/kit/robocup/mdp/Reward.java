@@ -69,16 +69,16 @@ public class Reward implements IReward {
 			double distBallnext = bnext.getDistance(pnext.get(i));
 			if (distBallnext > distBallprev) {
 				if (distBallnext < 1) {
-					reward += gettingAwayFromBall;
+					reward += gettingAwayFromBall* 5*(distBallnext-distBallprev);
 				} else {
-					reward += gettingAwayFromBall * 1 / distBallnext;
+					reward += gettingAwayFromBall * 1 / distBallnext * 5*(distBallnext-distBallprev);
 				}
 			} else {
 				if (distBallnext != distBallprev) {
 					if (distBallnext < 1) {
-						reward += gettingNearBall;
+						reward += gettingNearBall* 5*(distBallprev-distBallnext);
 					} else {
-						reward += gettingNearBall * 1 / distBallnext;
+						reward += gettingNearBall * 1 / distBallnext * 5*(distBallprev-distBallnext);
 					}
 				}
 			}
@@ -102,16 +102,16 @@ public class Reward implements IReward {
 			double distBallAdvGoalnext = Constants.GOAL_WEST.getDistance(bnext);
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
 				if (distBallAdvGoalnext < 1) {
-					reward += gettingNearGoal;
+					reward += gettingNearGoal*5 * (distBallAdvGoalprev-distBallAdvGoalnext);
 				} else {
-					reward += gettingNearGoal * 1 / distBallAdvGoalnext;
+					reward += gettingNearGoal * 1 / distBallAdvGoalnext * 5 * (distBallAdvGoalprev-distBallAdvGoalnext);
 				}
 			} else {
 				if (distBallAdvGoalnext != distBallAdvGoalprev) {
 					if (distBallAdvGoalnext < 1) {
-						reward += gettingAwayFromBall;
+						reward += gettingAwayFromBall*5 * -(distBallAdvGoalnext-distBallAdvGoalprev);
 					} else {
-						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext;
+						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext*5 * -(distBallAdvGoalnext-distBallAdvGoalprev);
 					}
 				}
 			}
@@ -130,16 +130,16 @@ public class Reward implements IReward {
 
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
 				if (distBallAdvGoalnext < 1)  {
-					reward += gettingNearGoal;
+					reward += gettingNearGoal*5*(distBallAdvGoalprev-distBallAdvGoalnext);
 				} else {
-					reward += gettingNearGoal * 1 / distBallAdvGoalnext;
+					reward += gettingNearGoal * 1 / distBallAdvGoalnext * 5 * (distBallAdvGoalprev - distBallAdvGoalnext);
 				}
 			} else {
 				if (distBallAdvGoalnext != distBallAdvGoalprev) {
 					if (distBallAdvGoalnext < 1) {
-						reward += gettingAwayFromGoal;
+						reward += gettingAwayFromGoal*5*(distBallAdvGoalnext-distBallAdvGoalprev);
 					} else {
-						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext;
+						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext * 5*(distBallAdvGoalnext-distBallAdvGoalprev);
 					}
 				}
 			}

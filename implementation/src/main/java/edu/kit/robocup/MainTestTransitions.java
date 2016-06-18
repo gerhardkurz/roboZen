@@ -36,7 +36,7 @@ public class MainTestTransitions {
 
         //ITransition t = new Transition(games);
         //((Transition)t).setLearning("Transitions/save.txt");
-        ITransition t1 = new TransitionDet();
+        ITransition t1 = new TransitionDet(2,4, 20);
 
         TransitionTestPolicy test = new TransitionTestPolicy(new ChaseAndKickPolicy(), t1);
 

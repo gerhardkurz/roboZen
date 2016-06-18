@@ -176,6 +176,21 @@ public class Transition implements ITransition {
         return new State(result.toArray(), pitchSide, s.getPlayers(pitchSide).size());
     }
 
+    @Override
+    public int getNumberAllPlayers() {
+        return games.get(0).getNumberofAllPlayers();
+    }
+
+    @Override
+    public int getStateDimension() {
+        return games.get(0).getStates().get(0).getDimension();
+    }
+
+    @Override
+    public int getNumberPlayersPitchside() {
+        return games.get(0).getActions().get(0).getActions().size();
+    }
+
     /**
      * tests, whether all action combinations do exist. If they don't, then there will be thrown an exception in the learn method
      * there can still be thrown an exception, if a player or the ball doesn't move or just in one direction
@@ -485,12 +500,11 @@ public class Transition implements ITransition {
         //t.startLearning();
         t.setLearning("C:/Users/dani/Documents/Praktikum/SS16_Robocup/lograndom300.txt");
         StateFactory f = new StateFactory();
-        State s = f.getRandomState(t.getGames().get(0).getNumberofAllPlayers(), PitchSide.EAST);
+        /*State s = f.getRandomState(t.getGames().get(0).getNumberofAllPlayers(), PitchSide.EAST);
         logger.info(s);
         PlayerActionSet a = t.getGames().get(0).getActions().get(5);
         logger.info(a);
         logger.info(t.getNewStateSample(s, a, PitchSide.EAST));
-
 
         logger.info(a);
         logger.info(t.getActionIndex(a));
@@ -501,7 +515,7 @@ public class Transition implements ITransition {
         logger.info(t.getNewStateSample(s, a, PitchSide.EAST));
 
         logger.info(t.getNewStateSample(games.get(0).getStates().get(0), games.get(0).getActions().get(0), PitchSide.EAST));
-        logger.info(games.get(0).getStates().get(1).toString());
+        logger.info(games.get(0).getStates().get(1).toString());*/
 
         /**Game g = new Game(getRandomStates(), getRandomActions());
         games.add(g);

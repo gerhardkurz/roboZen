@@ -13,6 +13,7 @@ import edu.kit.robocup.interf.mdp.IReward;
 import edu.kit.robocup.interf.mdp.IState;
 import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.mdp.PlayerActionSetFactory;
+import edu.kit.robocup.mdp.transition.ITransition;
 import edu.kit.robocup.mdp.transition.Transition;
 import org.apache.log4j.Logger;
 
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static edu.kit.robocup.game.Action.DASH;
 import static edu.kit.robocup.game.Action.KICK;
 
 
@@ -30,9 +32,9 @@ public class ValueIterationPolicy implements IPolicy {
 
     private DoubleMatrix1D theta;
     private IReward r;
-    private Transition t;
+    private ITransition t;
 
-    public ValueIterationPolicy(DoubleMatrix1D theta, IReward r, Transition t) {
+    public ValueIterationPolicy(DoubleMatrix1D theta, IReward r, ITransition t) {
         this.theta = theta;
         this.r = r;
         this.t = t;
@@ -41,7 +43,7 @@ public class ValueIterationPolicy implements IPolicy {
     @Override
     public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers, PitchSide pitchSide) {
         Map<IPlayerController, IAction> action = new HashMap<>();
-        if (((State) state).getArray().length == t.getA().rows()) {
+        if (((State) state).getArray().length == t.getStateDimension()) {
             // out of all actions that exist you should choose the action, which maximizes the immediate reward + theta*nextState
             PlayerActionSetFactory a = new PlayerActionSetFactory();
             List<PlayerActionSet> permutations = new ArrayList<>();
@@ -52,38 +54,29 @@ public class ValueIterationPolicy implements IPolicy {
                 }
             }*/
             int maxActionPermutation = 0;
-            int maxValue = 0;
-            int K = 10;
+            double maxValue = Double.MIN_VALUE;
+            //int K = 10;
+            double gamma = 0.7;
             for (int i = 0; i < permutations.size(); i++) {
-                int value = 0;
-                for (int k = 0; k < K; k++) {
-                    State s = t.getNewStateSample((State) state, permutations.get(i), r.getPitchSide());
-                    //logger.info(s.toString());
-                    DoubleFactory1D h = DoubleFactory1D.dense;
-                    DoubleMatrix1D next = h.make(s.getArray());
-                    value += r.calculateReward((State) state, permutations.get(i), s);
-                    //logger.info("Before theta: " + value);
-                    value += theta.zDotProduct(next);
-                    //logger.info("After theta: " + value);
-                }
-                //logger.info("For Actioncombination " +  permutations.get(i) + " the reward would be " + value);
+                double value = 0;
+                //for (int k = 0; k < K; k++) {
+                State s = t.getNewStateSample((State) state, permutations.get(i), r.getPitchSide());
+                DoubleFactory1D h = DoubleFactory1D.dense;
+                DoubleMatrix1D next = h.make(s.getArray());
+                value += r.calculateReward((State) state, permutations.get(i), s);
+                value += gamma * theta.zDotProduct(next);
+
                 if (maxValue < value) {
-                    //if (state.getPlayers(pitchSide).get(0).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN || state.getPlayers(pitchSide).get(1).getDistance(state.getBall()) < Constants.KICKABLE_MARGIN) {
-                        maxValue = value;
-                        maxActionPermutation = i;
-                    /*} else {
-                        if (permutations.get(i).getActions().get(0).getActionType() == KICK || permutations.get(i).getActions().get(1).getActionType() == KICK) {
-                            // do nothing
-                        } else {
-                            maxValue = value;
-                            maxActionPermutation = i;
-                        }
-                    }*/
+                    maxValue = value;
+                    maxActionPermutation = i;
                 }
+
+                //logger.info(permutations.get(i).getActions() + " " +r.calculateReward((State) state, permutations.get(i),s) + " " + gamma * theta.zDotProduct(next));
+
             }
+            //logger.info(state);
             for (int i = 0; i < playerControllers.size(); i++) {
-                //logger.info("Player " + playerControllers.get(i).getNumber() + " will do action " + permutations.get(maxActionPermutation).getActions().get(i).toString());
-                action.put(playerControllers.get(0), permutations.get(maxActionPermutation).getActions().get(i).getAction());
+                action.put(playerControllers.get(i), permutations.get(maxActionPermutation).getActions().get(i).getAction());
             }
         } else {
             action.put(playerControllers.get(0), new Turn(0));

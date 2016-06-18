@@ -17,11 +17,21 @@ public class StateFactory {
 
     public StateFactory() {};
 
-    public State getRandomState(int numberPlayers, PitchSide pitchSide) {
+    public State getRandomState(int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide) {
         Ball ball = new Ball(getRandomXPosition(), getRandomYPosition(), getRandomVelocity(), getRandomVelocity());
         List<IPlayerState> p = new ArrayList<>();
-        for (int i = 0; i < numberPlayers; i++) {
-            p.add(new PlayerState(pitchSide, i, getRandomXPosition(), getRandomYPosition(), getRandomVelocityLength(), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
+        int counter = 0;
+        for (int i = 0; i < numberAllPlayers; i++) {
+            counter++;
+            if (counter <= numberPlayersPitchside) {
+                p.add(new PlayerState(pitchSide, i + 1, getRandomXPosition(), getRandomYPosition(), getRandomVelocityLength(), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
+            } else {
+                if (pitchSide == PitchSide.EAST) {
+                    p.add(new PlayerState(PitchSide.WEST, i + 1 - numberPlayersPitchside, getRandomXPosition(), getRandomYPosition(), getRandomVelocityLength(), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
+                } else {
+                    p.add(new PlayerState(PitchSide.EAST, i + 1 - numberPlayersPitchside, getRandomXPosition(), getRandomYPosition(), getRandomVelocityLength(), getRandomDouble(Constants.minmoment, Constants.maxmoment), getRandomDouble(Constants.minneckmoment, Constants.maxneckmoment)));
+                }
+            }
         }
         return new State(ball, p);
     }
@@ -48,12 +58,6 @@ public class StateFactory {
         Random r = new Random();
         double randomValue = min + (max - min) * r.nextDouble();
         return randomValue;
-    }
-
-    public static void main(String[] args) {
-        StateFactory s = new StateFactory();
-        State state = s.getRandomState(3, PitchSide.WEST);
-        System.out.println(state.toString());
     }
 
 }
