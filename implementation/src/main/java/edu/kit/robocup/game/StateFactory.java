@@ -6,16 +6,35 @@ import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IPlayerState;
+import org.jsoup.select.Collector;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 
 public class StateFactory {
 
     public StateFactory() {};
+
+    public List<State> getEquidistantStates(int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide, int positionResolution, int velocityResolution) {
+
+        //int[] dimension = [positionResolution, positionResolution];
+
+        List<State> states = LongStream.range(0, positionResolution * 2 * velocityResolution * numberAllPlayers)
+                .mapToObj(i -> getEquidistantState(numberPlayersPitchside, numberAllPlayers, pitchSide, positionResolution, velocityResolution, i))
+                .collect(Collectors.toList();
+
+        return states;
+    }
+
+    private State getEquidistantState(int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide, int positionResolution, int velocityResolution, long index) {
+
+        return null;
+    }
 
     public State getRandomState(int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide) {
         Ball ball = new Ball(getRandomXPosition(), getRandomYPosition(), getRandomVelocity(), getRandomVelocity());
