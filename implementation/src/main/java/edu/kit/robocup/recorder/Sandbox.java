@@ -2,7 +2,11 @@ package edu.kit.robocup.recorder;
 
 
 import java.io.*;
+import java.util.List;
 
+import edu.kit.robocup.Main;
+import edu.kit.robocup.game.StateFactory;
+import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.util.Util;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.PlayMode;
@@ -13,12 +17,14 @@ import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.mdp.policy.ChaseAndKickPolicy;
 import edu.kit.robocup.mdp.policy.PerPlayModePolicy;
 import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
+import org.apache.log4j.Logger;
 
 
 public class Sandbox {
 
+    static Logger logger = Logger.getLogger(Sandbox.class.getName());
     public static void main(String[] args) throws IOException, InterruptedException {
-
+/*
         Util.initEnvironment();
 
         Trainer trainer = new Trainer("Trainer");
@@ -50,5 +56,9 @@ public class Sandbox {
         Thread.sleep(100);
         trainer.moveBall(new Ball(0, 0));
         trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
+        */
+
+        List<State> states = StateFactory.getEquidistantStates(2, 4, PitchSide.EAST, 2, 2, 2);
+        logger.info(states);
     }
 }

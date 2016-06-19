@@ -6,6 +6,8 @@ import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IPlayerState;
+import edu.kit.robocup.recorder.Sandbox;
+import org.apache.log4j.Logger;
 import org.jsoup.select.Collector;
 
 import java.util.ArrayList;
@@ -18,13 +20,14 @@ import java.util.stream.LongStream;
 
 public class StateFactory {
 
+    static Logger logger = Logger.getLogger(StateFactory.class.getName());
     public StateFactory() {};
 
     final static double playFieldWidth = 100;
     final static double playFieldHeight = 500;
     final static double maxVelocity = 10;
 
-    public List<State> getEquidistantStates(int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide, int positionResolution, int rotationResolution, int velocityResolution) {
+    public static List<State> getEquidistantStates(int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide, int positionResolution, int rotationResolution, int velocityResolution) {
 
         // Distances
         double positionDistanceX = playFieldWidth / (positionResolution - 1);
@@ -70,9 +73,12 @@ public class StateFactory {
         return states;
     }
 
-    private void provideStatesRecursive(int dimension, double[] stepDistance, int[] maxSteps, double[] currentDistance, List<State> states, int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide) {
+    private static void provideStatesRecursive(int dimension, double[] stepDistance, int[] maxSteps, double[] currentDistance, List<State> states, int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide) {
         if (dimension == currentDistance.length) {
-            states.add(new State(currentDistance, numberPlayersPitchside, numberAllPlayers, pitchSide));
+            State state = new State(currentDistance, numberPlayersPitchside, numberAllPlayers, pitchSide);
+            states.add(state);
+            //logger.info("created state: " + state);
+            return;
         }
         for (int i = 0; i < maxSteps[dimension]; i++) {
             currentDistance[dimension] = i * stepDistance[dimension];
