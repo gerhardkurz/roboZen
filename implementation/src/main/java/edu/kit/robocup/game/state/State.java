@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static cern.clhep.PhysicalConstants.pi;
+import static sun.audio.AudioPlayer.player;
+
 public class State implements IState, Serializable {
     private PlayMode playMode;
     private final Ball ball;
@@ -49,6 +52,26 @@ public class State implements IState, Serializable {
         ball = new Ball(state[state.length-4], state[state.length-3], state[state.length-2], state[state.length-1]);
         pos = new double[4*(players.size()+1)];
         initArray();
+    }
+
+    public State(double[] currentDistance, int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide) {
+        ball = new Ball(currentDistance[0], currentDistance[1], currentDistance[2], currentDistance[3]);
+        PitchSide currentPitchSide = pitchSide;
+
+        for (int p = 0; p < numberAllPlayers; p++) {
+            if (p == numberPlayersPitchside)
+                currentPitchSide = flipPitchSide(currentPitchSide);
+            int pOffset = 4 + (p * 5);
+            players.add(new PlayerState(pitchSide, p, currentDistance[pOffset], currentDistance[pOffset + 1], currentDistance[pOffset + 2], currentDistance[pOffset + 3], currentDistance[pOffset + 4], 0));
+        }
+        pos = new double[4*(players.size()+1)];
+        initArray();
+    }
+
+    private PitchSide flipPitchSide(PitchSide pitchSide) {
+        if (pitchSide == PitchSide.EAST)
+            return PitchSide.WEST;
+        return PitchSide.EAST;
     }
 
     public Ball getBall() {
