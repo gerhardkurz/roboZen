@@ -69,16 +69,16 @@ public class Reward implements IReward {
 			double distBallnext = bnext.getDistance(pnext.get(i));
 			if (distBallnext > distBallprev) {
 				if (distBallnext < 1) {
-					reward += gettingAwayFromBall* 5*(distBallnext-distBallprev);
+					reward += gettingAwayFromBall* (distBallnext-distBallprev);
 				} else {
-					reward += gettingAwayFromBall * 1 / distBallnext * 5*(distBallnext-distBallprev);
+					reward += gettingAwayFromBall * 1 / distBallnext * (distBallnext-distBallprev);
 				}
 			} else {
 				if (distBallnext != distBallprev) {
 					if (distBallnext < 1) {
-						reward += gettingNearBall* 5*(distBallprev-distBallnext);
+						reward += gettingNearBall* (distBallprev-distBallnext);
 					} else {
-						reward += gettingNearBall * 1 / distBallnext * 5*(distBallprev-distBallnext);
+						reward += gettingNearBall * 1 / distBallnext * (distBallprev-distBallnext);
 					}
 				}
 			}
@@ -91,7 +91,6 @@ public class Reward implements IReward {
 		if (pitchSide.equals(PitchSide.EAST)) {
 			if (bnext.getPositionX() <= Constants.GOAL_WEST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_WEST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_WEST.getLowerPost().getPositionY()) {
 				reward += goal;
-				//logger.info("goal");
 			}
 			if (bnext.getPositionX() >= Constants.GOAL_EAST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_EAST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_EAST.getLowerPost().getPositionY()) {
 				reward += advGoal;
@@ -102,16 +101,16 @@ public class Reward implements IReward {
 			double distBallAdvGoalnext = Constants.GOAL_WEST.getDistance(bnext);
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
 				if (distBallAdvGoalnext < 1) {
-					reward += gettingNearGoal*5 * (distBallAdvGoalprev-distBallAdvGoalnext);
+					reward += gettingNearGoal*(distBallAdvGoalprev-distBallAdvGoalnext);
 				} else {
-					reward += gettingNearGoal * 1 / distBallAdvGoalnext * 5 * (distBallAdvGoalprev-distBallAdvGoalnext);
+					reward += gettingNearGoal * 1 / distBallAdvGoalnext * (distBallAdvGoalprev-distBallAdvGoalnext);
 				}
 			} else {
 				if (distBallAdvGoalnext != distBallAdvGoalprev) {
 					if (distBallAdvGoalnext < 1) {
-						reward += gettingAwayFromBall*5 * -(distBallAdvGoalnext-distBallAdvGoalprev);
+						reward += gettingAwayFromBall* -(distBallAdvGoalnext-distBallAdvGoalprev);
 					} else {
-						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext*5 * -(distBallAdvGoalnext-distBallAdvGoalprev);
+						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext * -(distBallAdvGoalnext-distBallAdvGoalprev);
 					}
 				}
 			}
@@ -121,7 +120,6 @@ public class Reward implements IReward {
 			}
 			if (bnext.getPositionX() >= Constants.GOAL_EAST.getLowerPost().getPositionX() && bnext.getPositionY() <= Constants.GOAL_EAST.getUpperPost().getPositionY() && bnext.getPositionY() >= Constants.GOAL_EAST.getLowerPost().getPositionY()) {
 				reward += goal;
-				//logger.info("goal");
 			}
 
 			double distBallAdvGoalprev = Constants.GOAL_EAST.getDistance(bprev) ;
@@ -130,16 +128,16 @@ public class Reward implements IReward {
 
 			if (distBallAdvGoalnext < distBallAdvGoalprev) {
 				if (distBallAdvGoalnext < 1)  {
-					reward += gettingNearGoal*5*(distBallAdvGoalprev-distBallAdvGoalnext);
+					reward += gettingNearGoal*(distBallAdvGoalprev-distBallAdvGoalnext);
 				} else {
-					reward += gettingNearGoal * 1 / distBallAdvGoalnext * 5 * (distBallAdvGoalprev - distBallAdvGoalnext);
+					reward += gettingNearGoal * 1 / distBallAdvGoalnext * (distBallAdvGoalprev - distBallAdvGoalnext);
 				}
 			} else {
 				if (distBallAdvGoalnext != distBallAdvGoalprev) {
 					if (distBallAdvGoalnext < 1) {
-						reward += gettingAwayFromGoal*5*(distBallAdvGoalnext-distBallAdvGoalprev);
+						reward += gettingAwayFromGoal*(distBallAdvGoalnext-distBallAdvGoalprev);
 					} else {
-						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext * 5*(distBallAdvGoalnext-distBallAdvGoalprev);
+						reward += gettingAwayFromGoal * 1 / distBallAdvGoalnext * (distBallAdvGoalnext-distBallAdvGoalprev);
 					}
 				}
 			}
@@ -155,8 +153,6 @@ public class Reward implements IReward {
 	public static void main(String[] args){
 		List<IPlayerState> p = new ArrayList<>();
 		p.add(new PlayerState(PitchSide.EAST, 1, 0, 0, 2, 1, 22.5, 0));
-		logger.info(p.get(0).getVelocityX());
-		logger.info(p.get(0).getVelocityY());
 		p.add(new PlayerState(PitchSide.EAST, 2, 0, 0));
 		p.add(new PlayerState(PitchSide.WEST, 1, 0, 0));
 		p.add(new PlayerState(PitchSide.WEST, 2, 0, 0));

@@ -29,8 +29,8 @@ public class TransitionTestPolicy implements IPolicy {
     }
 
     public void evaluatePrediction(IState actual, IState predicted) {
-        logger.info("act: " + actual.getPlayers(PitchSide.EAST).get(0));
-        logger.info("pred: "+ predicted.getPlayers(PitchSide.EAST).get(0));
+        logger.info("act: " + actual.getPlayers(PitchSide.EAST));
+        logger.info("pred: "+ predicted.getPlayers(PitchSide.EAST));
 
         logger.info("act: " + actual.getBall());
         logger.info("pred: " + predicted.getBall());
@@ -45,7 +45,7 @@ public class TransitionTestPolicy implements IPolicy {
         PlayerActionSet playerActionSet = new PlayerActionSet(playerActions);
         if (previousState != null) {
             for (ITransition transition: transitions) {
-                evaluatePrediction(state, transition.getNewStateSample((State) previousState, playerActionSet, pitchSide));
+                evaluatePrediction(state, transition.getNewStateSample((State) previousState, previousPlayerActionSet, pitchSide));
             }
         }
         previousState = state;
