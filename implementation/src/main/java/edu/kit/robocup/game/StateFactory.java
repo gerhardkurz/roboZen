@@ -115,20 +115,20 @@ public class StateFactory {
 
     private static double reducePositionX(int positionResolution, double position) {
         double step = (playFieldWidth/(positionResolution-1));
-        return position - (position % step);
+        return (Math.floor(position/step)) * step;
     }
     private static double reducePositionY(int positionResolution, double position) {
         double step = (playFieldHeight/(positionResolution-1));
-        return position - (position % step);
+        return (Math.floor(position/step)) * step;
     }
     private static double reduceVelocity(int velocityResolution, double vel) {
         double step = (maxVelocity/(velocityResolution-1));
-        return vel - (vel % step);
+        return (Math.floor(vel/step)) * step;
     }
     private static double reduceAngle(int rotationResolution, double angle) {
         double a = angle + 180;
         double step = (360/(rotationResolution -1));
-        a = a - (a % step);
+        a = (Math.floor(a/step)) * step;
         return (a-180);
     }
 
@@ -151,20 +151,20 @@ public class StateFactory {
 
     private static double increasePositionX(int positionResolution, double position) {
         double step = (playFieldWidth/(positionResolution-1));
-        return position + (step - (position % step));
+        return (Math.floor(position/step)+1) * step;
     }
     private static double increasePositionY(int positionResolution, double position) {
         double step = (playFieldHeight/(positionResolution-1));
-        return position + (step - (position % step));
+        return (Math.floor(position/step)+1) * step;
     }
     private static double increaseVelocity(int velocityResolution, double vel) {
         double step = (maxVelocity/(velocityResolution-1));
-        return vel + (step -(vel % step));
+        return (Math.floor(vel/step)+1) * step;
     }
     private static double increaseAngle(int rotationResolution, double angle) {
         double a = angle + 180;
         double step = 360/(rotationResolution-1);
-        a = a + (step-(a % step));
+        a = (Math.floor(a/step)+1) * step;
         return (a-180);
     }
 
