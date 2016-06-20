@@ -13,6 +13,7 @@ import edu.kit.robocup.interf.mdp.IReward;
 import edu.kit.robocup.interf.mdp.IState;
 import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.mdp.PlayerActionSetFactory;
+import edu.kit.robocup.mdp.Value;
 import edu.kit.robocup.mdp.transition.ITransition;
 import edu.kit.robocup.mdp.transition.Transition;
 import org.apache.log4j.Logger;
@@ -30,12 +31,12 @@ public class ValueIterationPolicy implements IPolicy {
 
     static Logger logger = Logger.getLogger(ValueIterationPolicy.class.getName());
 
-    private DoubleMatrix1D theta;
+    private Value v;
     private IReward r;
     private ITransition t;
 
-    public ValueIterationPolicy(DoubleMatrix1D theta, IReward r, ITransition t) {
-        this.theta = theta;
+    public ValueIterationPolicy(Value v, IReward r, ITransition t) {
+        this.v = v;
         this.r = r;
         this.t = t;
     }
@@ -44,37 +45,34 @@ public class ValueIterationPolicy implements IPolicy {
     public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers, PitchSide pitchSide) {
         Map<IPlayerController, IAction> action = new HashMap<>();
         if (((State) state).getArray().length == t.getStateDimension()) {
-            // out of all actions that exist you should choose the action, which maximizes the immediate reward + theta*nextState
+
+            // out of all actions that exist you should choose the action, which maximizes the immediate reward + V(s)
+
             PlayerActionSetFactory a = new PlayerActionSetFactory();
             List<PlayerActionSet> permutations = new ArrayList<>();
             permutations = a.getReducedActions();
-            /*for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    permutations.addAll(a.getActionAction(i, j));
-                }
-            }*/
+
             int maxActionPermutation = 0;
             double maxValue = Double.MIN_VALUE;
-            //int K = 10;
+
+            // parameter
             double gamma = 0.7;
+
             for (int i = 0; i < permutations.size(); i++) {
+
                 double value = 0;
-                //for (int k = 0; k < K; k++) {
                 State s = t.getNewStateSample((State) state, permutations.get(i), r.getPitchSide());
-                DoubleFactory1D h = DoubleFactory1D.dense;
-                DoubleMatrix1D next = h.make(s.getArray());
+
                 value += r.calculateReward((State) state, permutations.get(i), s);
-                value += gamma * theta.zDotProduct(next);
+                value += gamma * v.interpolateReward(s);
+
+                //logger.info("For Actioncombination " +  permutations.get(i) + " the reward would be " + value);
 
                 if (maxValue < value) {
                     maxValue = value;
                     maxActionPermutation = i;
                 }
-
-                //logger.info(permutations.get(i).getActions() + " " +r.calculateReward((State) state, permutations.get(i),s) + " " + gamma * theta.zDotProduct(next));
-
             }
-            //logger.info(state);
             for (int i = 0; i < playerControllers.size(); i++) {
                 action.put(playerControllers.get(i), permutations.get(maxActionPermutation).getActions().get(i).getAction());
             }

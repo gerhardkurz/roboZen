@@ -106,6 +106,22 @@ public class PlayerActionSetFactory {
         reducedActions.add(new Kick(30, 0));
         reducedActions.add(new Kick(30, 25));
         reducedActions.add(new Kick(30, -25));
+
+        /*for (int i = 0; i < 10; i++) {
+            reducedActions.add(new Turn(i));
+            reducedActions.add(new Turn(-i));
+            reducedActions.add(new Kick(30, i));
+            reducedActions.add(new Kick(30, -i));
+        }
+        for (int i = 20; i < 180; i = i+40) {
+            reducedActions.add(new Turn(i));
+            reducedActions.add(new Turn(-i));
+            reducedActions.add(new Kick(30,i));
+            reducedActions.add(new Kick(30, -i));
+        }
+        for (int i = 1; i < 100; i = 10+ i) {
+            reducedActions.add(new Dash(i));
+        }*/
         List<PlayerActionSet> permutations = new ArrayList<>();
         for (int i = 0; i < reducedActions.size(); i++) {
             for (int j = 0; j < reducedActions.size(); j++) {

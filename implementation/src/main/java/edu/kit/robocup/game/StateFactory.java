@@ -2,6 +2,7 @@ package edu.kit.robocup.game;
 
 import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.constant.PitchSide;
+import edu.kit.robocup.game.controller.IPlayerController;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
@@ -84,6 +85,87 @@ public class StateFactory {
             currentDistance[dimension] = i * stepDistance[dimension];
             provideStatesRecursive(dimension + 1, stepDistance, maxSteps, currentDistance, states, numberPlayersPitchside, numberAllPlayers, pitchSide);
         }
+    }
+
+    // euler distance
+    public static double distance(State s, State q) {
+        double toSqrt = 0;
+        for (int i = 0; i < s.getDimension(); i++) {
+            toSqrt += (s.getArray()[i] - q.getArray()[i]) * (s.getArray()[i] - q.getArray()[i]);
+        }
+        return Math.sqrt(toSqrt);
+    }
+
+    public static State reduceState(State s, int positionResolution, int rotationResolution, int velocityResolution) {
+        List<IPlayerState> p = s.getPlayers();
+        List<IPlayerState> newP = new ArrayList<>();
+        for (IPlayerState player : p) {
+            double posX = reducePositionX(positionResolution, player.getPositionX());
+            double posY = reducePositionY(positionResolution, player.getPositionY());
+            double vel = reduceVelocity(velocityResolution, player.getVelocityLength());
+            double angle = reduceAngle(rotationResolution, player.getBodyAngle());
+            newP.add(new PlayerState(player.getPitchSide(), player.getNumber(), posX, posY, vel, angle, player.getNeckAngle()));
+        }
+        double posX = reducePositionX(positionResolution, s.getBall().getPositionX());
+        double posY = reducePositionX(positionResolution, s.getBall().getPositionY());
+        double velX = reduceVelocity(rotationResolution, s.getBall().getVelocityX());
+        double velY = reduceVelocity(rotationResolution, s.getBall().getVelocityY());
+        return new State(new Ball(posX, posY, velX, velY), newP);
+    }
+
+    private static double reducePositionX(int positionResolution, double position) {
+        double step = (playFieldWidth/(positionResolution-1));
+        return position - (position % step);
+    }
+    private static double reducePositionY(int positionResolution, double position) {
+        double step = (playFieldHeight/(positionResolution-1));
+        return position - (position % step);
+    }
+    private static double reduceVelocity(int velocityResolution, double vel) {
+        double step = (maxVelocity/(velocityResolution-1));
+        return vel - (vel % step);
+    }
+    private static double reduceAngle(int rotationResolution, double angle) {
+        double a = angle + 180;
+        double step = (360/(rotationResolution -1));
+        a = a - (a % step);
+        return (a-180);
+    }
+
+    public static State increaseState(State s, int positionResolution, int rotationResolution, int velocityResolution) {
+        List<IPlayerState> p = s.getPlayers();
+        List<IPlayerState> newP = new ArrayList<>();
+        for (IPlayerState player : p) {
+            double posX = increasePositionX(positionResolution, player.getPositionX());
+            double posY = increasePositionY(positionResolution, player.getPositionY());
+            double vel = increaseVelocity(velocityResolution, player.getVelocityLength());
+            double angle = increaseAngle(rotationResolution, player.getBodyAngle());
+            newP.add(new PlayerState(player.getPitchSide(), player.getNumber(), posX, posY, vel, angle, player.getNeckAngle()));
+        }
+        double posX = increasePositionX(positionResolution, s.getBall().getPositionX());
+        double posY = increasePositionX(positionResolution, s.getBall().getPositionY());
+        double velX = increaseVelocity(rotationResolution, s.getBall().getVelocityX());
+        double velY = increaseVelocity(rotationResolution, s.getBall().getVelocityY());
+        return new State(new Ball(posX, posY, velX, velY), newP);
+    }
+
+    private static double increasePositionX(int positionResolution, double position) {
+        double step = (playFieldWidth/(positionResolution-1));
+        return position + (step - (position % step));
+    }
+    private static double increasePositionY(int positionResolution, double position) {
+        double step = (playFieldHeight/(positionResolution-1));
+        return position + (step - (position % step));
+    }
+    private static double increaseVelocity(int velocityResolution, double vel) {
+        double step = (maxVelocity/(velocityResolution-1));
+        return vel + (step -(vel % step));
+    }
+    private static double increaseAngle(int rotationResolution, double angle) {
+        double a = angle + 180;
+        double step = 360/(rotationResolution-1);
+        a = a + (step-(a % step));
+        return (a-180);
     }
 
     public State getRandomState(int numberPlayersPitchside, int numberAllPlayers, PitchSide pitchSide) {

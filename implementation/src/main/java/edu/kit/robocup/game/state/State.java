@@ -33,6 +33,10 @@ public class State implements IState, Serializable {
         initArray();
     }
 
+    public List<IPlayerState> getPlayers() {
+        return (players.stream().collect(Collectors.toList()));
+    }
+
     public State(double[] state, PitchSide pitchSide, int numberOfPlayersOfPitchside) {
         this.playMode = PlayMode.UNKNOWN;
         int counter = 0;
@@ -62,7 +66,7 @@ public class State implements IState, Serializable {
             if (p == numberPlayersPitchside)
                 currentPitchSide = flipPitchSide(currentPitchSide);
             int pOffset = 4 + (p * 5);
-            players.add(new PlayerState(pitchSide, p, currentDistance[pOffset], currentDistance[pOffset + 1], currentDistance[pOffset + 2], currentDistance[pOffset + 3], currentDistance[pOffset + 4], 0));
+            players.add(new PlayerState(pitchSide, p+1, currentDistance[pOffset], currentDistance[pOffset + 1], currentDistance[pOffset + 2], currentDistance[pOffset + 3], currentDistance[pOffset + 4], 0));
         }
         pos = new double[4*(players.size()+1)];
         initArray();
