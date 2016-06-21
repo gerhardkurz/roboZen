@@ -114,12 +114,16 @@ public class StateFactory {
     }
 
     private static double reducePositionX(int positionResolution, double position) {
+        double p = position + playFieldWidth/2.0;
         double step = (playFieldWidth/(positionResolution-1));
-        return (Math.floor(position/step)) * step;
+        p = (Math.floor(p/step)) * step;
+        return (p-(playFieldWidth/2.0));
     }
     private static double reducePositionY(int positionResolution, double position) {
+        double p = position + playFieldHeight/2.0;
         double step = (playFieldHeight/(positionResolution-1));
-        return (Math.floor(position/step)) * step;
+        p = (Math.floor(p/step)) * step;
+        return (p - (playFieldHeight/2.0));
     }
     private static double reduceVelocity(int velocityResolution, double vel) {
         double step = (maxVelocity/(velocityResolution-1));
@@ -150,12 +154,16 @@ public class StateFactory {
     }
 
     private static double increasePositionX(int positionResolution, double position) {
+        double p = position + (playFieldWidth/2.0);
         double step = (playFieldWidth/(positionResolution-1));
-        return (Math.floor(position/step)+1) * step;
+        p = (Math.floor(p/step)+1) * step;
+        return p - (playFieldHeight/2.0);
     }
     private static double increasePositionY(int positionResolution, double position) {
+        double p = position + (playFieldHeight/2.0);
         double step = (playFieldHeight/(positionResolution-1));
-        return (Math.floor(position/step)+1) * step;
+        p = (Math.floor(p/step)+1) * step;
+        return (p - (playFieldHeight/2.0));
     }
     private static double increaseVelocity(int velocityResolution, double vel) {
         double step = (maxVelocity/(velocityResolution-1));
