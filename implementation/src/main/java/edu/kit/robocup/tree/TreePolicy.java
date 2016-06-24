@@ -77,15 +77,15 @@ public class TreePolicy implements IPolicy {
     }
 
     private PlayerActionSet getBestActions(List<BfsNode> nodes, PitchSide pitchSide) {
-        float maxReward = -Float.MAX_VALUE;
+        double maxReward = -Double.MAX_VALUE;
         PlayerActionSet bestActions = null;
 
-        int currentReward = 0;
+        long currentReward = 0;
         int count = 0;
         PlayerActionSet currActions = nodes.get(0).actions;
         for (BfsNode node: nodes) {
             if (node.actions != currActions) {
-                float newReward = (float) currentReward / (float) count;
+                double newReward = (double) currentReward / (double) count;
                 if (newReward > maxReward) {
                     maxReward = newReward;
                     bestActions = currActions;
