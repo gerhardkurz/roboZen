@@ -5,5 +5,5 @@ import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.interf.mdp.IState;
 
 public interface IReward {
-    int getReward(IState currentState, PitchSide pitchSide);
+    double getReward(IState currentState, PitchSide pitchSide);
 }

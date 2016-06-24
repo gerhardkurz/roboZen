@@ -3,14 +3,17 @@ package edu.kit.robocup.tree;
 
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.state.Ball;
+import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IState;
 
 public class TreeReward implements IReward {
 
-    public int getReward(IState currentState, PitchSide pitchSide) {
+    public double getReward(IState currentState, PitchSide pitchSide) {
         IState normalizedState = normalizeStateToEast(currentState, pitchSide);
-        int reward = 0;
+        double reward = 0;
         reward += rewardPlayMode(normalizedState, pitchSide);
+        reward += rewardBallPosition(normalizedState);
+        reward += rewardDistanceToBall(normalizedState, pitchSide);
 
         return reward;
     }
@@ -26,7 +29,7 @@ public class TreeReward implements IReward {
     }
 
 
-    private int rewardPlayMode(IState currentState, PitchSide pitchSide) {
+    private double rewardPlayMode(IState currentState, PitchSide pitchSide) {
         switch(currentState.getPlayMode()) {
             case PLAY_ON:
                 return 0;
@@ -44,17 +47,26 @@ public class TreeReward implements IReward {
         }
     }
 
-    private int rewardBallPosition(IState currentState, PitchSide pitchSide) {
-        int reward = 0;
-        Ball ball = currentState.getBall();
-        reward += ball.getPositionX();
+    private double rewardBallPosition(IState normalizedState) {
+        double reward = 0;
+        Ball ball = normalizedState.getBall();
+        reward += ball.getPositionX() * 100;
         if ( ball.getPositionX() >= 35 ) {
             // if ball is near the goal
         }
-
-
-        if (pitchSide == PitchSide.WEST)
-            reward = -reward;
         return reward;
+    }
+
+    private double rewardDistanceToBall(IState normalizedState, PitchSide pitchSide) {
+        double reward = 0;
+        Ball ball = normalizedState.getBall();
+        for (IPlayerState player : normalizedState.getPlayers(pitchSide)) {
+            reward += distanceToReward(ball.getDistance(player));
+        }
+        return reward;
+    }
+
+    private double distanceToReward(double distance) {
+        return 100 - (distance * 2);
     }
 }
