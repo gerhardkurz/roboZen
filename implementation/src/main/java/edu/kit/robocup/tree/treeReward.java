@@ -11,7 +11,7 @@ public class TreeReward implements IReward {
         IState normalizedState = normalizeStateToEast(currentState, pitchSide);
         int reward = 0;
         reward += rewardPlayMode(normalizedState, pitchSide);
-        
+
         return reward;
     }
 
