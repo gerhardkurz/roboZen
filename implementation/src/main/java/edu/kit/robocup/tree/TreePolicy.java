@@ -12,12 +12,14 @@ import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.mdp.PlayerActionSetFactory;
 import edu.kit.robocup.mdp.transition.ITransition;
 import edu.kit.robocup.mdp.transition.TransitionDet;
+import org.apache.log4j.Logger;
 
 import java.time.Duration;
 import java.util.*;
 import java.time.Instant;
 
 public class TreePolicy implements IPolicy {
+    private static Logger logger = Logger.getLogger(TreePolicy.class.getName());
     private ITransition transition;
     private IPruner pruner;
     private IReward reward;
@@ -54,11 +56,13 @@ public class TreePolicy implements IPolicy {
         List<BfsNode> nextNodes = new LinkedList<>();
         currNodes.add(new BfsNode(state, state, null));
         Iterator<BfsNode> currIterator = currNodes.iterator();
+        int depth = 0;
         while(Instant.now().isBefore(end) && (currIterator.hasNext() || !nextNodes.isEmpty())) {
             if (!currIterator.hasNext()) {
                 currNodes = nextNodes;
                 nextNodes = new LinkedList<>();
                 currIterator = currNodes.iterator();
+                depth++;
             }
             BfsNode node = currIterator.next();
             if (!pruner.prune(node.start, node.end)) {
@@ -68,6 +72,7 @@ public class TreePolicy implements IPolicy {
                 }
             }
         }
+        logger.info("Bfs depth: " + depth);
         return getBestActions(currNodes);
     }
 
