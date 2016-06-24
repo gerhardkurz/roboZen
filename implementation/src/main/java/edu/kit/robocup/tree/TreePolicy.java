@@ -27,7 +27,7 @@ public class TreePolicy implements IPolicy {
     private Duration duration;
 
     public TreePolicy() {
-        this(new TransitionDet(-1 , -1, -1), (s, e) -> false, new TreeReward(), new PlayerActionSetFactory().getReducedActions(), Duration.ofMillis(100));
+        this(new TransitionDet(-1 , -1, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getReducedActions(), Duration.ofMillis(100));
     }
 
     public TreePolicy(ITransition transition, IPruner pruner, IReward reward, List<PlayerActionSet> actions, Duration duration) {
@@ -65,7 +65,7 @@ public class TreePolicy implements IPolicy {
                 depth++;
             }
             BfsNode node = currIterator.next();
-            if (!pruner.prune(node.start, node.end)) {
+            if (!pruner.prune(node.start, node.end, pitchSide)) {
                 for (PlayerActionSet playerActionSet: actions) {
                     IState next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
                     nextNodes.add(new BfsNode(node.start, next, node.actions == null ? playerActionSet : node.actions));
