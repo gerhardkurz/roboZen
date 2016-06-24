@@ -27,7 +27,7 @@ public class TreePolicy implements IPolicy {
     private Duration duration;
 
     public TreePolicy() {
-        this(new TransitionDet(-1 , -1, -1), null, null, new PlayerActionSetFactory().getReducedActions(), Duration.ofMillis(100));
+        this(new TransitionDet(-1 , -1, -1), (s, e) -> false, new TreeReward(), new PlayerActionSetFactory().getReducedActions(), Duration.ofMillis(100));
     }
 
     public TreePolicy(ITransition transition, IPruner pruner, IReward reward, List<PlayerActionSet> actions, Duration duration) {
@@ -73,10 +73,10 @@ public class TreePolicy implements IPolicy {
             }
         }
         logger.info("Bfs depth: " + depth);
-        return getBestActions(currNodes);
+        return getBestActions(currNodes, pitchSide);
     }
 
-    private PlayerActionSet getBestActions(List<BfsNode> nodes) {
+    private PlayerActionSet getBestActions(List<BfsNode> nodes, PitchSide pitchSide) {
         float maxReward = Float.MIN_VALUE;
         PlayerActionSet bestActions = null;
 
@@ -94,7 +94,7 @@ public class TreePolicy implements IPolicy {
                 currentReward = 0;
                 count = 0;
             }
-            currentReward += reward.getReward(node.end, //TODO);
+            currentReward += reward.getReward(node.end, pitchSide);
             count++;
         }
 
