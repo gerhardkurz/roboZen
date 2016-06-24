@@ -28,7 +28,7 @@ public class BeforeGamePolicy implements IPolicy {
     public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers, PitchSide pitchSide) {
         Map<IPlayerController, IAction> result = new HashMap<>();
         List<IPlayerState> playerStates = state.getPlayers(pitchSide);
-        for (int i = 0; i < positions.size(); i++) {
+        for (int i = 0; i < playerControllers.size(); i++) {
             Optional<IAction> optionalAction = moveInPositionAndLookAt(positions.get(i), playerControllers.get(i), playerStates.get(i), new SimpleGameObject(0, 0));
             if (optionalAction.isPresent()) {
                 result.put(playerControllers.get(i), optionalAction.get());
