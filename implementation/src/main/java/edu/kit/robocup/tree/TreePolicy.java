@@ -89,7 +89,7 @@ public class TreePolicy implements IPolicy {
                 currentReward = 0;
                 count = 0;
             }
-            currentReward += reward.reward(node.start, node.end);
+            currentReward += reward.reward(node.end);
             count++;
         }
 
