@@ -1,6 +1,7 @@
 package edu.kit.robocup.interf.game;
 
 
+
 public interface IPlayerState extends IPlayer, IMoveAbleObject {
 
     double getNeckAngle();
@@ -14,4 +15,5 @@ public interface IPlayerState extends IPlayer, IMoveAbleObject {
 
         return Math.toDegrees(Math.atan2(x1 * y2 - y1 * x2, x1 * x2 + y1 * y2));
     }
+    IPlayerState flipPitchSide();
 }

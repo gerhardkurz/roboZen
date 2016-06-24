@@ -95,4 +95,8 @@ public class PlayerState implements IPlayerState, Serializable {
         IPlayer player = (IPlayer) obj;
         return pitchSide == player.getPitchSide() && getNumber() == player.getNumber();
     }
+
+    public IPlayerState flipPitchSide() {
+        return new PlayerState(this.pitchSide, this.number, -this.positionX, -this.positionY);
+    }
 }

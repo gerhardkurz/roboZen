@@ -142,4 +142,13 @@ public class State implements IState, Serializable {
 		pos[4 * players.size() + 2] = ball.getVelocityX();
         pos[4 * players.size() + 3] = ball.getVelocityY();
     }
+
+    public IState flipPitchSide() {
+        Ball ball = new Ball(-this.ball.getPositionX(), -this.ball.getPositionY(), -this.ball.getVelocityX(), -this.ball.getVelocityY());
+        ArrayList<IPlayerState> players = new ArrayList<>();
+        players.addAll(this.players.stream()
+                .map(IPlayerState::flipPitchSide)
+                .collect(Collectors.toList()));
+        return new State(ball, players);
+    }
 }
