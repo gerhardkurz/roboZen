@@ -14,7 +14,28 @@ public class TreeReward implements IReward {
         reward += rewardPlayMode(normalizedState, pitchSide);
         reward += rewardBallPosition(normalizedState);
         reward += rewardDistanceToBall(normalizedState, pitchSide);
+        reward += rewardSpreadOutPlayers(normalizedState, pitchSide);
+        return reward;
+    }
 
+    private double rewardSpreadOutPlayers(IState normalizedState, PitchSide pitchSide) {
+        double reward = 0;
+        for (IPlayerState player : normalizedState.getPlayers(pitchSide)) {
+            reward += rewardSpreadOutPlayer(player, normalizedState, pitchSide);
+        }
+        return reward;
+    }
+
+
+    private double rewardSpreadOutPlayer(IPlayerState player, IState normalizedState, PitchSide pitchSide) {
+        final double distanceToSpreadOut = 10;
+        final double rewardForSpreadOut = 100;
+        double reward = 0;
+        for (IPlayerState other : normalizedState.getPlayers(pitchSide)) {
+            if (!player.equals(other)) {
+                reward += player.getDistance(other) > distanceToSpreadOut ? rewardForSpreadOut : 0;
+            }
+        }
         return reward;
     }
 
@@ -50,10 +71,7 @@ public class TreeReward implements IReward {
     private double rewardBallPosition(IState normalizedState) {
         double reward = 0;
         Ball ball = normalizedState.getBall();
-        reward += ball.getPositionX() * 100;
-        if ( ball.getPositionX() >= 35 ) {
-            // if ball is near the goal
-        }
+        reward += ball.getDistanceToGoal(true);
         return reward;
     }
 
