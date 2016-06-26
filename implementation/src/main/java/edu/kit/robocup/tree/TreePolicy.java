@@ -27,7 +27,7 @@ public class TreePolicy implements IPolicy {
     private Duration duration;
 
     public TreePolicy() {
-        this(new TransitionDet(-1 , -1, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getReducedActions(), Duration.ofMillis(100));
+        this(new TransitionDet(-1 , -1, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getActionPermutations(2, 12, 4, 2), Duration.ofMillis(100));
     }
 
     public TreePolicy(ITransition transition, IPruner pruner, IReward reward, List<PlayerActionSet> actions, Duration duration) {

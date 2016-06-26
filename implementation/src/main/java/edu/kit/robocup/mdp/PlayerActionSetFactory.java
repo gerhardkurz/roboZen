@@ -11,82 +11,85 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.javacc.parser.LexGen.actions;
+
 /**
  * discretizes the actions and calculates a set of all possible discretized action vectors
  */
 public class PlayerActionSetFactory {
     private static Logger logger = Logger.getLogger(PlayerActionSetFactory.class.getName());
 
-    private int[] valuesTurn = new int[]{-180, -170, -160, -150, -140, -130, -120, -110, -100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180};
-    private int[] valuesKickPower = new int[]{-100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-    private int[] valuesDash = new int[]{0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+    private final int[] valuesTurn = new int[]{-180, -170, -160, -150, -140, -130, -120, -110, -100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180};
+    private final int[] valuesKickPower = new int[]{-100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+    private final int[] valuesDash = new int[]{0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+
+    private final int maxTurn = 180;
+    private final int maxKick = 100;
+    private final int maxDash = 100;
 
     public PlayerActionSetFactory() {};
 
-    public List<PlayerActionSet> getActionAction(int indexFirst, int indexSecond) {
-        List<IAction> first = getDiscretizedActions(indexFirst);
-        List<IAction> second = getDiscretizedActions(indexSecond);
+    public List<PlayerActionSet> getActionPermutations(int playerCount, int turnCount, int kickCount, int dashCount) {
+        List<IAction> actions = getAllDiscretizedActions(turnCount, kickCount, dashCount);
+        List<PlayerActionSet> permutations = permuteActions(playerCount, actions);
+        return permutations;
+    }
+
+    private List<PlayerActionSet> permuteActions(int playerCount, List<IAction> actions) {
+        // TODO only 2 Players supported, implement recursion for more players
+        assert playerCount==2;
 
         List<PlayerActionSet> permutations = new ArrayList<>();
-
-        // TODO hardgecoded for 2 players
-        for (int i = 0; i < first.size(); i++) {
-            for (int j = 0; j < second.size(); j++) {
-                List<PlayerAction> t = new ArrayList<>();
-                t.add(new PlayerAction(1, first.get(i)));
-                t.add(new PlayerAction(2, second.get(j)));
-                permutations.add(new PlayerActionSet(t));
+        for (int i = 0; i < actions.size(); i++) {
+            for (int j = 0; j < actions.size(); j++) {
+                permutations.add(createActionSet(i, j, actions));
             }
         }
         return permutations;
     }
 
-    private List<IAction> getDiscretizedActions(int index) {
-        switch (index) {
-            case 0: {
-                return getDiscretizedKick();
-            }
-            case 1: {
-                return getDiscretizedDash();
-            }
-            case 2: {
-                return getDiscretizedTurn();
-            }
-            default: {
-                logger.error("Not the correct index of action");
-                return null;
-            }
-        }
+    private PlayerActionSet createActionSet(int i, int j, List<IAction> actions) {
+        List<PlayerAction> t = new ArrayList<>();
+        t.add(new PlayerAction(1, actions.get(i)));
+        t.add(new PlayerAction(2, actions.get(j)));
+        return new PlayerActionSet(t);
+    }
+    public List<PlayerActionSet> getActionAction(int indexFirst, int indexSecond) {
+        return null;
     }
 
-    private List<IAction> getDiscretizedTurn() {
-        List<IAction> discretizedActions = new ArrayList<>();
+    private List<IAction> getAllDiscretizedActions(int turnCount, int kickCount, int dashCount) {
+        ArrayList<IAction> actions = new ArrayList<>();
+        actions.addAll(getDiscretizedTurn(turnCount));
+        actions.addAll(getDiscretizedKick(kickCount));
+        actions.addAll(getDiscretizedDash(dashCount));
+        return actions;
+    }
 
-        for (int i = 0; i < valuesTurn.length; i++) {
-            discretizedActions.add(new Turn(valuesTurn[i]));
+    private List<IAction> getDiscretizedTurn(int turnCount) {
+        List<IAction> discretizedActions = new ArrayList<>();
+        float stepSize = (maxTurn * 2) / turnCount;
+        for (float i = -maxTurn; i <= maxTurn; i += stepSize) {
+            discretizedActions.add(new Turn((int) i));
         }
         return discretizedActions;
     }
 
-    private List<IAction> getDiscretizedKick() {
+    private List<IAction> getDiscretizedKick(int kickCount) {
         List<IAction> discretizedActions = new ArrayList<>();
-
-        for (int i = 0; i < valuesTurn.length; i++) {
-            for (int j = 0; j < valuesKickPower.length; j++) {
-                discretizedActions.add(new Kick(valuesKickPower[j], valuesTurn[i]));
-            }
+        float stepSize = maxKick / kickCount;
+        for (float i = 0; i <= maxKick; i+= stepSize) {
+            discretizedActions.add(new Kick((int) i, 0));
         }
-
         return discretizedActions;
     }
 
-    private List<IAction> getDiscretizedDash() {
+    private List<IAction> getDiscretizedDash(int dashCount) {
         List<IAction> discretizedActions = new ArrayList<>();
-
-        for (int i = 0; i < valuesDash.length; i++) {
-            discretizedActions.add(new Dash(valuesDash[i]));
+        float stepSize = maxDash / dashCount;
+        for (float i = 0; i <= maxDash; i+= stepSize) {
+            discretizedActions.add(new Dash((int) i));
         }
-
         return discretizedActions;
     }
 
@@ -125,10 +128,7 @@ public class PlayerActionSetFactory {
         List<PlayerActionSet> permutations = new ArrayList<>();
         for (int i = 0; i < reducedActions.size(); i++) {
             for (int j = 0; j < reducedActions.size(); j++) {
-                List<PlayerAction> t = new ArrayList<>();
-                t.add(new PlayerAction(1, reducedActions.get(i)));
-                t.add(new PlayerAction(2, reducedActions.get(j)));
-                permutations.add(new PlayerActionSet(t));
+                permutations.add(createActionSet(i, j, reducedActions));
             }
         }
         return permutations;
