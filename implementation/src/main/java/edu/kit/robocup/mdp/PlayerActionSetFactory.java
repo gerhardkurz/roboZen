@@ -19,10 +19,6 @@ import static org.javacc.parser.LexGen.actions;
 public class PlayerActionSetFactory {
     private static Logger logger = Logger.getLogger(PlayerActionSetFactory.class.getName());
 
-    private final int[] valuesTurn = new int[]{-180, -170, -160, -150, -140, -130, -120, -110, -100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180};
-    private final int[] valuesKickPower = new int[]{-100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-    private final int[] valuesDash = new int[]{0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-
     private final int maxTurn = 180;
     private final int maxKick = 100;
     private final int maxDash = 100;
@@ -32,6 +28,7 @@ public class PlayerActionSetFactory {
     public List<PlayerActionSet> getActionPermutations(int playerCount, int turnCount, int kickCount, int dashCount) {
         List<IAction> actions = getAllDiscretizedActions(turnCount, kickCount, dashCount);
         List<PlayerActionSet> permutations = permuteActions(playerCount, actions);
+        logger.info("ActionSets created. Count: " + permutations.size());
         return permutations;
     }
 

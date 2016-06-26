@@ -14,7 +14,7 @@ public class TreeReward implements IReward {
         reward += rewardPlayMode(normalizedState, pitchSide);
         reward += rewardBallPosition(normalizedState);
         reward += rewardDistanceToBall(normalizedState, pitchSide);
-        reward += rewardSpreadOutPlayers(normalizedState, pitchSide);
+        //reward += rewardSpreadOutPlayers(normalizedState, pitchSide);
         return reward;
     }
 
