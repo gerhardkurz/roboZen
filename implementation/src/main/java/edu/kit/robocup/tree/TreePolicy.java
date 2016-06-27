@@ -27,7 +27,7 @@ public class TreePolicy implements IPolicy {
     private Duration duration;
 
     public TreePolicy() {
-        this(new TransitionDet(2 , 4, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getActionPermutations(2, 8, 8, 4), Duration.ofMillis(100));
+        this(new TransitionDet(2 , 4, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getActionPermutations(2, 6, 1, 3), Duration.ofMillis(1000));
     }
 
     public TreePolicy(ITransition transition, IPruner pruner, IReward reward, List<PlayerActionSet> actions, Duration duration) {
@@ -73,6 +73,7 @@ public class TreePolicy implements IPolicy {
             }
         }
         logger.info("Bfs depth: " + depth);
+        //logger.info(nextNodes.size());
         return getBestActions(currNodes, pitchSide);
     }
 
@@ -80,7 +81,7 @@ public class TreePolicy implements IPolicy {
         double maxReward = -Double.MAX_VALUE;
         PlayerActionSet bestActions = null;
 
-        long currentReward = 0;
+        double currentReward = 0;
         int count = 0;
         PlayerActionSet currActions = nodes.get(0).actions;
         for (BfsNode node: nodes) {
@@ -94,7 +95,10 @@ public class TreePolicy implements IPolicy {
                 currentReward = 0;
                 count = 0;
             }
+            //logger.info(node.end.toString());
             currentReward += reward.getReward(node.end, pitchSide);
+            //logger.info("Reward: " + currentReward);
+            //logger.info("Action: " + currActions);
             count++;
         }
 
@@ -105,6 +109,7 @@ public class TreePolicy implements IPolicy {
         }
 
         logger.info("Max reward: " + maxReward);
+        logger.info("Best action: " + bestActions);
         return bestActions;
     }
 
