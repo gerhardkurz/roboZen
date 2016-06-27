@@ -15,8 +15,8 @@ public interface IGameObject extends Serializable {
 
     default double getDistanceToGoal(boolean east) {
         if (east)
-            return Math.hypot(getPositionX() - (Constants.PITCH_LENGTH / 2), getPositionY());
+            return Constants.GOAL_EAST.getDistance(this);
         else
-            return Math.hypot(getPositionX() + (Constants.PITCH_LENGTH / 2), getPositionY());
+            return Constants.GOAL_WEST.getDistance(this);
     }
 }
