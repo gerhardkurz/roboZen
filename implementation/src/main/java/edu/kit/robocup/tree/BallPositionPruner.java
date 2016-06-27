@@ -15,12 +15,10 @@ public class BallPositionPruner implements IPruner {
     }
 
     private double ballDistanceToOwnGoal(IState state, PitchSide pitchSide) {
-        double goalPosEast = Constants.PITCH_LENGTH / 2;
-        double goalPosWest = -goalPosEast;
         if (pitchSide == PitchSide.EAST) {
-            return state.getBall().getPositionX() - goalPosEast;
+            return Constants.GOAL_EAST.getDistance(state.getBall());
         } else {
-            return state.getBall().getPositionX() - goalPosWest;
+            return Constants.GOAL_WEST.getDistance(state.getBall());
         }
     }
 

@@ -51,9 +51,6 @@ public class PlayerActionSetFactory {
         t.add(new PlayerAction(2, actions.get(j)));
         return new PlayerActionSet(t);
     }
-    public List<PlayerActionSet> getActionAction(int indexFirst, int indexSecond) {
-        return null;
-    }
 
     private List<IAction> getAllDiscretizedActions(int turnCount, int kickCount, int dashCount) {
         ArrayList<IAction> actions = new ArrayList<>();
