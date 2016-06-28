@@ -1,6 +1,7 @@
 package edu.kit.robocup.tree;
 
 
+import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.game.controller.IPlayerController;
@@ -18,6 +19,8 @@ import java.time.Duration;
 import java.util.*;
 import java.time.Instant;
 
+import static edu.kit.robocup.game.Action.KICK;
+
 public class TreePolicy implements IPolicy {
     private static Logger logger = Logger.getLogger(TreePolicy.class.getName());
     private ITransition transition;
@@ -27,7 +30,7 @@ public class TreePolicy implements IPolicy {
     private Duration duration;
 
     public TreePolicy() {
-        this(new TransitionDet(2 , 4, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getActionPermutations(2, 6, 1, 3), Duration.ofMillis(1000));
+        this(new TransitionDet(2 , 4, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getActionPermutations(2, 10, 1, 3), Duration.ofMillis(1000));
     }
 
     public TreePolicy(ITransition transition, IPruner pruner, IReward reward, List<PlayerActionSet> actions, Duration duration) {
@@ -35,6 +38,7 @@ public class TreePolicy implements IPolicy {
         this.pruner = pruner;
         this.reward = reward;
         this.actions = actions;
+        logger.info("Permutations: " + actions.size());
         this.duration = duration;
     }
 
@@ -57,23 +61,48 @@ public class TreePolicy implements IPolicy {
         currNodes.add(new BfsNode(state, state, null));
         Iterator<BfsNode> currIterator = currNodes.iterator();
         int depth = 0;
+        int prune = 0;
         while(Instant.now().isBefore(end) && (currIterator.hasNext() || !nextNodes.isEmpty())) {
             if (!currIterator.hasNext()) {
                 currNodes = nextNodes;
                 nextNodes = new LinkedList<>();
                 currIterator = currNodes.iterator();
                 depth++;
+                logger.info("Depth: " + depth + " currNodes: " + currNodes.size() + " pruned " + prune);
+                prune = 0;
             }
             BfsNode node = currIterator.next();
+            boolean firstPlayerKickable = false;
+            if (node.end.getPlayers(pitchSide).get(0).getDistance(node.end.getBall()) <= Constants.KICKABLE_MARGIN) {
+                firstPlayerKickable = true;
+                /*if (depth == 0) {
+                    logger.info("Player 1 is just " + node.end.getPlayers(pitchSide).get(0).getDistance(node.end.getBall()) + " far away of ball");
+                    logger.info(state);
+                }*/
+            }
+            boolean secondPlayerKickable = false;
+            if (node.end.getPlayers(pitchSide).get(1).getDistance(node.end.getBall()) <= Constants.KICKABLE_MARGIN) {
+                secondPlayerKickable = true;
+                /*if (depth == 0) {
+                    logger.info("Player 2 is just " + node.end.getPlayers(pitchSide).get(1).getDistance(node.end.getBall()) + " far away of ball");
+                    logger.info(state);
+                }*/
+            }
             if (!pruner.prune(node.start, node.end, pitchSide)) {
                 for (PlayerActionSet playerActionSet: actions) {
-                    IState next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
-                    nextNodes.add(new BfsNode(node.start, next, node.actions == null ? playerActionSet : node.actions));
+                    if ((firstPlayerKickable) || (!(playerActionSet.getActions().get(0).getActionType() == KICK))) {
+                        if ((secondPlayerKickable) || (!(playerActionSet.getActions().get(1).getActionType() == KICK))) {
+                            IState next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
+                            nextNodes.add(new BfsNode(node.start, next, node.actions == null ? playerActionSet : node.actions));
+                        }
+                    }
                 }
+            } else {
+                prune++;
             }
         }
         logger.info("Bfs depth: " + depth);
-        //logger.info(nextNodes.size());
+        logger.info("currNodes " + nextNodes.size() + " pruned " + prune);
         return getBestActions(currNodes, pitchSide);
     }
 
@@ -95,8 +124,16 @@ public class TreePolicy implements IPolicy {
                 currentReward = 0;
                 count = 0;
             }
+
             //logger.info(node.end.toString());
             currentReward += reward.getReward(node.end, pitchSide);
+            /*if (node.actions.getActions().get(0).getActionType() == KICK && count == 0 && Math.abs(node.start.getPlayers(pitchSide).get(0).getBodyAngle()) > 150) {
+                logger.info(node.start);
+                logger.info(node.end.toString());
+                logger.info(currActions);
+                logger.info(currentReward);
+                logger.info(count);
+            }*/
             //logger.info("Reward: " + currentReward);
             //logger.info("Action: " + currActions);
             count++;
@@ -117,6 +154,8 @@ public class TreePolicy implements IPolicy {
     @Override
     public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers, PitchSide pitchSide) {
         PlayerActionSet playerActionSet = bfs(state, pitchSide);
+        //logger.info(state);
+        //logger.info(transition.getNewStateSample((State) state, playerActionSet, pitchSide));
         Map<IPlayerController, IAction> actions = new HashMap<>();
         Iterator<? extends IPlayerController> playerControllerIterator = playerControllers.iterator();
         Iterator<PlayerAction> playerActionIterator = playerActionSet.getActions().iterator();
