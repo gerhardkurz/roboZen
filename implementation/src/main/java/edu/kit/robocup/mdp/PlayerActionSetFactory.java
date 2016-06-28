@@ -28,7 +28,6 @@ public class PlayerActionSetFactory {
     public List<PlayerActionSet> getActionPermutations(int playerCount, int turnCount, int kickCount, int dashCount) {
         List<IAction> actions = getAllDiscretizedActions(turnCount, kickCount, dashCount);
         List<PlayerActionSet> permutations = permuteActions(playerCount, actions);
-        logger.info("ActionSets created. Count: " + permutations.size());
         return permutations;
     }
 
@@ -64,7 +63,9 @@ public class PlayerActionSetFactory {
         List<IAction> discretizedActions = new ArrayList<>();
         float stepSize = (maxTurn * 2) / turnCount;
         for (float i = -maxTurn; i <= maxTurn; i += stepSize) {
-            discretizedActions.add(new Turn((int) i));
+            if (i != 0) {
+                discretizedActions.add(new Turn((int) i));
+            }
         }
         return discretizedActions;
     }
@@ -72,7 +73,7 @@ public class PlayerActionSetFactory {
     private List<IAction> getDiscretizedKick(int kickCount) {
         List<IAction> discretizedActions = new ArrayList<>();
         float stepSize = maxKick / kickCount;
-        for (float i = 0; i <= maxKick; i+= stepSize) {
+        for (float i = stepSize; i <= maxKick; i+= stepSize) {
             discretizedActions.add(new Kick((int) i, 0));
         }
         return discretizedActions;
@@ -81,7 +82,7 @@ public class PlayerActionSetFactory {
     private List<IAction> getDiscretizedDash(int dashCount) {
         List<IAction> discretizedActions = new ArrayList<>();
         float stepSize = maxDash / dashCount;
-        for (float i = 0; i <= maxDash; i+= stepSize) {
+        for (float i = stepSize; i <= maxDash; i+= stepSize) {
             discretizedActions.add(new Dash((int) i));
         }
         return discretizedActions;

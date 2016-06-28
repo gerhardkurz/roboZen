@@ -71,7 +71,7 @@ public class TreeReward implements IReward {
     private double rewardBallPosition(IState normalizedState) {
         double reward = 0;
         Ball ball = normalizedState.getBall();
-        reward += distanceToReward(ball.getDistanceToGoal(false));
+        reward += distanceToReward(ball.getDistanceToGoal(true));
         return reward;
     }
 
@@ -79,7 +79,7 @@ public class TreeReward implements IReward {
         double reward = 0;
         Ball ball = normalizedState.getBall();
         for (IPlayerState player : normalizedState.getPlayers(pitchSide)) {
-            reward += distanceToReward(ball.getDistance(player));
+            reward += 0.25 * distanceToReward(ball.getDistance(player));
         }
         return reward;
     }
