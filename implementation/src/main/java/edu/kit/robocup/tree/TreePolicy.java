@@ -30,7 +30,7 @@ public class TreePolicy implements IPolicy {
     private Duration duration;
 
     public TreePolicy() {
-        this(new TransitionDet(2 , 4, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getActionPermutations(2, 10, 1, 3), Duration.ofMillis(1000));
+        this(new TransitionDet(2 , 4, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getActionPermutations(2, 10, 1, 3), Duration.ofMillis(100));
     }
 
     public TreePolicy(ITransition transition, IPruner pruner, IReward reward, List<PlayerActionSet> actions, Duration duration) {
@@ -62,6 +62,8 @@ public class TreePolicy implements IPolicy {
         Iterator<BfsNode> currIterator = currNodes.iterator();
         int depth = 0;
         int prune = 0;
+        double maxReward = -Double.MAX_VALUE;
+        PlayerActionSet bestPlayerActionSet = null;
         while(Instant.now().isBefore(end) && (currIterator.hasNext() || !nextNodes.isEmpty())) {
             if (!currIterator.hasNext()) {
                 currNodes = nextNodes;
@@ -93,7 +95,13 @@ public class TreePolicy implements IPolicy {
                     if ((firstPlayerKickable) || (!(playerActionSet.getActions().get(0).getActionType() == KICK))) {
                         if ((secondPlayerKickable) || (!(playerActionSet.getActions().get(1).getActionType() == KICK))) {
                             IState next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
-                            nextNodes.add(new BfsNode(node.start, next, node.actions == null ? playerActionSet : node.actions));
+                            PlayerActionSet pas = node.actions == null ? playerActionSet : node.actions;
+                            nextNodes.add(new BfsNode(node.start, next, pas));
+                            double newReward = reward.getReward(next, pitchSide);
+                            if (newReward > maxReward) {
+                                maxReward = newReward;
+                                bestPlayerActionSet = pas;
+                            }
                         }
                     }
                 }
@@ -103,51 +111,7 @@ public class TreePolicy implements IPolicy {
         }
         logger.info("Bfs depth: " + depth);
         logger.info("currNodes " + nextNodes.size() + " pruned " + prune);
-        return getBestActions(currNodes, pitchSide);
-    }
-
-    private PlayerActionSet getBestActions(List<BfsNode> nodes, PitchSide pitchSide) {
-        double maxReward = -Double.MAX_VALUE;
-        PlayerActionSet bestActions = null;
-
-        double currentReward = 0;
-        int count = 0;
-        PlayerActionSet currActions = nodes.get(0).actions;
-        for (BfsNode node: nodes) {
-            if (node.actions != currActions) {
-                double newReward = (double) currentReward / (double) count;
-                if (newReward > maxReward) {
-                    maxReward = newReward;
-                    bestActions = currActions;
-                }
-                currActions = node.actions;
-                currentReward = 0;
-                count = 0;
-            }
-
-            //logger.info(node.end.toString());
-            currentReward += reward.getReward(node.end, pitchSide);
-            /*if (node.actions.getActions().get(0).getActionType() == KICK && count == 0 && Math.abs(node.start.getPlayers(pitchSide).get(0).getBodyAngle()) > 150) {
-                logger.info(node.start);
-                logger.info(node.end.toString());
-                logger.info(currActions);
-                logger.info(currentReward);
-                logger.info(count);
-            }*/
-            //logger.info("Reward: " + currentReward);
-            //logger.info("Action: " + currActions);
-            count++;
-        }
-
-        float newReward = (float) currentReward / (float) count;
-        if (newReward > maxReward) {
-            maxReward = newReward;
-            bestActions = currActions;
-        }
-
-        logger.info("Max reward: " + maxReward);
-        logger.info("Best action: " + bestActions);
-        return bestActions;
+        return bestPlayerActionSet;
     }
 
 
