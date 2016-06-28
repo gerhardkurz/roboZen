@@ -75,19 +75,19 @@ public class TreePolicy implements IPolicy {
             boolean firstPlayerKickable = false;
             if (node.end.getPlayers(pitchSide).get(0).getDistance(node.end.getBall()) <= Constants.KICKABLE_MARGIN) {
                 firstPlayerKickable = true;
-                /*if (depth == 0) {
-                    logger.info("Player 1 is just " + node.end.getPlayers(pitchSide).get(0).getDistance(node.end.getBall()) + " far away of ball");
-                    logger.info(state);
-                }*/
             }
+            /*if (depth == 0) {
+                logger.info("Player 1 is just " + node.end.getPlayers(pitchSide).get(0).getDistance(node.end.getBall()) + " far away of ball");
+                logger.info(state);
+            }*/
             boolean secondPlayerKickable = false;
             if (node.end.getPlayers(pitchSide).get(1).getDistance(node.end.getBall()) <= Constants.KICKABLE_MARGIN) {
                 secondPlayerKickable = true;
-                /*if (depth == 0) {
+            }
+            /*if (depth == 0) {
                     logger.info("Player 2 is just " + node.end.getPlayers(pitchSide).get(1).getDistance(node.end.getBall()) + " far away of ball");
                     logger.info(state);
-                }*/
-            }
+            }*/
             if (!pruner.prune(node.start, node.end, pitchSide)) {
                 for (PlayerActionSet playerActionSet: actions) {
                     if ((firstPlayerKickable) || (!(playerActionSet.getActions().get(0).getActionType() == KICK))) {
