@@ -143,6 +143,11 @@ public class State implements IState, Serializable {
         pos[4 * players.size() + 3] = ball.getVelocityY();
     }
 
+    public IState normalizeStateToEast(PitchSide pitchSide) {
+        return pitchSide == PitchSide.WEST ? flipPitchSide() : this;
+    }
+
+
     public IState flipPitchSide() {
         Ball ball = new Ball(-this.ball.getPositionX(), -this.ball.getPositionY(), -this.ball.getVelocityX(), -this.ball.getVelocityY());
         ArrayList<IPlayerState> players = new ArrayList<>();

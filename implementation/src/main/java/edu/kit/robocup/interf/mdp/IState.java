@@ -15,4 +15,5 @@ public interface IState extends Serializable {
     IPlayerState getPlayerState(IPlayer player);
     PlayMode getPlayMode();
     IState flipPitchSide();
+    IState normalizeStateToEast(PitchSide pitchSide);
 }

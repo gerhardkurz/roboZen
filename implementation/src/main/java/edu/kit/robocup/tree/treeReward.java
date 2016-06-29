@@ -9,7 +9,7 @@ import edu.kit.robocup.interf.mdp.IState;
 public class TreeReward implements IReward {
 
     public double getReward(IState currentState, PitchSide pitchSide) {
-        IState normalizedState = normalizeStateToEast(currentState, pitchSide);
+        IState normalizedState = currentState.normalizeStateToEast(pitchSide);
         double reward = 0;
         reward += rewardPlayMode(normalizedState, pitchSide);
         reward += rewardBallPosition(normalizedState);
@@ -37,16 +37,6 @@ public class TreeReward implements IReward {
             }
         }
         return reward;
-    }
-
-    private IState normalizeStateToEast(IState currentState, PitchSide pitchSide) {
-        IState normalizedState;
-        if (pitchSide == PitchSide.WEST) {
-            normalizedState = currentState.flipPitchSide();
-        } else {
-            normalizedState = currentState;
-        }
-        return normalizedState;
     }
 
 
