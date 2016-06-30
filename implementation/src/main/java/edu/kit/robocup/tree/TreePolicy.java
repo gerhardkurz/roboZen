@@ -3,6 +3,7 @@ package edu.kit.robocup.tree;
 
 import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.constant.PitchSide;
+import edu.kit.robocup.game.Dash;
 import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.game.controller.IPlayerController;
 import edu.kit.robocup.game.state.State;
@@ -46,11 +47,22 @@ public class TreePolicy implements IPolicy {
         private IState start;
         private IState end;
         private PlayerActionSet actions;
+        private double rew;
+        private List<PlayerActionSet> before;
 
-        private BfsNode(IState start, IState end, PlayerActionSet actions) {
+        private BfsNode(IState start, IState end, PlayerActionSet actions, double rew, List<PlayerActionSet> before) {
             this.start = start;
             this.end = end;
             this.actions = actions;
+            this.rew = rew;
+            this.before = new ArrayList<>();
+            for (PlayerActionSet p : before) {
+                this.before.add(p);
+            }
+        }
+
+        public void addAction(PlayerActionSet p) {
+            before.add(p);
         }
     }
 
@@ -58,7 +70,7 @@ public class TreePolicy implements IPolicy {
         Instant end = Instant.now().plus(duration);
         List<BfsNode> currNodes = new LinkedList<>();
         List<BfsNode> nextNodes = new LinkedList<>();
-        currNodes.add(new BfsNode(state, state, null));
+        currNodes.add(new BfsNode(state, state, null, 0, new ArrayList<PlayerActionSet>()));
         Iterator<BfsNode> currIterator = currNodes.iterator();
         int depth = 0;
         int prune = 0;
@@ -96,9 +108,17 @@ public class TreePolicy implements IPolicy {
                         if ((secondPlayerKickable) || (!(playerActionSet.getActions().get(1).getActionType() == KICK))) {
                             IState next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
                             PlayerActionSet pas = node.actions == null ? playerActionSet : node.actions;
-                            nextNodes.add(new BfsNode(node.end, next, pas));
-                            double newReward = reward.getReward(next, pitchSide);
-                            if (newReward > maxReward) {
+                            double newReward = node.rew + reward.getReward(next, pitchSide);
+                            BfsNode n = new BfsNode(node.end, next, pas, newReward, node.before);
+                            n.addAction(playerActionSet);
+                            nextNodes.add(n);
+                            //logger.info(n.before);
+                            //logger.info(n.rew);
+                            double possMaxReward = 0;
+                            if (n.before.size() != 0) {
+                                possMaxReward = newReward/((n.before.size() -1) * 1.0);
+                            }
+                            if (possMaxReward > maxReward) {
                                 maxReward = newReward;
                                 bestPlayerActionSet = pas;
                             }
@@ -113,6 +133,12 @@ public class TreePolicy implements IPolicy {
         logger.info("currNodes " + nextNodes.size() + " pruned " + prune);
         logger.info("Best reward: " + maxReward);
         logger.info("Best action: " + bestPlayerActionSet);
+        List<PlayerAction> l = new ArrayList<>();
+        l.add(new PlayerAction(1, new Dash(100)));
+        l.add(bestPlayerActionSet.getActions().get(1));
+        PlayerActionSet p = new PlayerActionSet(l);
+        logger.info("Reward dash: " +reward.getReward(transition.getNewStateSample((State) state, p, pitchSide), pitchSide));
+        logger.info("Best reward: " +reward.getReward(transition.getNewStateSample((State) state, bestPlayerActionSet, pitchSide), pitchSide));
         return bestPlayerActionSet;
     }
 
@@ -120,7 +146,7 @@ public class TreePolicy implements IPolicy {
     @Override
     public Map<IPlayerController, IAction> apply(IState state, List<? extends IPlayerController> playerControllers, PitchSide pitchSide) {
         PlayerActionSet playerActionSet = bfs(state, pitchSide);
-        //logger.info(state);
+        logger.info(state);
         //logger.info(transition.getNewStateSample((State) state, playerActionSet, pitchSide));
         Map<IPlayerController, IAction> actions = new HashMap<>();
         Iterator<? extends IPlayerController> playerControllerIterator = playerControllers.iterator();
