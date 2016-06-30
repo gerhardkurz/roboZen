@@ -1,6 +1,8 @@
 package edu.kit.robocup.interf.game;
 
 
+import edu.kit.robocup.constant.Constants;
+import edu.kit.robocup.game.state.Ball;
 
 public interface IPlayerState extends IPlayer, IMoveAbleObject {
 
@@ -15,5 +17,10 @@ public interface IPlayerState extends IPlayer, IMoveAbleObject {
 
         return Math.toDegrees(Math.atan2(x1 * y2 - y1 * x2, x1 * x2 + y1 * y2));
     }
+
+    default boolean canKickBall(Ball ball) {
+        return getDistance(ball) <  Constants.KICKABLE_MARGIN;
+    }
+
     IPlayerState flipPitchSide();
 }
