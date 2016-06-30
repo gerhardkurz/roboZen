@@ -19,7 +19,7 @@ public interface IPlayerState extends IPlayer, IMoveAbleObject {
     }
 
     default boolean canKickBall(Ball ball) {
-        return getDistance(ball) <  Constants.KICKABLE_MARGIN;
+        return getDistance(ball) <=  Constants.KICKABLE_MARGIN;
     }
 
     IPlayerState flipPitchSide();

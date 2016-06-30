@@ -28,7 +28,7 @@ public class ComplexTreePolicy implements IPolicy {
     private IComplexAction[] playerActionSets = {new ComplexKick(), new ComplexRun(), new ComplexPass()};
 
     public ComplexTreePolicy() {
-        this(new TransitionDet(2, 4, -1), new TreeReward(), Duration.ofMillis(100));
+        this(new TransitionDet(2, 4, -1), new TreeReward(), Duration.ofMillis(1000));
     }
 
     public ComplexTreePolicy(ITransition transition, IReward reward, Duration duration) {
@@ -73,14 +73,14 @@ public class ComplexTreePolicy implements IPolicy {
                     IState next = node.end;
                     for (PlayerActionSet playerActionSet : complexAction.getPlayerActionSets(state, pitchSide)) {
                         next = transition.getNewStateSample((State) next, playerActionSet, pitchSide);
+                        IComplexAction newComplexAction = node.actions == null ? complexAction : node.actions;
+                        double newReward = reward.getReward(next, pitchSide);
+                        if (newReward > maxReward) {
+                            maxReward = newReward;
+                            bestComplexAction = newComplexAction;
+                        }
+                        nextNodes.add(new ComplexTreePolicy.BfsNode(node.end, next, newComplexAction));
                     }
-                    IComplexAction newComplexAction = node.actions == null ? complexAction : node.actions;
-                    double newReward = reward.getReward(next, pitchSide);
-                    if (newReward > maxReward) {
-                        maxReward = newReward;
-                        bestComplexAction = newComplexAction;
-                    }
-                    nextNodes.add(new ComplexTreePolicy.BfsNode(node.start, next, newComplexAction));
                 }
 
 
