@@ -1,6 +1,8 @@
 package edu.kit.robocup.mdp;
 
 
+import edu.kit.robocup.constant.Constants;
+import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.Dash;
 import edu.kit.robocup.game.Kick;
 import edu.kit.robocup.game.PlayerAction;
@@ -34,6 +36,12 @@ public class PlayerActionSetFactory {
         return permutations;
     }
 
+    public List<PlayerActionSet> getActionPermutationsWithAngles(int playerCount, int turnCount, int kickCount, int dashCount, IState state, PitchSide pitchSide) {
+        List<IAction> actions = getAllDiscretizedActions(turnCount, kickCount, dashCount);
+        List<PlayerActionSet> permutations = permuteActionsWithAngle(playerCount, actions, state, pitchSide);
+        return permutations;
+    }
+
     private List<PlayerActionSet> permuteActions(int playerCount, List<IAction> actions) {
         // TODO only 2 Players supported, implement recursion for more players
         assert playerCount==2;
@@ -47,10 +55,42 @@ public class PlayerActionSetFactory {
         return permutations;
     }
 
+    private List<PlayerActionSet> permuteActionsWithAngle(int playerCount, List<IAction> actions, IState state, PitchSide pitchSide) {
+        // TODO only 2 Players supported, implement recursion for more players
+        assert playerCount==2;
+        List<IAction> firstPlayer = actions;
+        List<IAction> secondPlayer = actions;
+        firstPlayer.add(new Turn((int) state.getPlayers(pitchSide).get(0).getAngleTo(state.getBall())));
+        secondPlayer.add(new Turn((int) state.getPlayers(pitchSide).get(1).getAngleTo(state.getBall())));
+
+        if (pitchSide == PitchSide.EAST) {
+            firstPlayer.add(new Kick(99, (int) state.getPlayers(pitchSide).get(0).getAngleTo(Constants.GOAL_WEST)));
+            secondPlayer.add(new Kick(99, (int) state.getPlayers(pitchSide).get(1).getAngleTo(Constants.GOAL_WEST)));
+        } else {
+            firstPlayer.add(new Kick(99, (int) state.getPlayers(pitchSide).get(0).getAngleTo(Constants.GOAL_EAST)));
+            secondPlayer.add(new Kick(99, (int) state.getPlayers(pitchSide).get(1).getAngleTo(Constants.GOAL_EAST)));
+        }
+
+        List<PlayerActionSet> permutations = new ArrayList<>();
+        for (int i = 0; i < firstPlayer.size(); i++) {
+            for (int j = 0; j < secondPlayer.size(); j++) {
+                permutations.add(createActionSet(i, j, firstPlayer, secondPlayer));
+            }
+        }
+        return permutations;
+    }
+
     private PlayerActionSet createActionSet(int i, int j, List<IAction> actions) {
         List<PlayerAction> t = new ArrayList<>();
         t.add(new PlayerAction(1, actions.get(i)));
         t.add(new PlayerAction(2, actions.get(j)));
+        return new PlayerActionSet(t);
+    }
+
+    private PlayerActionSet createActionSet(int i, int j, List<IAction> first, List<IAction> second) {
+        List<PlayerAction> t = new ArrayList<>();
+        t.add(new PlayerAction(1, first.get(i)));
+        t.add(new PlayerAction(2, second.get(j)));
         return new PlayerActionSet(t);
     }
 

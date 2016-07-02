@@ -28,12 +28,12 @@ public class ChaseAndKickPolicy implements IPolicy {
                 action.put(playerController, new Turn((int)angle));
             } else {
                 if (playerState.getDistance(state.getBall()) > Constants.KICKABLE_MARGIN) {
-                    action.put(playerController, new Dash(((int)(Math.random() * ((Constants.maxpower) + 1)))));
+                    action.put(playerController, new Dash((int) Constants.maxpower)); //((int)(Math.random() * ((Constants.maxpower) + 1)))));
                 } else {
                     if (pitchSide == PitchSide.EAST) {
-                        action.put(playerController, new Kick((int)(Math.random() * ((Constants.maxpower) + 1)), (int) playerState.getAngleTo(Constants.GOAL_WEST)));
+                        action.put(playerController, new Kick((int) Constants.maxpower, (int) playerState.getAngleTo(Constants.GOAL_WEST))); //(Math.random() * ((Constants.maxpower) + 1)), (int) playerState.getAngleTo(Constants.GOAL_WEST)));
                     } else {
-                        action.put(playerController, new Kick((int)(Math.random() * ((Constants.maxpower) + 1)), (int) playerState.getAngleTo(Constants.GOAL_EAST)));
+                        action.put(playerController, new Kick((int) Constants.maxpower, (int) playerState.getAngleTo(Constants.GOAL_EAST))); //(Math.random() * ((Constants.maxpower) + 1)), (int) playerState.getAngleTo(Constants.GOAL_EAST)));
                     }
                 }
 

@@ -5,9 +5,12 @@ import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.Dash;
 import edu.kit.robocup.game.PlayerAction;
+import edu.kit.robocup.game.Turn;
 import edu.kit.robocup.game.controller.IPlayerController;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IAction;
+import edu.kit.robocup.interf.game.IPlayer;
+import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IPolicy;
 import edu.kit.robocup.interf.mdp.IState;
 import edu.kit.robocup.mdp.PlayerActionSet;
@@ -20,6 +23,7 @@ import java.time.Duration;
 import java.util.*;
 import java.time.Instant;
 
+import static edu.kit.robocup.game.Action.DASH;
 import static edu.kit.robocup.game.Action.KICK;
 
 public class TreePolicy implements IPolicy {
@@ -78,10 +82,27 @@ public class TreePolicy implements IPolicy {
         PlayerActionSet bestPlayerActionSet = null;
         while(Instant.now().isBefore(end) && (currIterator.hasNext() || !nextNodes.isEmpty())) {
             if (!currIterator.hasNext()) {
-                currNodes = nextNodes;
+                // sort nodes in decending order of reward value
+                Collections.sort(nextNodes, new Comparator<BfsNode>() {
+                    @Override
+                    public int compare(BfsNode o1, BfsNode o2) {
+                        if (o1.rew == o2.rew) {
+                            return 0;
+                        } else if (o1.rew > o2.rew) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    }
+                });
+                if (nextNodes.size() > 100) {
+                    currNodes = nextNodes.subList(0, 100);
+                } else {
+                    currNodes = nextNodes;
+                }
                 nextNodes = new LinkedList<>();
                 currIterator = currNodes.iterator();
-                logger.info("Depth: " + depth + " currNodes: " + currNodes.size() + " pruned " + prune);
+                //logger.info("Depth: " + depth + " currNodes: " + currNodes.size() + " pruned " + prune);
                 depth++;
                 prune = 0;
             }
@@ -102,8 +123,10 @@ public class TreePolicy implements IPolicy {
                     logger.info("Player 2 is just " + node.end.getPlayers(pitchSide).get(1).getDistance(node.end.getBall()) + " far away of ball");
                     logger.info(state);
             }*/
-            if (!pruner.prune(node.start, node.end, pitchSide)) {
-                for (PlayerActionSet playerActionSet: actions) {
+            PlayerActionSetFactory f = new PlayerActionSetFactory();
+            List<PlayerActionSet> l = f.getActionPermutationsWithAngles(2, 3, 1, 3, state, pitchSide);
+            //if (!pruner.prune(node.start, node.end, pitchSide)) {
+                for (PlayerActionSet playerActionSet : l) {
                     if ((firstPlayerKickable) || (!(playerActionSet.getActions().get(0).getActionType() == KICK))) {
                         if ((secondPlayerKickable) || (!(playerActionSet.getActions().get(1).getActionType() == KICK))) {
                             IState next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
@@ -112,11 +135,9 @@ public class TreePolicy implements IPolicy {
                             BfsNode n = new BfsNode(node.end, next, pas, newReward, node.before);
                             n.addAction(playerActionSet);
                             nextNodes.add(n);
-                            //logger.info(n.before);
-                            //logger.info(n.rew);
                             double possMaxReward = 0;
                             if (n.before.size() != 0) {
-                                possMaxReward = newReward/((n.before.size() -1) * 1.0);
+                                possMaxReward = newReward/((n.before.size() - 1) * 1.0);
                             }
                             if (possMaxReward > maxReward) {
                                 maxReward = newReward;
@@ -125,20 +146,13 @@ public class TreePolicy implements IPolicy {
                         }
                     }
                 }
-            } else {
+            /*} else {
                 prune++;
-            }
+            }*/
         }
         logger.info("Bfs depth: " + depth);
-        logger.info("currNodes " + nextNodes.size() + " pruned " + prune);
         logger.info("Best reward: " + maxReward);
         logger.info("Best action: " + bestPlayerActionSet);
-        List<PlayerAction> l = new ArrayList<>();
-        l.add(new PlayerAction(1, new Dash(100)));
-        l.add(bestPlayerActionSet.getActions().get(1));
-        PlayerActionSet p = new PlayerActionSet(l);
-        logger.info("Reward dash: " +reward.getReward(transition.getNewStateSample((State) state, p, pitchSide), pitchSide));
-        logger.info("Best reward: " +reward.getReward(transition.getNewStateSample((State) state, bestPlayerActionSet, pitchSide), pitchSide));
         return bestPlayerActionSet;
     }
 
