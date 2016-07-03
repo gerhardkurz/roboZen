@@ -131,7 +131,7 @@ public class Util {
             SimpleGameObject position = teamEast.positions.get(i);
             trainer.movePlayer(new PlayerState(PitchSide.EAST, i + 1, position.getPositionX(), position.getPositionY()));
         }
-        Thread.sleep(200);
+        Thread.sleep(2000);
         trainer.moveBall(ball);
         trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
 
@@ -139,9 +139,9 @@ public class Util {
             Thread.sleep(30);
         }
         //yolo
-        Thread.getAllStackTraces().keySet().stream().filter(thread -> !thread.equals(Thread.currentThread())).forEach(Thread::interrupt);
-        Util.killTask("rcssserver.exe");
-        Util.killTask("rcssmonitor.exe");
+        //Thread.getAllStackTraces().keySet().stream().filter(thread -> !thread.equals(Thread.currentThread())).forEach(Thread::interrupt);
+        //Util.killTask("rcssserver.exe");
+        //Util.killTask("rcssmonitor.exe");
         Thread.sleep(200);
     }
 }

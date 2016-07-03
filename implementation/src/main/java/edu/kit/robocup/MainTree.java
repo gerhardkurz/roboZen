@@ -18,7 +18,13 @@ public class MainTree {
         perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
         perPlayModePolicy.replacePolicyForPlayMode(new BeforeGamePolicy(), PlayMode.UNKNOWN);
 
+        PerPlayModePolicy perPlayModePolicy1 = new PerPlayModePolicy(new ChaseAndKickPolicy());
+        perPlayModePolicy1.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
+        perPlayModePolicy1.replacePolicyForPlayMode(new BeforeGamePolicy(), PlayMode.UNKNOWN);
+
+
         Util.TeamDescription teamDescription = new Util.TeamDescription(perPlayModePolicy, 2, new ArrayList<>());
-        Util.executeGame(teamDescription, teamDescription, new Ball(0, 0));
+        Util.TeamDescription teamDescription1 = new Util.TeamDescription(perPlayModePolicy1, 2, new ArrayList<>());
+        Util.executeGame(teamDescription, teamDescription1, new Ball(0, 0));
     }
 }

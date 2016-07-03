@@ -54,7 +54,7 @@ public class PlayerActionSet implements Serializable {
     }
 
     public String toString() {
-        return "Dimensions: " + dimension + " " + actions.toString();
-    }
+        return actions.toString();
+    } //"Dimensions: " + dimension + " " +
 
 }

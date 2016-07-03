@@ -40,6 +40,6 @@ public class PlayerAction implements Serializable {
 
     @Override
     public String toString() {
-        return " Player: " + playerNumber + " action: " + action.toString();
+        return "Pl: " + playerNumber + " act: " + action.toString();
     }
 }
