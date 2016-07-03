@@ -64,11 +64,11 @@ public class PlayerActionSetFactory {
         secondPlayer.add(new Turn((int) state.getPlayers(pitchSide).get(1).getAngleTo(state.getBall())));
 
         if (pitchSide == PitchSide.EAST) {
-            firstPlayer.add(new Kick(99, (int) state.getPlayers(pitchSide).get(0).getAngleTo(Constants.GOAL_WEST)));
-            secondPlayer.add(new Kick(99, (int) state.getPlayers(pitchSide).get(1).getAngleTo(Constants.GOAL_WEST)));
+            firstPlayer.add(new Kick(99, (int) (state.getPlayers(pitchSide).get(0).getAngleTo(Constants.GOAL_WEST) - state.getPlayers(pitchSide).get(0).getBodyAngle())));
+            secondPlayer.add(new Kick(99, (int) (state.getPlayers(pitchSide).get(1).getAngleTo(Constants.GOAL_WEST) - state.getPlayers(pitchSide).get(1).getBodyAngle())));
         } else {
-            firstPlayer.add(new Kick(99, (int) state.getPlayers(pitchSide).get(0).getAngleTo(Constants.GOAL_EAST)));
-            secondPlayer.add(new Kick(99, (int) state.getPlayers(pitchSide).get(1).getAngleTo(Constants.GOAL_EAST)));
+            firstPlayer.add(new Kick(99, (int) (state.getPlayers(pitchSide).get(0).getAngleTo(Constants.GOAL_EAST) - state.getPlayers(pitchSide).get(0).getBodyAngle())));
+            secondPlayer.add(new Kick(99, (int) (state.getPlayers(pitchSide).get(1).getAngleTo(Constants.GOAL_EAST) - state.getPlayers(pitchSide).get(1).getBodyAngle())));
         }
 
         List<PlayerActionSet> permutations = new ArrayList<>();
