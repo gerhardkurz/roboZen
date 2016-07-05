@@ -135,7 +135,7 @@ public class TreePolicy implements IPolicy {
                         if ((secondPlayerKickable) || (!(playerActionSet.getActions().get(1).getActionType() == KICK))) {
                             IState next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
                             PlayerActionSet pas = node.actions == null ? playerActionSet : node.actions;
-                            double newReward = reward.getReward(next, pitchSide);// * Math.pow(0.6, node.before.size());
+                            double newReward = reward.getReward(next, pitchSide)* Math.pow(0.9, node.before.size());
                             if (node.before.size() != 0) {
                                 newReward += node.rew;
                             }

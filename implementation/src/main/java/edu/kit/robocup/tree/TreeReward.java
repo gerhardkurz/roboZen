@@ -62,7 +62,6 @@ public class TreeReward implements IReward {
         double reward = 0;
         Ball ball = normalizedState.getBall();
         reward += distanceToReward(ball.getDistanceToGoal(false));
-        //reward += -500 * ball.getVelocityX();
         return reward;
     }
 
