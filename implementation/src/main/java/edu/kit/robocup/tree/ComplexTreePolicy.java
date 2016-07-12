@@ -28,7 +28,7 @@ public class ComplexTreePolicy implements IPolicy {
     private IComplexAction[] playerActionSets = {new ComplexKick(), new ComplexRun(), new ComplexPass()};
 
     public ComplexTreePolicy() {
-        this(new TransitionDet(2, 4, -1), new TreeReward(), Duration.ofMillis(1000));
+        this(new TransitionDet(2, 4, -1), new TreeReward(), Duration.ofMillis(960));
     }
 
     public ComplexTreePolicy(ITransition transition, IReward reward, Duration duration) {
