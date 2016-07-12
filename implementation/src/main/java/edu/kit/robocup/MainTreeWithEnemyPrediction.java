@@ -5,20 +5,17 @@ import edu.kit.robocup.game.PlayMode;
 import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
 import edu.kit.robocup.game.state.Ball;
-import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.mdp.policy.ChaseAndKickPolicy;
-import edu.kit.robocup.tree.ComplexTreePolicy;
-import edu.kit.robocup.util.Util;
-import edu.kit.robocup.mdp.policy.DoNothing;
 import edu.kit.robocup.mdp.policy.PerPlayModePolicy;
 import edu.kit.robocup.mdp.policy.heurisic.BeforeGamePolicy;
 import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
 import edu.kit.robocup.tree.TreePolicy;
+import edu.kit.robocup.util.Util;
 
 /**
  * Created by dani on 27.06.2016.
  */
-public class MainTreeShootGoal {
+public class MainTreeWithEnemyPrediction {
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -31,7 +28,7 @@ public class MainTreeShootGoal {
         Team team2 = new Team(PitchSide.WEST, 2, perPlayModePolicy1);
         team2.connectAll();
 
-        PerPlayModePolicy perPlayModePolicy = new PerPlayModePolicy(new TreePolicy());
+        PerPlayModePolicy perPlayModePolicy = new PerPlayModePolicy(new TreePolicy(team2));
         perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
         perPlayModePolicy.replacePolicyForPlayMode(new BeforeGamePolicy(), PlayMode.UNKNOWN);
 
