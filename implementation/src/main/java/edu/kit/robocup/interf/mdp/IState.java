@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface IState extends Serializable {
     Ball getBall();
+    List<IPlayerState> getPlayers();
     List<IPlayerState> getPlayers(final PitchSide pitchSide);
     IPlayerState getPlayerState(IPlayer player);
     PlayMode getPlayMode();

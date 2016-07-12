@@ -14,7 +14,10 @@ public class TreeReward implements IReward {
         reward += rewardPlayMode(normalizedState, pitchSide);
         reward += rewardBallPosition(normalizedState);
         reward += rewardDistanceToBall(normalizedState, pitchSide);
-        //reward += rewardSpreadOutPlayers(normalizedState, pitchSide);
+//        if (currentState.getBall().getVelocityX() > 0 || currentState.getBall().getVelocityY() > 0) {
+//            reward += rewardSpreadOutPlayers(normalizedState, pitchSide);
+//        }
+        reward += rewardNotStuck(normalizedState, pitchSide);
         return reward;
     }
 
@@ -26,7 +29,6 @@ public class TreeReward implements IReward {
         return reward;
     }
 
-
     private double rewardSpreadOutPlayer(IPlayerState player, IState normalizedState, PitchSide pitchSide) {
         final double distanceToSpreadOut = 10;
         final double rewardForSpreadOut = 100;
@@ -34,6 +36,30 @@ public class TreeReward implements IReward {
         for (IPlayerState other : normalizedState.getPlayers(pitchSide)) {
             if (!player.equals(other)) {
                 reward += player.getDistance(other) > distanceToSpreadOut ? rewardForSpreadOut : 0;
+            }
+        }
+        return reward;
+    }
+
+    private double rewardNotStuck(IState normalizedState, PitchSide pitchSide) {
+        double reward = 0;
+        for (IPlayerState player : normalizedState.getPlayers(pitchSide)) {
+            if (player.getDistance(normalizedState.getBall()) > 4) {
+                reward += rewardNotStuck(player, normalizedState);
+            } else {
+                reward += 500;
+            }
+        }
+        return reward;
+    }
+
+    private double rewardNotStuck(IPlayerState player, IState normalizedState) {
+        final double rewardNotSuck = 10;
+        final double distanceToSpreadOut = 2;
+        double reward = 0;
+        for (IPlayerState other : normalizedState.getPlayers()) {
+            if (!player.equals(other)) {
+                reward += player.getDistance(other) > distanceToSpreadOut ? rewardNotSuck : 0;
             }
         }
         return reward;
