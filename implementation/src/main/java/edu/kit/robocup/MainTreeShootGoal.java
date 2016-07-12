@@ -28,14 +28,14 @@ public class MainTreeShootGoal {
         perPlayModePolicy1.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
         perPlayModePolicy1.replacePolicyForPlayMode(new BeforeGamePolicy(), PlayMode.UNKNOWN);
 
-        Team team2 = new Team(PitchSide.WEST, 2, perPlayModePolicy1);
+        Team team2 = new Team(PitchSide.EAST, 2, perPlayModePolicy1);
         team2.connectAll();
 
         PerPlayModePolicy perPlayModePolicy = new PerPlayModePolicy(new TreePolicy());
         perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
         perPlayModePolicy.replacePolicyForPlayMode(new BeforeGamePolicy(), PlayMode.UNKNOWN);
 
-        Team team1 = new Team(PitchSide.EAST, 2, perPlayModePolicy);
+        Team team1 = new Team(PitchSide.WEST, 2, perPlayModePolicy);
         team1.connectAll();
 
         Trainer trainer = new Trainer("Trainer");

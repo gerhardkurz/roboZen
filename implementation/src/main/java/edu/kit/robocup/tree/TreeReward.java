@@ -1,6 +1,8 @@
 package edu.kit.robocup.tree;
 
 
+import edu.kit.robocup.constant.Constants;
+import edu.kit.robocup.constant.Goal;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.interf.game.IPlayerState;
@@ -47,15 +49,15 @@ public class TreeReward implements IReward {
             if (player.getDistance(normalizedState.getBall()) > 4) {
                 reward += rewardNotStuck(player, normalizedState);
             } else {
-                reward += 500;
+                reward += 3 * 100;
             }
         }
         return reward;
     }
 
     private double rewardNotStuck(IPlayerState player, IState normalizedState) {
-        final double rewardNotSuck = 10;
-        final double distanceToSpreadOut = 2;
+        final double rewardNotSuck = 100;
+        final double distanceToSpreadOut = 1;
         double reward = 0;
         for (IPlayerState other : normalizedState.getPlayers()) {
             if (!player.equals(other)) {
@@ -87,7 +89,7 @@ public class TreeReward implements IReward {
     private double rewardBallPosition(IState normalizedState) {
         double reward = 0;
         Ball ball = normalizedState.getBall();
-        reward += distanceToReward(ball.getDistanceToGoal(false));
+        reward += distanceToReward(ball.getDistance(Constants.GOAL_WEST));
         return reward;
     }
 
@@ -101,6 +103,6 @@ public class TreeReward implements IReward {
     }
 
     private double distanceToReward(double distance) {
-        return -(distance);
+        return -(distance * distance);
     }
 }

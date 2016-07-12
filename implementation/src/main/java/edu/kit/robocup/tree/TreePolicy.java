@@ -93,26 +93,31 @@ public class TreePolicy implements IPolicy {
                 depth++;
             }
             BfsNode node = currIterator.next();
+            boolean firstPlayerKickable = node.end.getPlayers(pitchSide).get(0).getDistance(node.end.getBall()) <= Constants.KICKABLE_MARGIN;
+            boolean secondPlayerKickable = node.end.getPlayers(pitchSide).get(1).getDistance(node.end.getBall()) <= Constants.KICKABLE_MARGIN;
 
             PlayerActionSetFactory factory = new PlayerActionSetFactory();
             List<PlayerActionSet> playerActionSets = factory.getActionPermutationsWithAngles(2, 3, 1, 3, state, pitchSide);
 
             for (PlayerActionSet playerActionSet : playerActionSets) {
-                IState next;
-                if (transition.hasEnemyTeam()) {
-                    next = transition.getNewStateSampleWithEnemyPolicy((State) node.end, playerActionSet, pitchSide);
-                } else {
-                    next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
-                }
+                if ((firstPlayerKickable) || (!(playerActionSet.getActions().get(0).getActionType() == KICK))) {
+                    if ((secondPlayerKickable) || (!(playerActionSet.getActions().get(1).getActionType() == KICK))) {
 
-                PlayerActionSet pas = node.actions == null ? playerActionSet : node.actions;
-                double newReward = reward.getReward(next, pitchSide) * Math.pow(0.9, node.before.size());
-                if (node.before.size() != 0) {
-                    newReward += node.rew;
-                }
-                BfsNode n = new BfsNode(node.end, next, pas, newReward, node.before);
-                n.addAction(playerActionSet);
-                nextNodes.add(n);
+                        IState next;
+                        if (transition.hasEnemyTeam()) {
+                            next = transition.getNewStateSampleWithEnemyPolicy((State) node.end, playerActionSet, pitchSide);
+                        } else {
+                            next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
+                        }
+
+                        PlayerActionSet pas = node.actions == null ? playerActionSet : node.actions;
+                        double newReward = reward.getReward(next, pitchSide) * Math.pow(0.9, node.before.size());
+                        if (node.before.size() != 0) {
+                            newReward += node.rew;
+                        }
+                        BfsNode n = new BfsNode(node.end, next, pas, newReward, node.before);
+                        n.addAction(playerActionSet);
+                        nextNodes.add(n);
                             /*double possMaxReward = 0;
                             if (n.before.size() >= 1) {
                                 possMaxReward = newReward/(n.before.size() * 1.0);
@@ -122,6 +127,8 @@ public class TreePolicy implements IPolicy {
                                 bestPlayerActionSet = pas;
                                 maxdepth = depth;
                             }*/
+                    }
+                }
             }
         }
         logger.info("Bfs depth: " + depth);
