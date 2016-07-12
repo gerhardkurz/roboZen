@@ -17,10 +17,6 @@ public class PlayerActionSet implements Serializable {
     private final int dimension;
     private double[] array;
 
-    public PlayerActionSet(Collection<IAction> actions) {
-        this((List<PlayerAction>)(List<?>)new ArrayList(actions));
-    }
-
     public PlayerActionSet(List<PlayerAction> actions) {
         actions.sort((o1, o2) -> o1.getPlayerNumber() - o2.getPlayerNumber());
         this.actions = actions;

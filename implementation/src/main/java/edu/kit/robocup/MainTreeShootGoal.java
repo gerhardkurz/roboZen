@@ -23,7 +23,7 @@ public class MainTreeShootGoal {
 
     public static void main(String[] args) throws InterruptedException {
 
-
+        Util.initEnvironment();
         PerPlayModePolicy perPlayModePolicy1 = new PerPlayModePolicy(new ChaseAndKickPolicy());
         perPlayModePolicy1.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
         perPlayModePolicy1.replacePolicyForPlayMode(new BeforeGamePolicy(), PlayMode.UNKNOWN);
@@ -41,7 +41,7 @@ public class MainTreeShootGoal {
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
 
-        Util.initEnvironment();
+
 
         /*trainer.movePlayer(new PlayerState(PitchSide.EAST, 1, -5, 5));
         trainer.movePlayer(new PlayerState(PitchSide.EAST, 2, -5, -5));

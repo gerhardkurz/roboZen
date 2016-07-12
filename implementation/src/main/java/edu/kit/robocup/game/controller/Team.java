@@ -2,6 +2,7 @@ package edu.kit.robocup.game.controller;
 
 
 import edu.kit.robocup.constant.PitchSide;
+import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.mdp.IPolicy;
@@ -11,6 +12,9 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import static javafx.scene.input.KeyCode.V;
 
 
 public class Team {
@@ -37,7 +41,11 @@ public class Team {
 
     public PlayerActionSet simulateHandleState(State state) {
         Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers, pitchSide);
-        return new PlayerActionSet(actions.values());
+        List<PlayerAction> actionList = new ArrayList<>();
+        for (Map.Entry<IPlayerController, IAction> entry : actions.entrySet()) {
+            actionList.add(new PlayerAction(entry.getKey().getNumber(), entry.getValue()));
+        }
+        return new PlayerActionSet(actionList);
     }
 
     public PlayerController getPlayer(int number) {
