@@ -1,11 +1,14 @@
 package edu.kit.robocup.mdp;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.primitives.Doubles;
 import edu.kit.robocup.game.PlayerAction;
-
+import edu.kit.robocup.interf.game.IAction;
 
 
 public class PlayerActionSet implements Serializable {
@@ -13,6 +16,10 @@ public class PlayerActionSet implements Serializable {
     private final List<PlayerAction> actions;
     private final int dimension;
     private double[] array;
+
+    public PlayerActionSet(Collection<IAction> actions) {
+        this((List<PlayerAction>)(List<?>)new ArrayList(actions));
+    }
 
     public PlayerActionSet(List<PlayerAction> actions) {
         actions.sort((o1, o2) -> o1.getPlayerNumber() - o2.getPlayerNumber());

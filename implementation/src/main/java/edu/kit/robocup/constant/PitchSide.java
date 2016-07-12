@@ -8,4 +8,13 @@ public enum PitchSide {
     public String toString() {
         return name();
     }
+
+    public PitchSide flipSide() {
+        if (this == EAST)
+            return WEST;
+        else if (this == WEST)
+            return EAST;
+        else
+            return DUMMY;
+    }
 }

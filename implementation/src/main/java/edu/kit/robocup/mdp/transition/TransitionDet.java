@@ -4,11 +4,14 @@ import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.Kick;
 import edu.kit.robocup.game.PlayerAction;
+import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.game.IPlayerState;
+import edu.kit.robocup.interf.mdp.IPolicy;
+import edu.kit.robocup.interf.mdp.IState;
 import edu.kit.robocup.mdp.PlayerActionSet;
 import edu.kit.robocup.mdp.Reward;
 import org.apache.commons.math3.analysis.function.Constant;
@@ -26,11 +29,31 @@ public class TransitionDet implements ITransition {
     private int numberAllPlayers;
     private int stateDimension;
     private int numberPlayersPitchside;
+    private Team enemyTeam;
 
     public TransitionDet(int numberPlayersPitchside, int numberAllPlayers, int stateDimension) {
         this.numberPlayersPitchside = numberPlayersPitchside;
         this.numberAllPlayers = numberAllPlayers;
         this.stateDimension = stateDimension;
+    }
+
+    public TransitionDet(int numberPlayersPitchside, int numberAllPlayers, int stateDimension, Team enemyTeam) {
+        this(numberPlayersPitchside, numberAllPlayers, stateDimension);
+        this.enemyTeam = enemyTeam;
+    }
+
+    public boolean hasEnemyTeam() {
+        return enemyTeam != null;
+    }
+
+    @Override
+    public State getNewStateSampleWithEnemyPolicy(State s, PlayerActionSet a, PitchSide pitchSide) {
+        if (enemyTeam != null) {
+            State newState = getNewStateSample(s, a, pitchSide);
+            return getNewStateSample(newState, enemyTeam.simulateHandleState(s), pitchSide.flipSide());
+        } else {
+            return getNewStateSample(s, a, pitchSide);
+        }
     }
 
     @Override

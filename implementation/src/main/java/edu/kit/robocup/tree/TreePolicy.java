@@ -7,6 +7,7 @@ import edu.kit.robocup.game.Dash;
 import edu.kit.robocup.game.PlayerAction;
 import edu.kit.robocup.game.Turn;
 import edu.kit.robocup.game.controller.IPlayerController;
+import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.game.IPlayer;
@@ -34,8 +35,12 @@ public class TreePolicy implements IPolicy {
     private List<PlayerActionSet> actions;
     private Duration duration;
 
+    public TreePolicy(Team enemyTeam) {
+        this(new TransitionDet(2 , 4, -1, enemyTeam), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getActionPermutations(2, 6, 1, 3), Duration.ofMillis(1000 -100));
+    }
+
     public TreePolicy() {
-        this(new TransitionDet(2 , 4, -1), new BallPositionPruner(), new TreeReward(), new PlayerActionSetFactory().getActionPermutations(2, 6, 1, 3), Duration.ofMillis(1000 -100));
+        this(null);
     }
 
     public TreePolicy(ITransition transition, IPruner pruner, IReward reward, List<PlayerActionSet> actions, Duration duration) {
@@ -127,13 +132,20 @@ public class TreePolicy implements IPolicy {
                     logger.info("Player 2 is just " + node.end.getPlayers(pitchSide).get(1).getDistance(node.end.getBall()) + " far away of ball");
                     logger.info(state);
             }*/
-            PlayerActionSetFactory f = new PlayerActionSetFactory();
-            List<PlayerActionSet> l = f.getActionPermutationsWithAngles(2, 3, 1, 3, state, pitchSide);
+            PlayerActionSetFactory factory = new PlayerActionSetFactory();
+            List<PlayerActionSet> playerActionSets = factory.getActionPermutationsWithAngles(2, 3, 1, 3, state, pitchSide);
             //if (!pruner.prune(node.start, node.end, pitchSide)) {
-                for (PlayerActionSet playerActionSet : l) {
+                for (PlayerActionSet playerActionSet : playerActionSets) {
                     if ((firstPlayerKickable) || (!(playerActionSet.getActions().get(0).getActionType() == KICK))) {
                         if ((secondPlayerKickable) || (!(playerActionSet.getActions().get(1).getActionType() == KICK))) {
-                            IState next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
+
+                            IState next;
+                            if (transition.hasEnemyTeam()) {
+                                next = transition.getNewStateSampleWithEnemyPolicy((State) node.end, playerActionSet, pitchSide);
+                            } else {
+                                next = transition.getNewStateSample((State) node.end, playerActionSet, pitchSide);
+                            }
+
                             PlayerActionSet pas = node.actions == null ? playerActionSet : node.actions;
                             double newReward = reward.getReward(next, pitchSide)* Math.pow(0.9, node.before.size());
                             if (node.before.size() != 0) {

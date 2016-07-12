@@ -48,6 +48,11 @@ public class Transition implements ITransition {
         B = new DoubleMatrix2D[numberOfCombinations];
     }
 
+    @Override
+    public boolean hasEnemyTeam() {
+        return false;
+    }
+
     public DoubleMatrix2D getA() {
         return this.A;
     }
@@ -174,6 +179,11 @@ public class Transition implements ITransition {
         }
         //logger.info("Norm epsilon: " + normEpsilon);
         return new State(result.toArray(), pitchSide, s.getPlayers(pitchSide).size());
+    }
+
+    @Override
+    public State getNewStateSampleWithEnemyPolicy(State s, PlayerActionSet a, PitchSide pitchSide) {
+       return getNewStateSample(s, a, pitchSide);
     }
 
     @Override

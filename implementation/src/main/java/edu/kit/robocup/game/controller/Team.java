@@ -5,6 +5,7 @@ import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.game.state.State;
 import edu.kit.robocup.interf.mdp.IPolicy;
+import edu.kit.robocup.mdp.PlayerActionSet;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -34,6 +35,10 @@ public class Team {
         actions.entrySet().forEach(e -> e.getKey().execute(e.getValue()));
     }
 
+    public PlayerActionSet simulateHandleState(State state) {
+        Map<IPlayerController, IAction> actions = policy.apply(state, playerControllers, pitchSide);
+        return new PlayerActionSet(actions.values());
+    }
 
     public PlayerController getPlayer(int number) {
         return playerControllers.stream().filter(p -> p.getNumber() == number).findAny().get();
