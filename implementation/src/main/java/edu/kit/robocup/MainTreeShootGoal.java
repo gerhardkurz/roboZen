@@ -24,12 +24,6 @@ public class MainTreeShootGoal {
     public static void main(String[] args) throws InterruptedException {
 
         Util.initEnvironment();
-        PerPlayModePolicy perPlayModePolicy1 = new PerPlayModePolicy(new ChaseAndKickPolicy());
-        perPlayModePolicy1.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
-        perPlayModePolicy1.replacePolicyForPlayMode(new BeforeGamePolicy(), PlayMode.UNKNOWN);
-
-        Team team2 = new Team(PitchSide.EAST, 2, perPlayModePolicy1);
-        team2.connectAll();
 
         PerPlayModePolicy perPlayModePolicy = new PerPlayModePolicy(new TreePolicy());
         perPlayModePolicy.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
@@ -37,6 +31,13 @@ public class MainTreeShootGoal {
 
         Team team1 = new Team(PitchSide.WEST, 2, perPlayModePolicy);
         team1.connectAll();
+
+        PerPlayModePolicy perPlayModePolicy1 = new PerPlayModePolicy(new ChaseAndKickPolicy());
+        perPlayModePolicy1.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
+        perPlayModePolicy1.replacePolicyForPlayMode(new BeforeGamePolicy(), PlayMode.UNKNOWN);
+
+        Team team2 = new Team(PitchSide.EAST, 2, perPlayModePolicy1);
+        team2.connectAll();
 
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
