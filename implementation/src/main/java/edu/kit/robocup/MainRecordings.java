@@ -90,7 +90,8 @@ public class MainRecordings {
         for (int i = 0; i < policiesTeamEast.length; i++) {
             Util.TeamDescription teamDescriptionWest = new Util.TeamDescription(policiesTeamWest[i], 2, posTeamWest.get(i));
             Util.TeamDescription teamDescriptionEast = new Util.TeamDescription(policiesTeamEast[i], 2, posTeamEast.get(i));
-            Util.executeGame(teamDescriptionWest, teamDescriptionEast, ball.get(i));
+            final int j = i;
+            Util.executeGame(teamDescriptionWest, teamDescriptionEast, t -> t.moveBall(ball.get(j)));
         }
         Util.killTask("rcssmonitor.exe");
         Util.killTask("rcssserver.exe");

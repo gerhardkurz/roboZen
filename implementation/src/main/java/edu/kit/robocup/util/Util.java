@@ -104,13 +104,13 @@ public class Util {
         }
     }
 
-    public static void executeGame(TeamDescription teamWest, TeamDescription teamEast, Ball ball) throws InterruptedException {
+    public static void executeGame(TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand) throws InterruptedException {
         StatusSupplier<Boolean> statusSupplierWest = new EndGameStatusSupplier<>(Boolean.class);
         StatusSupplier<Boolean> statusSupplierEast = new EndGameStatusSupplier<>(Boolean.class);
-        executeGame(teamWest, teamEast,  ball, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
+        executeGame(teamWest, teamEast,  trainerCommand, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
     }
 
-    public static void executeGame(TeamDescription teamWest, TeamDescription teamEast, Ball ball, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
+    public static void executeGame(TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
         Util.initEnvironment();
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
@@ -132,7 +132,7 @@ public class Util {
             trainer.movePlayer(new PlayerState(PitchSide.EAST, i + 1, position.getPositionX(), position.getPositionY()));
         }
         Thread.sleep(2000);
-        trainer.moveBall(ball);
+        trainerCommand.execute(trainer);
         trainer.changePlayMode(com.github.robocup_atan.atan.model.enums.PlayMode.PLAY_ON);
 
         while (endGamePolicyWest.getStatus() || endGamePolicyEast.getStatus()) {
@@ -143,5 +143,9 @@ public class Util {
         //Util.killTask("rcssserver.exe");
         //Util.killTask("rcssmonitor.exe");
         Thread.sleep(200);
+    }
+
+    public interface TrainerCommand {
+        void execute(Trainer trainer);
     }
 }

@@ -11,8 +11,7 @@ import edu.kit.robocup.util.Util;
 
 import java.util.ArrayList;
 
-
-public class MainTree {
+public class MainTree2 {
     public static void main(String[] args) throws InterruptedException {
         PerPlayModePolicy policyWest = new PerPlayModePolicy(new TreePolicy());
         policyWest.replacePolicyForPlayMode(new KickOffPolicy(), PlayMode.KICK_OFF_EAST, PlayMode.KICK_OFF_WEST, PlayMode.GOAL_SIDE_EAST, PlayMode.GOAL_SIDE_WEST);
@@ -25,6 +24,8 @@ public class MainTree {
 
         Util.TeamDescription teamWest = new Util.TeamDescription(policyWest, 2, new ArrayList<>());
         Util.TeamDescription teamEast = new Util.TeamDescription(policyEast, 2, new ArrayList<>());
-        Util.executeGame(teamWest, teamEast, t -> t.moveBall(new Ball(0, 0)));
+        Util.executeGame(teamWest, teamEast, t -> {
+            t.moveBall(new Ball(1, 0));
+        });
     }
 }

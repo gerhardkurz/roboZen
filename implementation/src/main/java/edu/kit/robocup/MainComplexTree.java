@@ -19,6 +19,6 @@ public class MainComplexTree {
         perPlayModePolicy.replacePolicyForPlayMode(new BeforeGamePolicy(), PlayMode.UNKNOWN);
 
         Util.TeamDescription teamDescription = new Util.TeamDescription(perPlayModePolicy, 2, new ArrayList<>());
-        Util.executeGame(teamDescription, teamDescription, new Ball(0, 0));
+        Util.executeGame(teamDescription, teamDescription, t -> t.moveBall(new Ball(0, 0)));
     }
 }
