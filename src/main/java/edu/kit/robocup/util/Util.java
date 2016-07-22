@@ -11,6 +11,7 @@ import edu.kit.robocup.interf.mdp.IPolicy;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,9 @@ public class Util {
     private Util() {
     }
 
-    public static final String rcssDir = "..\\rcss\\";
+    public static final String rcssDir = "\\dependencies\\";
+    public static final String serverConfFlag = "-sfile";
+    public static final String playerConfFlag = "-pfile";
 
 
     public static void initEnvironment() {
@@ -31,31 +34,37 @@ public class Util {
 
     public static void startServer() {
         System.out.println("starting rcssserver!");
-        killAndStart("rcssserver.exe", rcssDir + "rcssserver-14.0.3-win\\rcssserver.exe");
+        List<String> command = Arrays.asList(rcssDir + "rcssserver-14.0.3-win\\rcssserver.exe",
+                playerConfFlag, "C:/Users/florian/projects/robocup/dependencies/rcssserver-14.0.3-win/player.conf",
+                serverConfFlag, "C:/Users/florian/projects/robocup/dependencies/rcssserver-14.0.3-win/server.conf");
+        killAndStart("rcssserver.exe", command);
+        //
+        //
     }
 
     public static void startMonitor() {
         System.out.println("starting rcssmonitor!");
-        killAndStart("rcssmonitor.exe", rcssDir + "rcssmonitor-14.1.0-win\\rcssmonitor.exe");
+        List<String> command = Arrays.asList(rcssDir + "rcssmonitor-14.1.0-win\\rcssmonitor.exe");
+        killAndStart("rcssmonitor.exe", command);
     }
 
-    public static void killAndStart(String processName, String path) {
+    public static void killAndStart(String processName, List<String> command) {
         killTask(processName);
         try {
             TimeUnit.MILLISECONDS.sleep(500);
-            startExe(path);
+            startExe(command);
             TimeUnit.MILLISECONDS.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public static void startExe(String path) {
+    public static void startExe(List<String> command) {
         try {
-            File file = new File(path).getAbsoluteFile();
-            ProcessBuilder pb = new ProcessBuilder(file.getAbsolutePath());
-            File dir = file.getParentFile().getAbsoluteFile();
-            pb.directory(dir);
+//            File file = new File(path).getAbsoluteFile();
+            ProcessBuilder pb = new ProcessBuilder(command);//file.getAbsolutePath()
+//            File dir = file.getParentFile().getAbsoluteFile();
+//            pb.directory(dir);
 
             Process p = pb.start();
             printStream(p.getInputStream());

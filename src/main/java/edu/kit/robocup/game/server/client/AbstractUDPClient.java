@@ -1,7 +1,6 @@
 package edu.kit.robocup.game.server.client;
 
 import com.github.robocup_atan.atan.model.ByteBuffer;
-import edu.kit.robocup.recorder.GameRecorder;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
