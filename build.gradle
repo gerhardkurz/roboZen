@@ -18,5 +18,5 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.robozen-atan:atan:0.4.4'
+    compile 'com.github.robocup-atan:atan:0.4.4'
 }
