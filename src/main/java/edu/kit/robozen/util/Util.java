@@ -22,7 +22,7 @@ public class Util {
 
     public static void initEnvironmentWin(InitWinConfiguration configuration) {
         PropertyConfigurator.configure(configuration.log4jConfig);
-        File homeDir = new File(configuration.homeDirectory);
+        File homeDir = new File(configuration.workingDirectory);
         System.out.println("starting rcssserver!");
         killAndStartWin(configuration.serverExe, configuration.serverDir + configuration.serverExe, homeDir);
         System.out.println("starting rcssmonitor!");
@@ -139,15 +139,15 @@ public class Util {
     }
 
     public static class InitWinConfiguration {
-        public final String homeDirectory;
+        public final String workingDirectory;
         public final String log4jConfig;
         public final String serverDir;
         public final String serverExe;
         public final String monitorDir;
         public final String monitorExe;
 
-        public InitWinConfiguration(String homeDirectory, String log4jConfig, String serverDir, String serverExe, String monitorDir, String monitorExe) {
-            this.homeDirectory = homeDirectory;
+        public InitWinConfiguration(String workingDirectory, String log4jConfig, String serverDir, String serverExe, String monitorDir, String monitorExe) {
+            this.workingDirectory = workingDirectory;
             this.log4jConfig = log4jConfig;
             this.serverDir = serverDir;
             this.serverExe = serverExe;
