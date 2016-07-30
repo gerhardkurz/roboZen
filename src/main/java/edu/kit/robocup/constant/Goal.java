@@ -1,7 +1,6 @@
 package edu.kit.robocup.constant;
 
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.kit.robocup.interf.game.IGameObject;
 import edu.kit.robocup.game.SimpleGameObject;
 
