@@ -5,7 +5,7 @@ RoboZen is an API that provides a central interface to the [Robocup Soccer Simul
 - The automatic initialization of the soccer server and monitor is currently restricted to Windows.
 Namely the method `edu.kit.robocup.Util.initEnvironmentWin`. Except for the initialization, the API works with every operating system.
 
-- The `server::coach_w_referee` option contained in the **server.conf** needs to be enabled to allow the centralized control of the clients.
+- The `server::coach_w_referee` option contained in the **server.conf** needs to be enabled to allow for centralized control over the clients.
 The **server.conf** is generated automatically by the RCSS server.
 
 ### Getting started
