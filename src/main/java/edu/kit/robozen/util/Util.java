@@ -17,28 +17,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Util {
 
-    public class InitWinConfiguration {
-        public final String homeDirectory;
-        public final String log4jConfig;
-        public final String serverDir;
-        public final String serverExe;
-        public final String monitorDir;
-        public final String monitorExe;
-
-        public InitWinConfiguration(String homeDirectory, String log4jConfig, String serverDir, String serverExe, String monitorDir, String monitorExe) {
-            this.homeDirectory = homeDirectory;
-            this.log4jConfig = log4jConfig;
-            this.serverDir = serverDir;
-            this.serverExe = serverExe;
-            this.monitorDir = monitorDir;
-            this.monitorExe = monitorExe;
-        }
-    }
-
     private Util() {
     }
-
-
 
     public static void initEnvironmentWin(InitWinConfiguration configuration) {
         PropertyConfigurator.configure(configuration.log4jConfig);
@@ -156,5 +136,23 @@ public class Util {
 
     public interface TrainerCommand {
         void execute(Trainer trainer);
+    }
+
+    public static class InitWinConfiguration {
+        public final String homeDirectory;
+        public final String log4jConfig;
+        public final String serverDir;
+        public final String serverExe;
+        public final String monitorDir;
+        public final String monitorExe;
+
+        public InitWinConfiguration(String homeDirectory, String log4jConfig, String serverDir, String serverExe, String monitorDir, String monitorExe) {
+            this.homeDirectory = homeDirectory;
+            this.log4jConfig = log4jConfig;
+            this.serverDir = serverDir;
+            this.serverExe = serverExe;
+            this.monitorDir = monitorDir;
+            this.monitorExe = monitorExe;
+        }
     }
 }
