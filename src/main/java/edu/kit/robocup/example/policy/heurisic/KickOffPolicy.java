@@ -1,11 +1,10 @@
-package edu.kit.robocup.mdp.policy.heurisic;
+package edu.kit.robocup.example.policy.heurisic;
 
 
 import edu.kit.robocup.constant.Constants;
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;
 import edu.kit.robocup.game.controller.IPlayerController;
-import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.interf.game.IAction;
 import edu.kit.robocup.interf.game.IPlayerState;
 import edu.kit.robocup.interf.mdp.IPolicy;

@@ -1,4 +1,4 @@
-package edu.kit.robocup.mdp.policy.heurisic;
+package edu.kit.robocup.example.policy.heurisic;
 
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.*;

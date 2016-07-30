@@ -1,4 +1,4 @@
-package edu.kit.robocup.mdp.policy;
+package edu.kit.robocup.example.policy;
 
 import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.Dash;

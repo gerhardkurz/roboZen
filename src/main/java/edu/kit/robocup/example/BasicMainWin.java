@@ -1,4 +1,4 @@
-package edu.kit.robocup;
+package edu.kit.robocup.example;
 
 import edu.kit.robocup.util.Util;
 
@@ -6,12 +6,12 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
-public class Main {
+public class BasicMainWin {
 
-    static Logger logger = Logger.getLogger(Main.class.getName());
+    static Logger logger = Logger.getLogger(BasicMainWin.class.getName());
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        Util.initEnvironment("build/test");
+        Util.initEnvironmentWin("build/test");
     }
 }
