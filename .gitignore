@@ -1,9 +1,5 @@
 .DS_Store
 *.iml
-**/.gradle
-**/.idea
-**/build
-*.class
-
-*.rcl
-*.rcg
+.idea/
+build/
+.gradle/

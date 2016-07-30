@@ -21,50 +21,47 @@ public class Util {
     private Util() {
     }
 
-    public static final String rcssDir = "\\dependencies\\";
-    public static final String serverConfFlag = "-sfile";
-    public static final String playerConfFlag = "-pfile";
+    public static final String rcssDir = "dependencies/";
+    public static final String serverDir = rcssDir + "rcssserver-14.0.3-win/";
+    public static final String monitorDir = rcssDir + "rcssmonitor-14.1.0-win/";
+    public static final String serverExe = "rcssserver.exe";
+    public static final String monitorExe = "rcssmonitor.exe";
 
 
-    public static void initEnvironment() {
+
+    public static void initEnvironment(String homeDirectory) {
         PropertyConfigurator.configure("src/main/resources/log4j.properties");
-        Util.startServer();
-        Util.startMonitor();
+        File homeDir = new File(homeDirectory);
+        Util.startServer(homeDir);
+        Util.startMonitor(homeDir);
     }
 
-    public static void startServer() {
+    public static void startServer(File homeDirectory) {
         System.out.println("starting rcssserver!");
-        List<String> command = Arrays.asList(rcssDir + "rcssserver-14.0.3-win\\rcssserver.exe",
-                playerConfFlag, "C:/Users/florian/projects/robocup/dependencies/rcssserver-14.0.3-win/player.conf",
-                serverConfFlag, "C:/Users/florian/projects/robocup/dependencies/rcssserver-14.0.3-win/server.conf");
-        killAndStart("rcssserver.exe", command);
-        //
-        //
+        killAndStart(serverExe, serverDir + serverExe, homeDirectory);
     }
 
-    public static void startMonitor() {
+    public static void startMonitor(File homeDirectory) {
         System.out.println("starting rcssmonitor!");
-        List<String> command = Arrays.asList(rcssDir + "rcssmonitor-14.1.0-win\\rcssmonitor.exe");
-        killAndStart("rcssmonitor.exe", command);
+        killAndStart(monitorExe, monitorDir + monitorExe, homeDirectory);
     }
 
-    public static void killAndStart(String processName, List<String> command) {
+    public static void killAndStart(String processName, String path, File homeDirectory) {
         killTask(processName);
         try {
             TimeUnit.MILLISECONDS.sleep(500);
-            startExe(command);
+            startExe(path, homeDirectory);
             TimeUnit.MILLISECONDS.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public static void startExe(List<String> command) {
+    public static void startExe(String path, File homeDirectory) {
         try {
-//            File file = new File(path).getAbsoluteFile();
-            ProcessBuilder pb = new ProcessBuilder(command);//file.getAbsolutePath()
-//            File dir = file.getParentFile().getAbsoluteFile();
-//            pb.directory(dir);
+            File file = new File(path).getAbsoluteFile();
+            ProcessBuilder pb = new ProcessBuilder(file.getAbsolutePath());
+            pb.directory(homeDirectory.getAbsoluteFile());
 
             Process p = pb.start();
             printStream(p.getInputStream());
@@ -113,14 +110,14 @@ public class Util {
         }
     }
 
-    public static void executeGame(TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand) throws InterruptedException {
+    public static void executeGame(String homeDirectory, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand) throws InterruptedException {
         StatusSupplier<Boolean> statusSupplierWest = new EndGameStatusSupplier<>(Boolean.class);
         StatusSupplier<Boolean> statusSupplierEast = new EndGameStatusSupplier<>(Boolean.class);
-        executeGame(teamWest, teamEast,  trainerCommand, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
+        executeGame(homeDirectory, teamWest, teamEast,  trainerCommand, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
     }
 
-    public static void executeGame(TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
-        Util.initEnvironment();
+    public static void executeGame(String homeDirectory, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
+        Util.initEnvironment(homeDirectory);
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
         endGamePolicyWest.setPolicy(teamWest.policy);
