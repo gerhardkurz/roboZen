@@ -16,32 +16,37 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Util {
+
+    public class InitWinConfiguration {
+        public final String homeDirectory;
+        public final String log4jConfig;
+        public final String serverDir;
+        public final String serverExe;
+        public final String monitorDir;
+        public final String monitorExe;
+
+        public InitWinConfiguration(String homeDirectory, String log4jConfig, String serverDir, String serverExe, String monitorDir, String monitorExe) {
+            this.homeDirectory = homeDirectory;
+            this.log4jConfig = log4jConfig;
+            this.serverDir = serverDir;
+            this.serverExe = serverExe;
+            this.monitorDir = monitorDir;
+            this.monitorExe = monitorExe;
+        }
+    }
+
     private Util() {
     }
 
-    public static final String rcssDir = "dependencies/";
-    public static final String serverDir = rcssDir + "rcssserver-14.0.3-win/";
-    public static final String monitorDir = rcssDir + "rcssmonitor-14.1.0-win/";
-    public static final String serverExe = "rcssserver.exe";
-    public static final String monitorExe = "rcssmonitor.exe";
 
 
-
-    public static void initEnvironmentWin(String homeDirectory, String log4jConfig) {
-        PropertyConfigurator.configure(log4jConfig);
-        File homeDir = new File(homeDirectory);
-        Util.startServerWin(homeDir);
-        Util.startMonitor(homeDir);
-    }
-
-    public static void startServerWin(File homeDirectory) {
+    public static void initEnvironmentWin(InitWinConfiguration configuration) {
+        PropertyConfigurator.configure(configuration.log4jConfig);
+        File homeDir = new File(configuration.homeDirectory);
         System.out.println("starting rcssserver!");
-        killAndStartWin(serverExe, serverDir + serverExe, homeDirectory);
-    }
-
-    public static void startMonitor(File homeDirectory) {
+        killAndStartWin(configuration.serverExe, configuration.serverDir + configuration.serverExe, homeDir);
         System.out.println("starting rcssmonitor!");
-        killAndStartWin(monitorExe, monitorDir + monitorExe, homeDirectory);
+        killAndStartWin(configuration.monitorDir, configuration.monitorDir + configuration.monitorExe, homeDir);
     }
 
     public static void killAndStartWin(String processName, String path, File homeDirectory) {
@@ -108,14 +113,14 @@ public class Util {
         }
     }
 
-    public static void executeGameWin(String homeDirectory, String log4jConfig, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand) throws InterruptedException {
+    public static void executeGameWin(InitWinConfiguration configuration, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand) throws InterruptedException {
         StatusSupplier<Boolean> statusSupplierWest = new EndGameStatusSupplier<>(Boolean.class);
         StatusSupplier<Boolean> statusSupplierEast = new EndGameStatusSupplier<>(Boolean.class);
-        executeGameWin(homeDirectory, log4jConfig, teamWest, teamEast,  trainerCommand, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
+        executeGameWin(configuration, teamWest, teamEast,  trainerCommand, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
     }
 
-    public static void executeGameWin(String homeDirectory, String log4jConfig, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
-        Util.initEnvironmentWin(homeDirectory, log4jConfig);
+    public static void executeGameWin(InitWinConfiguration configuration, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
+        Util.initEnvironmentWin(configuration);
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
         endGamePolicyWest.setPolicy(teamWest.policy);
