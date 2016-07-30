@@ -27,8 +27,8 @@ public class Util {
 
 
 
-    public static void initEnvironmentWin(String homeDirectory) {
-        PropertyConfigurator.configure("src/main/resources/log4j.properties");
+    public static void initEnvironmentWin(String homeDirectory, String log4jConfig) {
+        PropertyConfigurator.configure(log4jConfig);
         File homeDir = new File(homeDirectory);
         Util.startServerWin(homeDir);
         Util.startMonitor(homeDir);
@@ -108,14 +108,14 @@ public class Util {
         }
     }
 
-    public static void executeGameWin(String homeDirectory, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand) throws InterruptedException {
+    public static void executeGameWin(String homeDirectory, String log4jConfig, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand) throws InterruptedException {
         StatusSupplier<Boolean> statusSupplierWest = new EndGameStatusSupplier<>(Boolean.class);
         StatusSupplier<Boolean> statusSupplierEast = new EndGameStatusSupplier<>(Boolean.class);
-        executeGameWin(homeDirectory, teamWest, teamEast,  trainerCommand, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
+        executeGameWin(homeDirectory, log4jConfig, teamWest, teamEast,  trainerCommand, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
     }
 
-    public static void executeGameWin(String homeDirectory, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
-        Util.initEnvironmentWin(homeDirectory);
+    public static void executeGameWin(String homeDirectory, String log4jConfig, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
+        Util.initEnvironmentWin(homeDirectory, log4jConfig);
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
         endGamePolicyWest.setPolicy(teamWest.policy);
