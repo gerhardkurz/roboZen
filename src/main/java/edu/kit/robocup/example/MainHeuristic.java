@@ -1,16 +1,6 @@
 package edu.kit.robocup.example;
 
 
-import edu.kit.robocup.game.PlayMode;
-import edu.kit.robocup.game.state.Ball;
-import edu.kit.robocup.mdp.policy.ChaseAndKickPolicy;
-import edu.kit.robocup.mdp.policy.PerPlayModePolicy;
-import edu.kit.robocup.mdp.policy.heurisic.BeforeGamePolicy;
-import edu.kit.robocup.mdp.policy.heurisic.KickOffPolicy;
-import edu.kit.robocup.util.Util;
-
-import java.util.ArrayList;
-
 public class MainHeuristic {
     public static void main(String[] args) throws InterruptedException {
 //        PerPlayModePolicy perPlayModePolicy = new PerPlayModePolicy(new ChaseAndKickPolicy());

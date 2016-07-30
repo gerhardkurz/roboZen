@@ -10,8 +10,6 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static cern.clhep.PhysicalConstants.pi;
-import static sun.audio.AudioPlayer.player;
 
 public class State implements IState, Serializable {
     private PlayMode playMode;

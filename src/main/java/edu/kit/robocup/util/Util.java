@@ -5,13 +5,11 @@ import edu.kit.robocup.constant.PitchSide;
 import edu.kit.robocup.game.SimpleGameObject;
 import edu.kit.robocup.game.controller.Team;
 import edu.kit.robocup.game.controller.Trainer;
-import edu.kit.robocup.game.state.Ball;
 import edu.kit.robocup.game.state.PlayerState;
 import edu.kit.robocup.interf.mdp.IPolicy;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -29,35 +27,35 @@ public class Util {
 
 
 
-    public static void initEnvironment(String homeDirectory) {
+    public static void initEnvironmentWin(String homeDirectory) {
         PropertyConfigurator.configure("src/main/resources/log4j.properties");
         File homeDir = new File(homeDirectory);
-        Util.startServer(homeDir);
+        Util.startServerWin(homeDir);
         Util.startMonitor(homeDir);
     }
 
-    public static void startServer(File homeDirectory) {
+    public static void startServerWin(File homeDirectory) {
         System.out.println("starting rcssserver!");
-        killAndStart(serverExe, serverDir + serverExe, homeDirectory);
+        killAndStartWin(serverExe, serverDir + serverExe, homeDirectory);
     }
 
     public static void startMonitor(File homeDirectory) {
         System.out.println("starting rcssmonitor!");
-        killAndStart(monitorExe, monitorDir + monitorExe, homeDirectory);
+        killAndStartWin(monitorExe, monitorDir + monitorExe, homeDirectory);
     }
 
-    public static void killAndStart(String processName, String path, File homeDirectory) {
+    public static void killAndStartWin(String processName, String path, File homeDirectory) {
         killTask(processName);
         try {
             TimeUnit.MILLISECONDS.sleep(500);
-            startExe(path, homeDirectory);
+            startExeWin(path, homeDirectory);
             TimeUnit.MILLISECONDS.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public static void startExe(String path, File homeDirectory) {
+    public static void startExeWin(String path, File homeDirectory) {
         try {
             File file = new File(path).getAbsoluteFile();
             ProcessBuilder pb = new ProcessBuilder(file.getAbsolutePath());
@@ -110,14 +108,14 @@ public class Util {
         }
     }
 
-    public static void executeGame(String homeDirectory, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand) throws InterruptedException {
+    public static void executeGameWin(String homeDirectory, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand) throws InterruptedException {
         StatusSupplier<Boolean> statusSupplierWest = new EndGameStatusSupplier<>(Boolean.class);
         StatusSupplier<Boolean> statusSupplierEast = new EndGameStatusSupplier<>(Boolean.class);
-        executeGame(homeDirectory, teamWest, teamEast,  trainerCommand, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
+        executeGameWin(homeDirectory, teamWest, teamEast,  trainerCommand, new StatusPolicy<>(statusSupplierWest), new StatusPolicy<>(statusSupplierEast));
     }
 
-    public static void executeGame(String homeDirectory, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
-        Util.initEnvironment(homeDirectory);
+    public static void executeGameWin(String homeDirectory, TeamDescription teamWest, TeamDescription teamEast, TrainerCommand trainerCommand, StatusPolicy<Boolean> endGamePolicyWest, StatusPolicy<Boolean> endGamePolicyEast) throws InterruptedException {
+        Util.initEnvironmentWin(homeDirectory);
         Trainer trainer = new Trainer("Trainer");
         trainer.connect();
         endGamePolicyWest.setPolicy(teamWest.policy);
