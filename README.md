@@ -9,6 +9,7 @@ Namely the method `edu.kit.robocup.Util.initEnvironmentWin`. Except for the init
 The **server.conf** is generated automatically by the RCSS server.
 
 ### Getting started
+RoboZen uses gradle to resolve dependencies. The associated wrapper can be found under `gradle/wrapper/`. The windows binaries of the robocup server and monitor are already included in the repository.
 
 ### Examples
 Basic and advanced policy examples can be found in the `edu.kit.robocup.example` package.
