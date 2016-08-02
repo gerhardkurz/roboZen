@@ -12,5 +12,5 @@ The **server.conf** is generated automatically by the RCSS server.
 To get started follow the instruction in the [roboZen example repository](https://github.com/devgg/roboZen_examples).
 
 ### Logging
-RoboZen uses the [log4j](http://logging.apache.org/log4j/2.x/index.html) logging API. 
+RoboZen uses the [log4j](http://logging.apache.org/log4j/2.x/index.html) logging API.   
 Logging can be initialized by using the method `edu.kit.robozen.Util.initLogging`.
