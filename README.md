@@ -1,5 +1,5 @@
 # roboZen
-RoboZen is an library that provides a central interface to the [Robocup Soccer Simulation League](http://wiki.robocup.org/wiki/Soccer_Simulation_League). To achieve centralized control over all clients, from within a single thread, the trainer is used.
+RoboZen is a library that provides a central interface to the [Robocup Soccer Simulation League](http://wiki.robocup.org/wiki/Soccer_Simulation_League). To achieve centralized control over all clients, from within a single thread, the trainer is used.
 
 ### Requirements
 - The automatic initialization of the soccer server and monitor is currently restricted to Windows.
@@ -13,4 +13,4 @@ To get started follow the instruction in the [roboZen example repository](https:
 
 ### Logging
 RoboZen uses the [log4j](http://logging.apache.org/log4j/2.x/index.html) logging API. 
-The configuration file can be found in `src/main/resources/`.
+Logging can be initialized by using the method `edu.kit.robozen.Util.initLogging`.
