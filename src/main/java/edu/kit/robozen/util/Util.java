@@ -10,6 +10,8 @@ import edu.kit.robozen.interf.mdp.IPolicy;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -22,29 +24,29 @@ public class Util {
 
     public static void initEnvironmentWin(InitWinConfiguration configuration) {
         PropertyConfigurator.configure(configuration.log4jConfig);
-        File homeDir = new File(configuration.workingDirectory);
         System.out.println("starting rcssserver!");
-        killAndStartWin(configuration.serverExe, configuration.serverDir + configuration.serverExe, homeDir);
+        killAndStartWin(configuration.server, configuration.workingDirectory);
         System.out.println("starting rcssmonitor!");
-        killAndStartWin(configuration.monitorDir, configuration.monitorDir + configuration.monitorExe, homeDir);
+        killAndStartWin(configuration.monitor, configuration.workingDirectory);
     }
 
-    public static void killAndStartWin(String processName, String path, File homeDirectory) {
-        killTask(processName);
+    public static void killAndStartWin(String exeString, String homeString) {
+        Path exePath = Paths.get(exeString).toAbsolutePath();
+        Path homePath = Paths.get(homeString).toAbsolutePath();
+        killTask(exePath);
         try {
             TimeUnit.MILLISECONDS.sleep(500);
-            startExeWin(path, homeDirectory);
+            startExeWin(exePath, homePath);
             TimeUnit.MILLISECONDS.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public static void startExeWin(String path, File homeDirectory) {
+    public static void startExeWin(Path exePath, Path homePath) {
         try {
-            File file = new File(path).getAbsoluteFile();
-            ProcessBuilder pb = new ProcessBuilder(file.getAbsolutePath());
-            pb.directory(homeDirectory.getAbsoluteFile());
+            ProcessBuilder pb = new ProcessBuilder(exePath.toString());
+            pb.directory(homePath.toFile());
 
             Process p = pb.start();
             printStream(p.getInputStream());
@@ -55,9 +57,9 @@ public class Util {
         }
     }
 
-    public static void killTask(String processName) {
+    public static void killTask(Path path) {
         try {
-            Runtime.getRuntime().exec("taskkill /F /IM " + processName);
+            Runtime.getRuntime().exec("taskkill /F /IM " + path.getFileSystem().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,17 +68,15 @@ public class Util {
     private static void printStream(InputStream inputStream) throws IOException {
         final BufferedReader input = new BufferedReader(new InputStreamReader(inputStream));
 
-        new Thread(new Runnable() {
-            public void run() {
-                String line;
-                try {
-                    while ((line = input.readLine()) != null) {
-                        System.out.println(line);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+        new Thread(() -> {
+            String line;
+            try {
+                while ((line = input.readLine()) != null) {
+                    System.out.println(line);
                 }
-            };
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }).start();
     }
 
@@ -139,20 +139,16 @@ public class Util {
     }
 
     public static class InitWinConfiguration {
-        public final String workingDirectory;
-        public final String log4jConfig;
-        public final String serverDir;
-        public final String serverExe;
-        public final String monitorDir;
-        public final String monitorExe;
+        private final String workingDirectory;
+        private final String log4jConfig;
+        private final String server;
+        private final String monitor;
 
-        public InitWinConfiguration(String workingDirectory, String log4jConfig, String serverDir, String serverExe, String monitorDir, String monitorExe) {
+        public InitWinConfiguration(String workingDirectory, String log4jConfig, String server, String monitor) {
             this.workingDirectory = workingDirectory;
             this.log4jConfig = log4jConfig;
-            this.serverDir = serverDir;
-            this.serverExe = serverExe;
-            this.monitorDir = monitorDir;
-            this.monitorExe = monitorExe;
+            this.server = server;
+            this.monitor = monitor;
         }
     }
 }
