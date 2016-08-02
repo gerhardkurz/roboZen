@@ -22,8 +22,11 @@ public class Util {
     private Util() {
     }
 
+    public static void initLogging(String log4jConfig) {
+        PropertyConfigurator.configure(log4jConfig);
+    }
+
     public static void initEnvironmentWin(InitWinConfiguration configuration) {
-        PropertyConfigurator.configure(configuration.log4jConfig);
         System.out.println("starting rcssserver!");
         killAndStartWin(configuration.server, configuration.workingDirectory);
         System.out.println("starting rcssmonitor!");
@@ -140,13 +143,11 @@ public class Util {
 
     public static class InitWinConfiguration {
         private final String workingDirectory;
-        private final String log4jConfig;
         private final String server;
         private final String monitor;
 
-        public InitWinConfiguration(String workingDirectory, String log4jConfig, String server, String monitor) {
+        public InitWinConfiguration(String workingDirectory, String server, String monitor) {
             this.workingDirectory = workingDirectory;
-            this.log4jConfig = log4jConfig;
             this.server = server;
             this.monitor = monitor;
         }
